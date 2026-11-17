@@ -53,13 +53,34 @@
       animation: pulse-fast 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
 
+
+    /* Hide scrollbar for Chrome, Safari and Opera on horizontal tab bar */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+    .mobile-nav-pill.active {
+      background-color: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.15);
+    }
+    .mobile-nav-pill.active .nav-badge {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+
   </style>
 </head>
 <body class="antialiased">
 
   <div class="min-h-screen flex flex-col lg:flex-row">
     <!-- LEFT SIDEBAR (Desktop) / TOP HEADER (Mobile) -->
-    <aside class="lg:w-72 lg:fixed lg:inset-y-0 lg:left-0 bg-white border-b lg:border-b-0 lg:border-r border-slate-200 z-30 flex flex-col justify-between no-print">
+    <aside id="desktopSidebar" class="hidden lg:flex lg:w-72 lg:fixed lg:inset-y-0 lg:left-0 bg-white border-r border-slate-200 z-30 flex-col justify-between no-print">
       <div class="p-4 lg:p-5 space-y-5">
         <!-- Brand / Doc Meta -->
         <div>
@@ -134,10 +155,180 @@
     </aside>
 
     <!-- MAIN CONTENT AREA -->
+    
+    <!-- MOBILE TOP BAR (Sticky, only visible on screens < 1024px) -->
+    <div class="block lg:hidden sticky top-0 z-40 bg-white border-b border-slate-200 shadow-xs no-print">
+      <!-- Upper row: Brand, Session & Quick Actions -->
+      <div class="px-3 py-2 flex items-center justify-between gap-2 bg-white">
+        <div class="flex items-center gap-2 min-w-0">
+          <button id="mobileMenuBtn" class="p-2 rounded-lg text-slate-700 hover:bg-slate-100 active:bg-slate-200 transition cursor-pointer shrink-0" aria-label="Mở menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <div class="truncate">
+            <div class="flex items-center gap-1.5">
+              <span class="font-bold text-slate-900 text-sm tracking-tight truncate">QA/QC 1FO</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.2 bg-sky-100 text-sky-800 rounded font-semibold">21297</span>
+            </div>
+            <div id="mSessionTitleDisp" class="text-[11px] text-slate-500 font-medium truncate">Đợt 01 (Mặc định)</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5 shrink-0">
+          <!-- Mobile Sync Pill -->
+          <div id="mSyncBadge" class="flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-800 border border-emerald-200">
+            <span id="mSyncDot" class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <span id="mSyncStatusText">Cloud</span>
+          </div>
+
+          <!-- Quick Action: Edit Session Modal -->
+          <button id="mEditSessionBtn" class="p-1.5 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-semibold transition cursor-pointer" title="Thông tin đợt">
+            ⚙️
+          </button>
+
+          <!-- Quick Action: Share/Copy Link -->
+          <button id="mShareBtn" class="p-1.5 text-white bg-slate-900 hover:bg-slate-800 rounded-lg text-xs font-semibold transition cursor-pointer" title="Copy link máy khác">
+            📋
+          </button>
+        </div>
+      </div>
+
+      <!-- Lower row: Horizontal Swipeable Nav Tabs Carousel -->
+      <nav id="mobileTabBar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar px-3 py-2 bg-slate-50/90 border-t border-slate-100" aria-label="Điều hướng tab di động">
+        <button class="mobile-nav-pill active flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-slate-900 text-white transition cursor-pointer shrink-0" data-tab="part_previsit">
+          <span>0. Chuẩn Bị</span>
+          <span id="mPvBadge" class="px-1.5 py-0.2 text-[10px] font-mono rounded bg-white/20 text-white">0/33</span>
+        </button>
+        <button class="mobile-nav-pill flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-white text-slate-700 border border-slate-200 transition cursor-pointer shrink-0" data-tab="part0">
+          <span>1. Cấu Trúc</span>
+          <span class="px-1.5 py-0.2 text-[10px] font-mono rounded bg-slate-100 text-slate-600">7</span>
+        </button>
+        <button class="mobile-nav-pill flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-white text-slate-700 border border-slate-200 transition cursor-pointer shrink-0" data-tab="part1">
+          <span>2. 38 Chỉ Tiêu</span>
+          <span id="mSpecsBadge" class="px-1.5 py-0.2 text-[10px] font-mono rounded bg-slate-100 text-slate-600">0/38</span>
+        </button>
+        <button class="mobile-nav-pill flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-white text-slate-700 border border-slate-200 transition cursor-pointer shrink-0" data-tab="part6">
+          <span>3. Test Nhanh</span>
+          <span class="px-1.5 py-0.2 text-[10px] font-mono rounded bg-slate-100 text-slate-600">6</span>
+        </button>
+        <button class="mobile-nav-pill flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-white text-slate-700 border border-slate-200 transition cursor-pointer shrink-0" data-tab="part2">
+          <span>4. Gian Lận</span>
+          <span class="px-1.5 py-0.2 text-[10px] font-mono rounded bg-slate-100 text-slate-600">8</span>
+        </button>
+        <button class="mobile-nav-pill flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-white text-slate-700 border border-slate-200 transition cursor-pointer shrink-0" data-tab="part3">
+          <span>5. Hồ Sơ</span>
+          <span class="px-1.5 py-0.2 text-[10px] font-mono rounded bg-slate-100 text-slate-600">7</span>
+        </button>
+        <button class="mobile-nav-pill flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-white text-slate-700 border border-slate-200 transition cursor-pointer shrink-0" data-tab="part4">
+          <span>6. Chất Vấn</span>
+          <span class="px-1.5 py-0.2 text-[10px] font-mono rounded bg-slate-100 text-slate-600">6</span>
+        </button>
+        <button class="mobile-nav-pill flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-white text-slate-700 border border-slate-200 transition cursor-pointer shrink-0" data-tab="part5">
+          <span>7. What-If</span>
+          <span class="px-1.5 py-0.2 text-[10px] font-mono rounded bg-slate-100 text-slate-600">7</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- MOBILE SLIDE-OVER DRAWER (Off-canvas Menu) -->
+    <div id="mobileDrawer" class="hidden fixed inset-0 z-50 lg:hidden no-print">
+      <!-- Backdrop -->
+      <div id="drawerBackdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"></div>
+      
+      <!-- Drawer Content -->
+      <div class="fixed inset-y-0 left-0 w-80 max-w-[85vw] bg-white shadow-2xl flex flex-col justify-between z-10 p-4 space-y-4 overflow-y-auto">
+        <div class="space-y-4">
+          <!-- Drawer Header -->
+          <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider bg-sky-100 text-sky-800 rounded">QA/QC Playbook</span>
+                <span class="text-[11px] font-mono text-slate-500">21297/QĐ-VTT</span>
+              </div>
+              <h2 class="text-sm font-bold text-slate-900 mt-1">Nghiệm Thu Cáp 1FO</h2>
+            </div>
+            <button id="closeDrawerBtn" class="p-2 text-slate-400 hover:text-slate-700 rounded-lg text-lg font-bold cursor-pointer">✕</button>
+          </div>
+
+          <!-- Session Selector in Drawer -->
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
+            <div class="flex items-center justify-between text-xs font-semibold text-slate-600">
+              <span>Đợt nghiệm thu:</span>
+              <button id="drawerNewSessionBtn" class="text-sky-700 hover:underline text-[11px] cursor-pointer">➕ Đợt mới</button>
+            </div>
+            <select id="drawerSessionSelect" class="w-full bg-white text-xs font-semibold text-slate-900 p-2 rounded-lg border border-slate-300">
+              <option value="default">Mặc định</option>
+            </select>
+          </div>
+
+          <!-- Full Nav List in Drawer -->
+          <nav class="space-y-1" aria-label="Menu ngăn kéo">
+            <button class="nav-item active w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part_previsit">
+              <span class="truncate">0. Chuẩn Bị Trước Khi Đi</span>
+              <span class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-sky-100 text-sky-800">33</span>
+            </button>
+            <button class="nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part0">
+              <span class="truncate">1. Cấu Trúc &amp; 7 Thành Phần</span>
+              <span class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-600">7</span>
+            </button>
+            <button class="nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part1">
+              <span class="truncate">2. Bảng Chỉ Tiêu &amp; Bài Đo</span>
+              <span class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-600">38</span>
+            </button>
+            <button class="nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part6">
+              <span class="truncate">3. Test Nhanh Tại Xưởng</span>
+              <span class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-600">6</span>
+            </button>
+            <button class="nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part2">
+              <span class="truncate">4. Chiêu Trò Gian Lận</span>
+              <span class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-600">8</span>
+            </button>
+            <button class="nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part3">
+              <span class="truncate">5. Hồ Sơ &amp; Chứng Từ</span>
+              <span class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-600">7</span>
+            </button>
+            <button class="nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part4">
+              <span class="truncate">6. Câu Hỏi Chất Vấn</span>
+              <span class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-600">6</span>
+            </button>
+            <button class="nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part5">
+              <span class="truncate">7. Kịch Bản What-If</span>
+              <span class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-600">7</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Drawer Footer: Score & Action Buttons -->
+        <div class="pt-3 border-t border-slate-200 space-y-3">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-600 font-medium">Tiến độ đo kiểm</span>
+            <span id="drawerProgressCount" class="font-mono font-bold text-slate-900">0/38</span>
+          </div>
+          <div class="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden flex">
+            <div id="drawerPassBar" class="bg-emerald-500 h-full transition-all" style="width: 0%"></div>
+            <div id="drawerFailBar" class="bg-rose-500 h-full transition-all" style="width: 0%"></div>
+          </div>
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-emerald-700 font-semibold">Đạt: <strong id="drawerPassCount">0</strong></span>
+            <span class="text-rose-700 font-semibold">Trượt: <strong id="drawerFailCount">0</strong></span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button id="drawerToggleAlertBtn" class="px-2.5 py-2 rounded-lg text-xs font-semibold bg-amber-100 text-amber-900 hover:bg-amber-200 border border-amber-300 transition cursor-pointer">
+              ⚠ 11 Cảnh Báo
+            </button>
+            <button id="drawerPrintBtn" class="px-2.5 py-2 rounded-lg text-xs font-semibold bg-white text-slate-700 hover:bg-slate-100 border border-slate-300 transition cursor-pointer">
+              🖨️ In / PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="main-shell flex-1 lg:ml-72 min-w-0">
 
       <!-- CLOUD SYNC & SESSION CONTROL HEADER (Sticky) -->
-      <header class="glass-bar border-b border-slate-200/90 px-4 sm:px-6 py-3 sticky top-0 z-20 no-print">
+      <header class="glass-bar hidden lg:block border-b border-slate-200/90 px-4 sm:px-6 py-3 sticky top-0 z-20 no-print">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3">
           <!-- Left: Session selector & info -->
           <div class="flex flex-wrap items-center gap-2 sm:gap-3">
@@ -234,7 +425,23 @@
         <span>✓</span> <span>Đã copy link đồng bộ! Bạn có thể dán link này vào máy tính, điện thoại khác để cùng làm việc.</span>
       </div>
 
-      <main class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+      <main class="max-w-6xl mx-auto p-3 sm:p-6 lg:p-8 space-y-6 pb-20 lg:pb-8">
+
+      <!-- MOBILE FLOATING ACTION / STATUS BAR (Only on mobile < 1024px) -->
+      <aside class="fixed bottom-3 left-3 right-3 z-30 lg:hidden flex items-center justify-between bg-slate-900/95 text-white backdrop-blur-md px-4 py-2.5 rounded-2xl shadow-xl border border-slate-700/60 text-xs no-print">
+        <div class="flex items-center gap-2">
+          <span>Tiến độ: <strong id="mBarProgress" class="font-mono text-white">0/38</strong></span>
+          <span class="text-slate-500">•</span>
+          <span class="text-emerald-400 font-semibold">✓ <span id="mBarPass">0</span></span>
+          <span class="text-rose-400 font-semibold">✕ <span id="mBarFail">0</span></span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="mScrollTopBtn" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-semibold transition cursor-pointer flex items-center gap-1">
+            <span>⬆</span> <span>Đầu trang</span>
+          </button>
+        </div>
+      </aside>
+
 
         <!-- Collapsible Ambiguity Alert Drawer -->
         <section id="alertPanel" class="hidden bg-white border border-amber-300 rounded-2xl p-5 shadow-sm">
@@ -582,7 +789,8 @@
             </select>
           </div>
           <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div class="overflow-x-auto">
+            <!-- DESKTOP TABLE (Hidden on mobile) -->
+            <div class="overflow-x-auto hidden md:block">
               <table class="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead class="bg-slate-50 text-slate-600 uppercase text-[11px] border-b border-slate-200">
                   <tr>
@@ -596,6 +804,9 @@
                 <tbody id="whatIfTableBody" class="divide-y divide-slate-100"></tbody>
               </table>
             </div>
+
+            <!-- MOBILE CARDS CONTAINER (Visible only on mobile) -->
+            <div id="whatIfMobileCards" class="block md:hidden space-y-3"></div>
           </div>
         </section>
 
@@ -1597,37 +1808,42 @@
     let syncDebounceTimer = null;
     let isSaving = false;
 
-    // Cloud status UI updater
+    // Cloud status UI updater (Supports both Desktop and Mobile Badges)
     function setSyncStatus(type, message) {
-      const badge = document.getElementById("syncBadge");
-      const dot = document.getElementById("syncDot");
-      const txt = document.getElementById("syncStatusText");
-      if (!badge || !dot || !txt) return;
+      const badges = [
+        { badge: document.getElementById("syncBadge"), dot: document.getElementById("syncDot"), txt: document.getElementById("syncStatusText") },
+        { badge: document.getElementById("mSyncBadge"), dot: document.getElementById("mSyncDot"), txt: document.getElementById("mSyncStatusText") }
+      ];
 
-      badge.classList.remove("bg-emerald-50", "text-emerald-800", "border-emerald-200", "bg-sky-50", "text-sky-800", "border-sky-200", "bg-amber-50", "text-amber-800", "border-amber-200", "bg-rose-50", "text-rose-800", "border-rose-200");
-      dot.classList.remove("bg-emerald-500", "bg-sky-500", "bg-amber-500", "bg-rose-500", "animate-pulse-fast");
+      badges.forEach(({ badge, dot, txt }) => {
+        if (!badge || !dot || !txt) return;
 
-      if (type === "SYNCED") {
-        badge.classList.add("bg-emerald-50", "text-emerald-800", "border-emerald-200");
-        dot.classList.add("bg-emerald-500");
-        txt.textContent = message || "Cloud: Đã đồng bộ";
-      } else if (type === "SAVING") {
-        badge.classList.add("bg-sky-50", "text-sky-800", "border-sky-200");
-        dot.classList.add("bg-sky-500", "animate-pulse-fast");
-        txt.textContent = message || "Cloud: Đang lưu...";
-      } else if (type === "OFFLINE") {
-        badge.classList.add("bg-amber-50", "text-amber-800", "border-amber-200");
-        dot.classList.add("bg-amber-500");
-        txt.textContent = message || "Offline (Đã lưu máy)";
-      } else if (type === "ERROR") {
-        badge.classList.add("bg-rose-50", "text-rose-800", "border-rose-200");
-        dot.classList.add("bg-rose-500");
-        txt.textContent = message || "Lỗi đồng bộ";
-      }
+        badge.classList.remove("bg-emerald-50", "text-emerald-800", "border-emerald-200", "bg-sky-50", "text-sky-800", "border-sky-200", "bg-amber-50", "text-amber-800", "border-amber-200", "bg-rose-50", "text-rose-800", "border-rose-200");
+        dot.classList.remove("bg-emerald-500", "bg-sky-500", "bg-amber-500", "bg-rose-500", "animate-pulse-fast");
+
+        if (type === "SYNCED") {
+          badge.classList.add("bg-emerald-50", "text-emerald-800", "border-emerald-200");
+          dot.classList.add("bg-emerald-500");
+          txt.textContent = message || "Cloud: Đã đồng bộ";
+        } else if (type === "SAVING") {
+          badge.classList.add("bg-sky-50", "text-sky-800", "border-sky-200");
+          dot.classList.add("bg-sky-500", "animate-pulse-fast");
+          txt.textContent = message || "Đang lưu...";
+        } else if (type === "OFFLINE") {
+          badge.classList.add("bg-amber-50", "text-amber-800", "border-amber-200");
+          dot.classList.add("bg-amber-500");
+          txt.textContent = message || "Offline (Lưu máy)";
+        } else if (type === "ERROR") {
+          badge.classList.add("bg-rose-50", "text-rose-800", "border-rose-200");
+          dot.classList.add("bg-rose-500");
+          txt.textContent = message || "Lỗi đồng bộ";
+        }
+      });
     }
 
     function updateSessionMetaBanner() {
       const titleEl = document.getElementById("curTitleDisp");
+      const mTitleEl = document.getElementById("mSessionTitleDisp");
       const lotWrap = document.getElementById("curLotWrap");
       const lotEl = document.getElementById("curLotDisp");
       const audWrap = document.getElementById("curAuditorWrap");
@@ -1635,7 +1851,10 @@
       const facWrap = document.getElementById("curFactoryWrap");
       const facEl = document.getElementById("curFactoryDisp");
 
-      if (titleEl) titleEl.textContent = sessionMeta.title || "Đợt nghiệm thu 01";
+      const titleText = sessionMeta.title || "Đợt nghiệm thu 01";
+      if (titleEl) titleEl.textContent = titleText;
+      if (mTitleEl) mTitleEl.textContent = titleText;
+
       if (lotWrap && lotEl) {
         if (sessionMeta.cable_lot) {
           lotWrap.classList.remove("hidden");
@@ -1708,8 +1927,8 @@
     }
 
     function renderSessionDropdown() {
-      const select = document.getElementById("sessionSelect");
-      if (!select) return;
+      const selectDesktop = document.getElementById("sessionSelect");
+      const selectDrawer = document.getElementById("drawerSessionSelect");
 
       const items = [...allSessionsList];
       const hasCurrent = items.some(s => s.id === currentSessionId);
@@ -1722,15 +1941,18 @@
         });
       }
 
-      select.innerHTML = items.map(s => {
+      const optionsHtml = items.map(s => {
         const sel = s.id === currentSessionId ? "selected" : "";
         const stat = s.testedCount !== undefined ? ` (${s.passCount || 0}/${s.testedCount || 0} Đạt)` : "";
         return `<option value="${s.id}" ${sel}>${s.title || s.id}${stat}</option>`;
       }).join("");
+
+      if (selectDesktop) selectDesktop.innerHTML = optionsHtml;
+      if (selectDrawer) selectDrawer.innerHTML = optionsHtml;
     }
 
     async function loadSessionFromCloud(id) {
-      setSyncStatus("SAVING", "Đang tải dữ liệu...");
+      setSyncStatus("SAVING", "Đang tải...");
       try {
         const res = await fetch("/api/sessions/" + encodeURIComponent(id));
         if (res.ok) {
@@ -1754,7 +1976,6 @@
             if (timeEl) timeEl.textContent = "Đồng bộ: " + new Date().toLocaleTimeString("vi-VN");
           }
         } else if (res.status === 404) {
-          // If not in cloud yet, sync our local state up
           await pushSessionToCloud();
         } else {
           setSyncStatus("OFFLINE", "Offline (Dùng dữ liệu máy)");
@@ -1771,7 +1992,7 @@
     async function pushSessionToCloud() {
       if (isSaving) return;
       isSaving = true;
-      setSyncStatus("SAVING", "Cloud: Đang lưu...");
+      setSyncStatus("SAVING", "Đang lưu...");
       try {
         const payload = {
           id: currentSessionId,
@@ -1796,9 +2017,9 @@
           setSyncStatus("SYNCED", "Cloud: Đã đồng bộ");
           const timeEl = document.getElementById("lastSyncTime");
           if (timeEl) timeEl.textContent = "Đồng bộ: " + new Date().toLocaleTimeString("vi-VN");
-          fetchSessionsList(); // update counts in dropdown
+          fetchSessionsList();
         } else {
-          setSyncStatus("OFFLINE", "Offline (Lưu tạm trên máy)");
+          setSyncStatus("OFFLINE", "Offline (Lưu tạm máy)");
         }
       } catch (err) {
         setSyncStatus("OFFLINE", "Offline (Đã lưu máy)");
@@ -1817,20 +2038,55 @@
       }, 500);
     }
 
+    // Updates Counters everywhere (Desktop Sidebar, Mobile Drawer, Mobile Badges, Mobile Floating Bar)
     function updateCounters() {
       const ids = Object.keys(testStatus).filter(k => testStatus[k]);
       const pass = ids.filter(k => testStatus[k] === "PASS").length;
       const fail = ids.filter(k => testStatus[k] === "FAIL").length;
       const total = specsData.length;
-      document.getElementById("progressCount").textContent = `${ids.length}/${total}`;
-      document.getElementById("passCount").textContent = pass;
-      document.getElementById("failCount").textContent = fail;
-      document.getElementById("passBar").style.width = `${(pass / total) * 100}%`;
-      document.getElementById("failBar").style.width = `${(fail / total) * 100}%`;
+      const pctPass = (pass / total) * 100;
+      const pctFail = (fail / total) * 100;
+
+      // Desktop Sidebar
+      const pCount = document.getElementById("progressCount");
+      const passC = document.getElementById("passCount");
+      const failC = document.getElementById("failCount");
+      const pBar = document.getElementById("passBar");
+      const fBar = document.getElementById("failBar");
+      if (pCount) pCount.textContent = `${ids.length}/${total}`;
+      if (passC) passC.textContent = pass;
+      if (failC) failC.textContent = fail;
+      if (pBar) pBar.style.width = `${pctPass}%`;
+      if (fBar) fBar.style.width = `${pctFail}%`;
+
+      // Mobile Top Tab Badge
+      const mBadge = document.getElementById("mSpecsBadge");
+      if (mBadge) mBadge.textContent = `${ids.length}/${total}`;
+
+      // Mobile Drawer
+      const dpCount = document.getElementById("drawerProgressCount");
+      const dPassC = document.getElementById("drawerPassCount");
+      const dFailC = document.getElementById("drawerFailCount");
+      const dpBar = document.getElementById("drawerPassBar");
+      const dfBar = document.getElementById("drawerFailBar");
+      if (dpCount) dpCount.textContent = `${ids.length}/${total}`;
+      if (dPassC) dPassC.textContent = pass;
+      if (dFailC) dFailC.textContent = fail;
+      if (dpBar) dpBar.style.width = `${pctPass}%`;
+      if (dfBar) dfBar.style.width = `${pctFail}%`;
+
+      // Mobile Floating Bottom Action Bar
+      const mbProg = document.getElementById("mBarProgress");
+      const mbPass = document.getElementById("mBarPass");
+      const mbFail = document.getElementById("mBarFail");
+      if (mbProg) mbProg.textContent = `${ids.length}/${total}`;
+      if (mbPass) mbPass.textContent = pass;
+      if (mbFail) mbFail.textContent = fail;
     }
 
     function renderAmbiguities() {
       const el = document.getElementById("ambiguityList");
+      if (!el) return;
       el.innerHTML = ambiguities.map(a => `
         <div class="bg-amber-50/60 p-3.5 rounded-xl border border-amber-200/80">
           <div class="font-bold text-amber-950">${a.id}: ${a.title}</div>
@@ -1841,6 +2097,7 @@
 
     function renderComponentDeepDive() {
       const container = document.getElementById("componentDeepDiveContainer");
+      if (!container) return;
       const q = compSearchTerm.toLowerCase();
       const filtered = componentDeepDiveData.map(comp => {
         if (activeComp !== "ALL" && comp.id !== activeComp) return null;
@@ -1874,7 +2131,9 @@
             <div class="text-slate-700"><strong class="text-slate-900">🎯 Công dụng:</strong> ${c.purpose}</div>
             <div class="text-slate-700"><strong class="text-slate-900">📐 Chuẩn CTKT:</strong> ${c.summary}</div>
           </div>
-          <div class="overflow-x-auto">
+          
+          <!-- Desktop Table (Hidden on Mobile) -->
+          <div class="overflow-x-auto hidden md:block">
             <table class="w-full text-left border-collapse text-xs sm:text-sm">
               <thead class="bg-slate-50/70 text-slate-500 text-[11px] uppercase border-b border-slate-200">
                 <tr>
@@ -1894,12 +2153,29 @@
               </tbody>
             </table>
           </div>
+
+          <!-- Mobile Cards (Visible only on Mobile) -->
+          <div class="block md:hidden divide-y divide-slate-100 p-3 space-y-3">
+            ${c.cases.map(cs => `
+              <div class="pt-3 first:pt-0 space-y-2 text-xs">
+                <div class="font-bold text-slate-900 leading-snug">⚠️ ${cs.risk}</div>
+                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-slate-700 leading-relaxed">
+                  <strong class="text-slate-900">🔍 Tự kiểm tra:</strong> ${cs.selfCheck}
+                </div>
+                <div class="bg-amber-50/60 p-2.5 rounded-lg border border-amber-200/80 text-amber-950 leading-relaxed">
+                  <strong class="text-amber-950">📋 Yêu cầu nhà máy:</strong> ${cs.factoryReq}
+                </div>
+              </div>
+            `).join("")}
+          </div>
         </div>
       `).join("");
     }
 
+    // Renders BOTH Desktop 6-column table and Mobile Touch Cards
     function renderSpecsTable() {
       const tbody = document.getElementById("specsTableBody");
+      const mobileContainer = document.getElementById("specsMobileCards");
       const q = searchTerm1.toLowerCase();
       const filtered = specsData.filter(item => {
         const matchGroup = activeGroup === "ALL" || item.group === activeGroup;
@@ -1914,47 +2190,120 @@
       });
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-500">Không tìm thấy chỉ tiêu phù hợp.</td></tr>`;
+        if (tbody) tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-500">Không tìm thấy chỉ tiêu phù hợp.</td></tr>`;
+        if (mobileContainer) mobileContainer.innerHTML = `<div class="p-8 text-center text-slate-500 text-sm bg-white rounded-xl border border-slate-200">Không tìm thấy chỉ tiêu phù hợp.</div>`;
         return;
       }
 
-      tbody.innerHTML = filtered.map(item => {
-        const st = testStatus[item.id];
-        const noteVal = testNotes[item.id] || "";
-        const rowBg = st === "PASS" ? "bg-emerald-50/40" : st === "FAIL" ? "bg-rose-50/40" : "hover:bg-slate-50/70";
-        return `
-          <tr class="${rowBg} transition">
-            <td class="p-3 align-top">
-              <div class="font-mono font-bold text-slate-900 text-xs">${item.id}</div>
-              <div class="flex gap-1 mt-1.5 no-print">
-                <button data-id="${item.id}" data-val="PASS" class="status-toggle px-1.5 py-0.5 rounded text-[11px] font-semibold border cursor-pointer ${st === 'PASS' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-600 border-slate-300 hover:bg-emerald-50'}">Đạt</button>
-                <button data-id="${item.id}" data-val="FAIL" class="status-toggle px-1.5 py-0.5 rounded text-[11px] font-semibold border cursor-pointer ${st === 'FAIL' ? 'bg-rose-600 text-white border-rose-600' : 'bg-white text-slate-600 border-slate-300 hover:bg-rose-50'}">Trượt</button>
+      // 1. Desktop 6-Column Table (100% Intact)
+      if (tbody) {
+        tbody.innerHTML = filtered.map(item => {
+          const st = testStatus[item.id];
+          const noteVal = testNotes[item.id] || "";
+          const rowBg = st === "PASS" ? "bg-emerald-50/40" : st === "FAIL" ? "bg-rose-50/40" : "hover:bg-slate-50/70";
+          return `
+            <tr class="${rowBg} transition">
+              <td class="p-3 align-top">
+                <div class="font-mono font-bold text-slate-900 text-xs">${item.id}</div>
+                <div class="flex gap-1 mt-1.5 no-print">
+                  <button data-id="${item.id}" data-val="PASS" class="status-toggle px-1.5 py-0.5 rounded text-[11px] font-semibold border cursor-pointer ${st === 'PASS' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-600 border-slate-300 hover:bg-emerald-50'}">Đạt</button>
+                  <button data-id="${item.id}" data-val="FAIL" class="status-toggle px-1.5 py-0.5 rounded text-[11px] font-semibold border cursor-pointer ${st === 'FAIL' ? 'bg-rose-600 text-white border-rose-600' : 'bg-white text-slate-600 border-slate-300 hover:bg-rose-50'}">Trượt</button>
+                </div>
+              </td>
+              <td class="p-3 align-top">
+                <div class="font-semibold text-slate-900">${item.name}</div>
+                ${item.note.includes("⚠") ? `<span class="inline-block mt-1 px-1.5 py-0.5 text-[11px] font-medium rounded bg-amber-100 text-amber-900">${item.note}</span>` : `<span class="inline-block mt-1 text-[11px] text-slate-500">${item.note}</span>`}
+              </td>
+              <td class="p-3 align-top font-medium text-slate-800">${item.passFail}</td>
+              <td class="p-3 align-top text-slate-600">${item.equipment}</td>
+              <td class="p-3 align-top text-slate-600">${item.env}</td>
+              <td class="p-3 align-top text-slate-700 leading-relaxed">
+                <div>${item.steps}</div>
+                <div class="mt-2 pt-2 border-t border-slate-100 no-print flex items-center gap-1.5">
+                  <span class="text-[11px] text-slate-400">📝</span>
+                  <input type="text" data-spec-id="${item.id}" class="spec-note-input flex-1 px-2 py-1 text-xs border border-slate-200 rounded-md focus:bg-white bg-slate-50/70 transition" placeholder="Ghi chú / số đo thực tế (VD: 0.33 dB/km, 0.45mm)..." value="${noteVal.replace(/"/g, '&quot;')}" />
+                </div>
+                ${noteVal ? `<div class="hidden print:block text-xs font-mono text-sky-950 mt-1 font-semibold">→ Đo thực tế: ${noteVal}</div>` : ''}
+              </td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      // 2. Mobile Native Card View (Optimized for Phones)
+      if (mobileContainer) {
+        mobileContainer.innerHTML = filtered.map(item => {
+          const st = testStatus[item.id];
+          const noteVal = testNotes[item.id] || "";
+          const cardBorder = st === "PASS" ? "border-emerald-300 bg-emerald-50/20" : st === "FAIL" ? "border-rose-300 bg-rose-50/20" : "border-slate-200 bg-white";
+          return `
+            <div class="rounded-2xl border ${cardBorder} p-4 shadow-xs space-y-3 transition">
+              <!-- Card Header -->
+              <div class="flex items-start justify-between gap-2">
+                <div class="flex-1">
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded-md font-mono font-bold text-xs bg-slate-100 text-slate-800">${item.id}</span>
+                    <span class="text-[11px] font-medium text-slate-500">${item.group}</span>
+                  </div>
+                  <h4 class="font-bold text-slate-900 text-sm mt-1 leading-snug">${item.name}</h4>
+                </div>
+                ${item.note.includes("⚠") ? `<span class="shrink-0 px-2 py-0.5 text-[10px] font-bold rounded bg-amber-100 text-amber-900 border border-amber-300">⚠ Lưu ý</span>` : ''}
               </div>
-            </td>
-            <td class="p-3 align-top">
-              <div class="font-semibold text-slate-900">${item.name}</div>
-              ${item.note.includes("⚠") ? `<span class="inline-block mt-1 px-1.5 py-0.5 text-[11px] font-medium rounded bg-amber-100 text-amber-900">${item.note}</span>` : `<span class="inline-block mt-1 text-[11px] text-slate-500">${item.note}</span>`}
-            </td>
-            <td class="p-3 align-top font-medium text-slate-800">${item.passFail}</td>
-            <td class="p-3 align-top text-slate-600">${item.equipment}</td>
-            <td class="p-3 align-top text-slate-600">${item.env}</td>
-            <td class="p-3 align-top text-slate-700 leading-relaxed">
-              <div>${item.steps}</div>
-              <div class="mt-2 pt-2 border-t border-slate-100 no-print flex items-center gap-1.5">
-                <span class="text-[11px] text-slate-400">📝</span>
-                <input type="text" data-spec-id="${item.id}" class="spec-note-input flex-1 px-2 py-1 text-xs border border-slate-200 rounded-md focus:bg-white bg-slate-50/70 transition" placeholder="Ghi chú / số đo thực tế (VD: 0.33 dB/km, 0.45mm)..." value="${noteVal.replace(/"/g, '&quot;')}" />
+
+              <!-- Thumb-Friendly Large Touch Buttons -->
+              <div class="grid grid-cols-2 gap-2 pt-0.5 no-print">
+                <button data-id="${item.id}" data-val="PASS" class="status-toggle py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer active:scale-98 ${st === 'PASS' ? 'bg-emerald-600 text-white shadow-sm ring-2 ring-emerald-600/30' : 'bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 border border-slate-200'}">
+                  <span>✓</span> <span>ĐẠT</span>
+                </button>
+                <button data-id="${item.id}" data-val="FAIL" class="status-toggle py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer active:scale-98 ${st === 'FAIL' ? 'bg-rose-600 text-white shadow-sm ring-2 ring-rose-600/30' : 'bg-slate-100 text-slate-700 hover:bg-rose-50 hover:text-rose-700 border border-slate-200'}">
+                  <span>✕</span> <span>TRƯỢT</span>
+                </button>
+              </div>
+
+              <!-- Key Specs Mobile Block -->
+              <div class="bg-slate-50/90 rounded-xl p-3 space-y-1.5 text-xs border border-slate-200/60">
+                <div class="flex items-start gap-1.5">
+                  <span class="font-bold text-slate-900 shrink-0">🎯 Chuẩn đạt:</span>
+                  <span class="text-slate-800 font-semibold leading-relaxed">${item.passFail}</span>
+                </div>
+                <div class="flex items-start gap-1.5">
+                  <span class="font-semibold text-slate-600 shrink-0">🔬 Thiết bị:</span>
+                  <span class="text-slate-700">${item.equipment}</span>
+                </div>
+                <div class="flex items-start gap-1.5">
+                  <span class="font-semibold text-slate-600 shrink-0">🌡️ Môi trường:</span>
+                  <span class="text-slate-700">${item.env}</span>
+                </div>
+              </div>
+
+              <!-- Collapsible Standard Steps -->
+              <details class="text-xs text-slate-600 group">
+                <summary class="font-semibold text-sky-700 cursor-pointer py-1 flex items-center gap-1">
+                  <span>📖 Các bước đo chuẩn</span>
+                  <span class="text-[10px] text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <div class="p-2.5 mt-1 bg-white border border-slate-200 rounded-xl text-slate-700 leading-relaxed">${item.steps}</div>
+              </details>
+
+              <!-- Touch Note Input -->
+              <div class="pt-0.5 no-print">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-400">📝</span>
+                  <input type="text" data-spec-id="${item.id}" class="spec-note-input flex-1 px-3 py-2 text-xs border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:border-sky-500 focus:outline-none transition" placeholder="Ghi chú / số đo thực tế (VD: 0.33 dB, 0.45mm)..." value="${noteVal.replace(/"/g, '&quot;')}" />
+                </div>
               </div>
               ${noteVal ? `<div class="hidden print:block text-xs font-mono text-sky-950 mt-1 font-semibold">→ Đo thực tế: ${noteVal}</div>` : ''}
-            </td>
-          </tr>
-        `;
-      }).join("");
+            </div>
+          `;
+        }).join("");
+      }
     }
 
     function renderFieldTests() {
       const container = document.getElementById("fieldTestContainer");
+      if (!container) return;
       container.innerHTML = fieldTestData.map(item => `
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5">
           <h3 class="text-sm sm:text-base font-bold text-slate-900 pb-2.5 border-b border-slate-100">${item.title}</h3>
           <p class="text-xs sm:text-sm text-rose-900 bg-rose-50/70 border border-rose-200/80 rounded-lg p-3 mt-3">
             <strong>Rủi ro bị lừa:</strong> ${item.risk}
@@ -1978,6 +2327,7 @@
 
     function renderFraud() {
       const container = document.getElementById("fraudContainer");
+      if (!container) return;
       const q = searchTerm2.toLowerCase();
       const filtered = fraudData.filter(f =>
         !q ||
@@ -1988,7 +2338,7 @@
       );
 
       container.innerHTML = filtered.map(f => `
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
             <h3 class="text-sm sm:text-base font-bold text-slate-900">${f.category}</h3>
             <span class="px-2.5 py-0.5 text-xs font-medium bg-slate-100 text-slate-600 rounded-md w-fit">Đối tượng: ${f.target}</span>
@@ -2009,8 +2359,10 @@
       `).join("");
     }
 
+    // Pre-visit Checklist with mobile touch-friendly buttons
     function renderPreVisit() {
       const container = document.getElementById("preVisitList");
+      if (!container) return;
       let totalItems = 0;
       let checkedItems = 0;
       let hasCount = 0;
@@ -2020,8 +2372,17 @@
         if (preVisitChecked[it.id] === "HAS") { checkedItems++; hasCount++; }
         else if (preVisitChecked[it.id] === "MISSING") { checkedItems++; missCount++; }
       }));
-      document.getElementById("pvBadge").textContent = `${checkedItems}/${totalItems}`;
-      document.getElementById("pvProgressText").innerHTML = `Đã kiểm: <strong>${checkedItems}/${totalItems}</strong> &nbsp;|&nbsp; <span class="text-emerald-700">Có/Đủ: <strong>${hasCount}</strong></span> &nbsp;|&nbsp; <span class="text-rose-700">Thiếu/Không: <strong>${missCount}</strong></span>`;
+
+      // Desktop & Mobile Badges
+      const pvB = document.getElementById("pvBadge");
+      const mpvB = document.getElementById("mPvBadge");
+      if (pvB) pvB.textContent = `${checkedItems}/${totalItems}`;
+      if (mpvB) mpvB.textContent = `${checkedItems}/${totalItems}`;
+
+      const pvProg = document.getElementById("pvProgressText");
+      if (pvProg) {
+        pvProg.innerHTML = `Đã kiểm: <strong>${checkedItems}/${totalItems}</strong> &nbsp;|&nbsp; <span class="text-emerald-700">Có/Đủ: <strong>${hasCount}</strong></span> &nbsp;|&nbsp; <span class="text-rose-700">Thiếu/Không: <strong>${missCount}</strong></span>`;
+      }
 
       container.innerHTML = preVisitData.map(grp => `
         <div class="border border-slate-200 rounded-xl overflow-hidden bg-white">
@@ -2039,9 +2400,10 @@
                     <div class="font-semibold text-slate-900">${it.title}</div>
                     <p class="text-slate-600 mt-0.5 leading-relaxed">${it.detail}</p>
                   </div>
-                  <div class="flex items-center gap-1.5 shrink-0 no-print">
-                    <button type="button" data-pv-id="${it.id}" data-pv-val="HAS" class="pv-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold border cursor-pointer transition ${st === 'HAS' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-700 border-slate-300 hover:bg-emerald-50'}">✓ Có / Đủ</button>
-                    <button type="button" data-pv-id="${it.id}" data-pv-val="MISSING" class="pv-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold border cursor-pointer transition ${st === 'MISSING' ? 'bg-rose-600 text-white border-rose-600' : 'bg-white text-slate-700 border-slate-300 hover:bg-rose-50'}">✕ Thiếu / Không</button>
+                  <!-- Mobile Responsive Grid Buttons (Full width on mobile, inline on desktop) -->
+                  <div class="grid grid-cols-2 gap-2 sm:flex sm:items-center sm:gap-1.5 shrink-0 no-print">
+                    <button type="button" data-pv-id="${it.id}" data-pv-val="HAS" class="pv-btn py-2.5 px-3 sm:py-1.5 sm:px-2.5 rounded-lg text-xs font-semibold border cursor-pointer transition flex items-center justify-center gap-1 ${st === 'HAS' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-700 border-slate-300 hover:bg-emerald-50'}">✓ Có / Đủ</button>
+                    <button type="button" data-pv-id="${it.id}" data-pv-val="MISSING" class="pv-btn py-2.5 px-3 sm:py-1.5 sm:px-2.5 rounded-lg text-xs font-semibold border cursor-pointer transition flex items-center justify-center gap-1 ${st === 'MISSING' ? 'bg-rose-600 text-white border-rose-600' : 'bg-white text-slate-700 border-slate-300 hover:bg-rose-50'}">✕ Thiếu / Không</button>
                   </div>
                 </div>
               `;
@@ -2051,25 +2413,53 @@
       `).join("");
     }
 
+    // Renders BOTH Desktop 5-Column Table and Mobile Cards for Documents
     function renderDocs() {
       const tbody = document.getElementById("docsTableBody");
-      tbody.innerHTML = docsData.map((d, idx) => `
-        <tr class="${docChecked[idx] ? 'bg-emerald-50/40' : 'hover:bg-slate-50/70'}">
-          <td class="p-3 text-center align-top">
-            <input type="checkbox" data-doc-idx="${idx}" class="doc-check w-4 h-4 accent-slate-900 cursor-pointer" ${docChecked[idx] ? 'checked' : ''} />
-          </td>
-          <td class="p-3 align-top font-semibold text-slate-900">${d.doc}</td>
-          <td class="p-3 align-top font-mono text-xs text-slate-500">${d.scope}</td>
-          <td class="p-3 align-top text-slate-700 leading-relaxed">${d.check}</td>
-          <td class="p-3 align-top text-rose-900 bg-rose-50/30 leading-relaxed">${d.fakeRisk}</td>
-        </tr>
-      `).join("");
+      const mobileContainer = document.getElementById("docsMobileCards");
+
+      // 1. Desktop Table (100% Intact)
+      if (tbody) {
+        tbody.innerHTML = docsData.map((d, idx) => `
+          <tr class="${docChecked[idx] ? 'bg-emerald-50/40' : 'hover:bg-slate-50/70'}">
+            <td class="p-3 text-center align-top">
+              <input type="checkbox" data-doc-idx="${idx}" class="doc-check w-4 h-4 accent-slate-900 cursor-pointer" ${docChecked[idx] ? 'checked' : ''} />
+            </td>
+            <td class="p-3 align-top font-semibold text-slate-900">${d.doc}</td>
+            <td class="p-3 align-top font-mono text-xs text-slate-500">${d.scope}</td>
+            <td class="p-3 align-top text-slate-700 leading-relaxed">${d.check}</td>
+            <td class="p-3 align-top text-rose-900 bg-rose-50/30 leading-relaxed">${d.fakeRisk}</td>
+          </tr>
+        `).join("");
+      }
+
+      // 2. Mobile Cards (Optimized for Phones)
+      if (mobileContainer) {
+        mobileContainer.innerHTML = docsData.map((d, idx) => `
+          <div class="bg-white rounded-2xl border ${docChecked[idx] ? 'border-emerald-300 bg-emerald-50/15' : 'border-slate-200'} p-4 shadow-xs space-y-2.5 transition">
+            <div class="flex items-start gap-3">
+              <input type="checkbox" data-doc-idx="${idx}" class="doc-check w-5 h-5 accent-slate-900 rounded-md mt-0.5 cursor-pointer shrink-0" ${docChecked[idx] ? 'checked' : ''} />
+              <div class="flex-1">
+                <div class="font-bold text-slate-900 text-sm leading-snug">${d.doc}</div>
+                <div class="text-[11px] font-mono text-slate-500 mt-0.5">${d.scope}</div>
+              </div>
+            </div>
+            <div class="text-xs text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-100 leading-relaxed">
+              <strong class="text-slate-900">🔍 Điểm cần soi:</strong> ${d.check}
+            </div>
+            <div class="text-xs text-rose-900 bg-rose-50/60 p-2.5 rounded-xl border border-rose-200/80 leading-relaxed">
+              <strong class="text-rose-950">⚠ Rủi ro làm giả:</strong> ${d.fakeRisk}
+            </div>
+          </div>
+        `).join("");
+      }
     }
 
     function renderQuestions() {
       const container = document.getElementById("questionsContainer");
+      if (!container) return;
       container.innerHTML = questionsData.map(q => `
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col justify-between gap-3">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 flex flex-col justify-between gap-3">
           <div>
             <span class="px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-700 rounded">${q.topic}</span>
             <p class="mt-2.5 text-sm font-semibold text-slate-900 leading-relaxed">“${q.question}”</p>
@@ -2088,23 +2478,51 @@
       `).join("");
     }
 
+    // Renders BOTH Desktop 5-Column Table and Mobile Cards for What-If
     function renderWhatIf() {
       const tbody = document.getElementById("whatIfTableBody");
+      const mobileContainer = document.getElementById("whatIfMobileCards");
       const filtered = whatIfData.filter(w => whatIfFilterVal === "ALL" || w.decision === whatIfFilterVal);
-      tbody.innerHTML = filtered.map(w => {
-        const badgeClass = w.decision === "REJECT" ? "bg-rose-100 text-rose-800" : w.decision === "RETEST" ? "bg-sky-100 text-sky-800" : "bg-amber-100 text-amber-800";
-        return `
-          <tr class="hover:bg-slate-50/70">
-            <td class="p-3 align-top font-semibold text-slate-900">${w.item}</td>
-            <td class="p-3 align-top text-slate-700 leading-relaxed">${w.scenario}</td>
-            <td class="p-3 align-top">
-              <span class="inline-block px-2 py-1 rounded text-[11px] font-bold ${badgeClass}">${w.decisionLabel}</span>
-            </td>
-            <td class="p-3 align-top text-slate-700 leading-relaxed">${w.action}</td>
-            <td class="p-3 align-top text-slate-600 leading-relaxed">${w.evidence}</td>
-          </tr>
-        `;
-      }).join("");
+
+      // 1. Desktop Table (100% Intact)
+      if (tbody) {
+        tbody.innerHTML = filtered.map(w => {
+          const badgeClass = w.decision === "REJECT" ? "bg-rose-100 text-rose-800" : w.decision === "RETEST" ? "bg-sky-100 text-sky-800" : "bg-amber-100 text-amber-800";
+          return `
+            <tr class="hover:bg-slate-50/70">
+              <td class="p-3 align-top font-semibold text-slate-900">${w.item}</td>
+              <td class="p-3 align-top text-slate-700 leading-relaxed">${w.scenario}</td>
+              <td class="p-3 align-top">
+                <span class="inline-block px-2 py-1 rounded text-[11px] font-bold ${badgeClass}">${w.decisionLabel}</span>
+              </td>
+              <td class="p-3 align-top text-slate-700 leading-relaxed">${w.action}</td>
+              <td class="p-3 align-top text-slate-600 leading-relaxed">${w.evidence}</td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      // 2. Mobile Cards (Optimized for Phones)
+      if (mobileContainer) {
+        mobileContainer.innerHTML = filtered.map(w => {
+          const badgeClass = w.decision === "REJECT" ? "bg-rose-100 text-rose-800 border-rose-200" : w.decision === "RETEST" ? "bg-sky-100 text-sky-800 border-sky-200" : "bg-amber-100 text-amber-800 border-amber-200";
+          return `
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs space-y-2.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-bold text-slate-900 text-sm">${w.item}</span>
+                <span class="px-2.5 py-1 rounded-md text-[11px] font-bold border ${badgeClass}">${w.decisionLabel}</span>
+              </div>
+              <div class="text-xs text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-100 leading-relaxed">
+                <strong class="text-slate-900">⚡ Tình huống:</strong> ${w.scenario}
+              </div>
+              <div class="text-xs text-slate-700 space-y-1.5">
+                <div><strong class="text-slate-900">📌 Xử lý:</strong> ${w.action}</div>
+                <div class="text-slate-500"><strong class="text-slate-700">🧾 Bằng chứng:</strong> ${w.evidence}</div>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
     }
 
     function renderAllViews() {
@@ -2119,18 +2537,95 @@
       renderWhatIf();
       updateCounters();
     }
-// ==================== EVENT LISTENERS ====================
+
+    // Unified Tab Switching for Desktop Nav, Mobile Carousel & Mobile Drawer
+    function switchTab(targetTab) {
+      // 1. Switch panel
+      document.querySelectorAll(".tab-panel").forEach(p => {
+        p.classList.toggle("hidden", p.id !== targetTab);
+      });
+
+      // 2. Update Desktop / Drawer .nav-item
+      document.querySelectorAll(".nav-item").forEach(b => {
+        b.classList.toggle("active", b.getAttribute("data-tab") === targetTab);
+      });
+
+      // 3. Update Mobile Horizontal Tab Carousel .mobile-nav-pill
+      document.querySelectorAll(".mobile-nav-pill").forEach(pill => {
+        const isActive = pill.getAttribute("data-tab") === targetTab;
+        pill.classList.toggle("active", isActive);
+        if (isActive) {
+          pill.classList.remove("bg-white", "text-slate-700", "border", "border-slate-200");
+          pill.classList.add("bg-slate-900", "text-white");
+          pill.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        } else {
+          pill.classList.remove("bg-slate-900", "text-white");
+          pill.classList.add("bg-white", "text-slate-700", "border", "border-slate-200");
+        }
+      });
+
+      // 4. Close mobile drawer if open
+      const drawer = document.getElementById("mobileDrawer");
+      if (drawer) drawer.classList.add("hidden");
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // ==================== EVENT LISTENERS ====================
+    // Desktop & Drawer Nav items
     document.querySelectorAll(".nav-item").forEach(btn => {
       btn.addEventListener("click", () => {
-        document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
         const target = btn.getAttribute("data-tab");
-        document.querySelectorAll(".tab-panel").forEach(p => {
-          p.classList.toggle("hidden", p.id !== target);
-        });
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        switchTab(target);
       });
     });
+
+    // Mobile Horizontal Tab Bar Carousel
+    document.querySelectorAll(".mobile-nav-pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        const target = pill.getAttribute("data-tab");
+        switchTab(target);
+      });
+    });
+
+    // Mobile Drawer Open / Close
+    const mDrawer = document.getElementById("mobileDrawer");
+    const mMenuBtn = document.getElementById("mobileMenuBtn");
+    const closeDrawerBtn = document.getElementById("closeDrawerBtn");
+    const drawerBackdrop = document.getElementById("drawerBackdrop");
+
+    if (mMenuBtn && mDrawer) {
+      mMenuBtn.addEventListener("click", () => mDrawer.classList.remove("hidden"));
+    }
+    if (closeDrawerBtn && mDrawer) {
+      closeDrawerBtn.addEventListener("click", () => mDrawer.classList.add("hidden"));
+    }
+    if (drawerBackdrop && mDrawer) {
+      drawerBackdrop.addEventListener("click", () => mDrawer.classList.add("hidden"));
+    }
+
+    // Mobile Floating Scroll To Top
+    const mScrollTop = document.getElementById("mScrollTopBtn");
+    if (mScrollTop) {
+      mScrollTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+    }
+
+    // Mobile Drawer Alert & Print triggers
+    const dAlertBtn = document.getElementById("drawerToggleAlertBtn");
+    if (dAlertBtn) {
+      dAlertBtn.addEventListener("click", () => {
+        if (mDrawer) mDrawer.classList.add("hidden");
+        document.getElementById("alertPanel").classList.toggle("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+    const dPrintBtn = document.getElementById("drawerPrintBtn");
+    if (dPrintBtn) {
+      dPrintBtn.addEventListener("click", () => {
+        if (mDrawer) mDrawer.classList.add("hidden");
+        window.print();
+      });
+    }
 
     document.getElementById("compSelector").addEventListener("click", e => {
       const btn = e.target.closest(".comp-pill");
@@ -2189,7 +2684,8 @@
       renderWhatIf();
     });
 
-    document.getElementById("specsTableBody").addEventListener("click", e => {
+    // Delegated click for PASS / FAIL buttons (works for BOTH desktop table and mobile cards)
+    document.getElementById("part1").addEventListener("click", e => {
       const btn = e.target.closest(".status-toggle");
       if (!btn) return;
       const id = btn.getAttribute("data-id");
@@ -2200,6 +2696,15 @@
       renderSpecsTable();
     });
 
+    // Delegated input for spec measurement note (works for BOTH desktop table and mobile cards)
+    document.getElementById("part1").addEventListener("input", e => {
+      if (!e.target.classList.contains("spec-note-input")) return;
+      const id = e.target.getAttribute("data-spec-id");
+      testNotes[id] = e.target.value;
+      triggerSaveAndSync();
+    });
+
+    // Delegated click for Pre-visit buttons
     document.getElementById("preVisitList").addEventListener("click", e => {
       const btn = e.target.closest(".pv-btn");
       if (!btn) return;
@@ -2242,21 +2747,19 @@
       }
     });
 
-    document.getElementById("docsTableBody").addEventListener("change", e => {
+    // Delegated checkbox change for Docs (works for BOTH desktop table and mobile cards)
+    document.getElementById("part3").addEventListener("change", e => {
       if (!e.target.classList.contains("doc-check")) return;
       const idx = e.target.getAttribute("data-doc-idx");
       docChecked[idx] = e.target.checked;
       triggerSaveAndSync();
-      renderPreVisit();
-    renderDocs();
+      renderDocs();
     });
 
-    
     // ==================== CLOUD SYNC & SESSION EVENTS ====================
-    // Session switcher dropdown
-    document.getElementById("sessionSelect").addEventListener("change", async (e) => {
-      const newId = e.target.value;
-      if (newId === currentSessionId) return;
+    // Session switcher handler (works for both desktop and mobile drawer)
+    async function onSessionChange(newId) {
+      if (!newId || newId === currentSessionId) return;
       currentSessionId = newId;
       const url = new URL(window.location);
       url.searchParams.set("session", currentSessionId);
@@ -2265,10 +2768,16 @@
       renderAllViews();
       updateSessionMetaBanner();
       await loadSessionFromCloud(currentSessionId);
-    });
+    }
 
-    // Create New Session
-    document.getElementById("newSessionBtn").addEventListener("click", async () => {
+    const sSelect = document.getElementById("sessionSelect");
+    if (sSelect) sSelect.addEventListener("change", e => onSessionChange(e.target.value));
+
+    const sDrawerSelect = document.getElementById("drawerSessionSelect");
+    if (sDrawerSelect) sDrawerSelect.addEventListener("change", e => onSessionChange(e.target.value));
+
+    // Create New Session (Shared between Desktop & Mobile)
+    async function createNewSessionPrompt() {
       const name = prompt("Nhập tên đợt nghiệm thu mới (VD: Cuộn 02 — Lô 21297):", "Cuộn mới — " + new Date().toLocaleDateString("vi-VN"));
       if (!name || !name.trim()) return;
 
@@ -2295,18 +2804,31 @@
       renderAllViews();
       await pushSessionToCloud();
       await fetchSessionsList();
-    });
+    }
 
-    // Edit Session Metadata Modal
+    const newSBtn = document.getElementById("newSessionBtn");
+    if (newSBtn) newSBtn.addEventListener("click", createNewSessionPrompt);
+
+    const dNewSBtn = document.getElementById("drawerNewSessionBtn");
+    if (dNewSBtn) dNewSBtn.addEventListener("click", createNewSessionPrompt);
+
+    // Edit Session Metadata Modal (Desktop + Mobile)
     const modal = document.getElementById("sessionModal");
-    document.getElementById("editSessionBtn").addEventListener("click", () => {
+    function openSessionModal() {
       document.getElementById("modalTitleInput").value = sessionMeta.title || "";
       document.getElementById("modalLotInput").value = sessionMeta.cable_lot || "";
       document.getElementById("modalAuditorInput").value = sessionMeta.auditor || "";
       document.getElementById("modalFactoryInput").value = sessionMeta.factory || "";
       document.getElementById("modalNotesInput").value = sessionMeta.notes || "";
       modal.classList.remove("hidden");
-    });
+    }
+
+    const editSBtn = document.getElementById("editSessionBtn");
+    if (editSBtn) editSBtn.addEventListener("click", openSessionModal);
+
+    const mEditSBtn = document.getElementById("mEditSessionBtn");
+    if (mEditSBtn) mEditSBtn.addEventListener("click", openSessionModal);
+
     document.getElementById("closeModalBtn").addEventListener("click", () => modal.classList.add("hidden"));
     document.getElementById("cancelModalBtn").addEventListener("click", () => modal.classList.add("hidden"));
     document.getElementById("saveModalBtn").addEventListener("click", async () => {
@@ -2321,8 +2843,8 @@
       renderSessionDropdown();
     });
 
-    // Share / Copy Link
-    document.getElementById("shareSessionBtn").addEventListener("click", () => {
+    // Share / Copy Link (Desktop + Mobile)
+    function shareSessionLink() {
       const url = new URL(window.location);
       url.searchParams.set("session", currentSessionId);
       const shareUrl = url.toString();
@@ -2340,40 +2862,44 @@
       } else {
         prompt("Copy link sau để mở trên máy tính hoặc điện thoại khác:", shareUrl);
       }
-    });
+    }
+
+    const shareBtn = document.getElementById("shareSessionBtn");
+    if (shareBtn) shareBtn.addEventListener("click", shareSessionLink);
+
+    const mShareBtn = document.getElementById("mShareBtn");
+    if (mShareBtn) mShareBtn.addEventListener("click", shareSessionLink);
 
     // Manual Force Sync
-    document.getElementById("manualSyncBtn").addEventListener("click", async () => {
-      await loadSessionFromCloud(currentSessionId);
-      await fetchSessionsList();
-    });
+    const manualBtn = document.getElementById("manualSyncBtn");
+    if (manualBtn) {
+      manualBtn.addEventListener("click", async () => {
+        await loadSessionFromCloud(currentSessionId);
+        await fetchSessionsList();
+      });
+    }
 
     // Delete Session
-    document.getElementById("deleteSessionBtn").addEventListener("click", async () => {
-      if (!confirm(`Bạn có chắc muốn xóa đợt nghiệm thu "${sessionMeta.title}" không?`)) return;
-      try {
-        await fetch("/api/sessions/" + encodeURIComponent(currentSessionId), { method: "DELETE" });
-        localStorage.removeItem("qa_qc_session_" + currentSessionId);
-        currentSessionId = "default";
-        const url = new URL(window.location);
-        url.searchParams.delete("session");
-        window.history.pushState({}, "", url);
-        loadLocalState();
-        renderAllViews();
-        await loadSessionFromCloud("default");
-        await fetchSessionsList();
-      } catch (e) {
-        alert("Lỗi khi xóa session: " + e.message);
-      }
-    });
-
-    // Spec note input event delegation
-    document.getElementById("specsTableBody").addEventListener("input", e => {
-      if (!e.target.classList.contains("spec-note-input")) return;
-      const id = e.target.getAttribute("data-spec-id");
-      testNotes[id] = e.target.value;
-      triggerSaveAndSync();
-    });
+    const delBtn = document.getElementById("deleteSessionBtn");
+    if (delBtn) {
+      delBtn.addEventListener("click", async () => {
+        if (!confirm(`Bạn có chắc muốn xóa đợt nghiệm thu "${sessionMeta.title}" không?`)) return;
+        try {
+          await fetch("/api/sessions/" + encodeURIComponent(currentSessionId), { method: "DELETE" });
+          localStorage.removeItem("qa_qc_session_" + currentSessionId);
+          currentSessionId = "default";
+          const url = new URL(window.location);
+          url.searchParams.delete("session");
+          window.history.pushState({}, "", url);
+          loadLocalState();
+          renderAllViews();
+          await loadSessionFromCloud("default");
+          await fetchSessionsList();
+        } catch (e) {
+          alert("Lỗi khi xóa session: " + e.message);
+        }
+      });
+    }
 
     // Init sequence
     (async function init() {
@@ -2388,6 +2914,7 @@
       await fetchSessionsList();
       await loadSessionFromCloud(currentSessionId);
     })();
-  </script>
+
+</script>
 </body>
 </html>
