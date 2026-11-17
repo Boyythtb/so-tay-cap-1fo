@@ -1,0 +1,2386 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sổ Tay QA/QC Hiện Trường — Cáp Quang 1FO (21297/QĐ-VTT)</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .nav-item.active {
+      background-color: #0f172a;
+      color: #ffffff;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+    }
+    .nav-item.active .nav-badge {
+      background-color: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+    }
+    .comp-pill.active {
+      background-color: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+    }
+    .filter-btn.active {
+      background-color: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      .main-shell { margin-left: 0 !important; }
+      .tab-panel { display: block !important; page-break-after: always; }
+    }
+
+    .glass-bar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+    }
+    .spec-note-input:focus {
+      outline: none;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
+    }
+    @keyframes pulse-fast {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.9); }
+    }
+    .animate-pulse-fast {
+      animation: pulse-fast 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+  </style>
+</head>
+<body class="antialiased">
+
+  <div class="min-h-screen flex flex-col lg:flex-row">
+    <!-- LEFT SIDEBAR (Desktop) / TOP HEADER (Mobile) -->
+    <aside class="lg:w-72 lg:fixed lg:inset-y-0 lg:left-0 bg-white border-b lg:border-b-0 lg:border-r border-slate-200 z-30 flex flex-col justify-between no-print">
+      <div class="p-4 lg:p-5 space-y-5">
+        <!-- Brand / Doc Meta -->
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider bg-sky-100 text-sky-800 rounded">QA/QC Playbook</span>
+            <span class="text-[11px] font-mono text-slate-500">21297/QĐ-VTT</span>
+          </div>
+          <h1 class="text-base font-bold text-slate-900 mt-2 leading-snug">Nghiệm Thu Cáp Quang 1FO Bọc Chặt (G657A1)</h1>
+          <p class="text-xs text-slate-500 mt-1">Ban hành: 17/09/2026 • Mẫu đánh giá: 01 cuộn (1 km)</p>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-1 gap-1.5" aria-label="Điều hướng chính">
+          <button class="nav-item active flex items-center justify-between px-3 py-2.5 rounded-lg text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part_previsit">
+            <span class="truncate">0. Chuẩn Bị Trước Khi Đi</span>
+            <span id="pvBadge" class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-sky-100 text-sky-800">0/15</span>
+          </button>
+          <button class="nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part0">
+            <span class="truncate">1. Cấu Trúc &amp; 7 Thành Phần</span>
+            <span class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-600">7</span>
+          </button>
+          <button class="nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part1">
+            <span class="truncate">2. Bảng Chỉ Tiêu &amp; Bài Đo</span>
+            <span class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-600">38</span>
+          </button>
+          <button class="nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part6">
+            <span class="truncate">3. Test Nhanh Tại Xưởng</span>
+            <span class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-600">6</span>
+          </button>
+          <button class="nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part2">
+            <span class="truncate">4. Chiêu Trò Gian Lận</span>
+            <span class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-600">8</span>
+          </button>
+          <button class="nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part3">
+            <span class="truncate">5. Hồ Sơ &amp; Chứng Từ</span>
+            <span class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-600">7</span>
+          </button>
+          <button class="nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part4">
+            <span class="truncate">6. Câu Hỏi Chất Vấn</span>
+            <span class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-600">6</span>
+          </button>
+          <button class="nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-left" data-tab="part5">
+            <span class="truncate">7. Kịch Bản What-If</span>
+            <span class="nav-badge ml-2 px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-600">7</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Sidebar Footer: Live Audit Score & Alerts -->
+      <div class="p-4 lg:p-5 border-t border-slate-200 bg-slate-50/70 space-y-3">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-slate-600 font-medium">Tiến độ đo kiểm</span>
+          <span id="progressCount" class="font-mono font-bold text-slate-900">0/38</span>
+        </div>
+        <div class="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden flex">
+          <div id="passBar" class="bg-emerald-500 h-full transition-all" style="width: 0%"></div>
+          <div id="failBar" class="bg-rose-500 h-full transition-all" style="width: 0%"></div>
+        </div>
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-emerald-700 font-semibold">Đạt: <strong id="passCount">0</strong></span>
+          <span class="text-rose-700 font-semibold">Trượt: <strong id="failCount">0</strong></span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button id="toggleAlertBtn" class="px-2.5 py-2 rounded-lg text-xs font-semibold bg-amber-100 text-amber-900 hover:bg-amber-200 border border-amber-300 transition cursor-pointer">
+            ⚠ 11 Cảnh Báo
+          </button>
+          <button id="printBtn" class="px-2.5 py-2 rounded-lg text-xs font-semibold bg-white text-slate-700 hover:bg-slate-100 border border-slate-300 transition cursor-pointer">
+            🖨️ In / PDF
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="main-shell flex-1 lg:ml-72 min-w-0">
+
+      <!-- CLOUD SYNC & SESSION CONTROL HEADER (Sticky) -->
+      <header class="glass-bar border-b border-slate-200/90 px-4 sm:px-6 py-3 sticky top-0 z-20 no-print">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <!-- Left: Session selector & info -->
+          <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+            <div class="flex items-center gap-1.5 bg-slate-100/90 p-1 rounded-xl border border-slate-200">
+              <span class="text-xs font-semibold text-slate-500 pl-2">Đợt:</span>
+              <select id="sessionSelect" class="bg-white text-xs sm:text-sm font-semibold text-slate-900 px-2.5 py-1.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-600 cursor-pointer">
+                <option value="default">Mặc định (Đang tải...)</option>
+              </select>
+            </div>
+            
+            <button id="newSessionBtn" class="px-2.5 py-1.5 text-xs font-semibold bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200 rounded-lg transition cursor-pointer flex items-center gap-1">
+              <span>➕</span> <span>Tạo đợt mới</span>
+            </button>
+            <button id="editSessionBtn" class="px-2.5 py-1.5 text-xs font-semibold bg-white text-slate-700 hover:bg-slate-50 border border-slate-300 rounded-lg transition cursor-pointer flex items-center gap-1" title="Chỉnh sửa thông tin đợt nghiệm thu">
+              <span>⚙️</span> <span>Thông tin đợt</span>
+            </button>
+          </div>
+
+          <!-- Right: Sync status & actions -->
+          <div class="flex items-center gap-2 self-end md:self-auto">
+            <!-- Sync Status Pill -->
+            <div id="syncBadge" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 transition-all">
+              <span id="syncDot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span id="syncStatusText">Cloudflare: Sẵn sàng</span>
+            </div>
+
+            <!-- Manual Sync Button -->
+            <button id="manualSyncBtn" class="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg border border-slate-300 transition cursor-pointer" title="Đồng bộ lại từ Cloudflare">
+              🔄
+            </button>
+
+            <!-- Share/Copy Multi-device link -->
+            <button id="shareSessionBtn" class="px-3 py-1.5 text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 rounded-lg transition cursor-pointer flex items-center gap-1.5 shadow-sm" title="Sao chép link để mở trên điện thoại / máy tính khác">
+              <span>📋</span> <span class="hidden sm:inline">Copy Link Máy Khác</span>
+            </button>
+
+            <!-- Delete Session Button -->
+            <button id="deleteSessionBtn" class="p-1.5 text-rose-600 hover:text-rose-800 hover:bg-rose-50 rounded-lg border border-rose-200 transition cursor-pointer" title="Xóa đợt nghiệm thu này">
+              🗑️
+            </button>
+          </div>
+        </div>
+
+        <!-- Session Metadata Sub-banner -->
+        <div id="sessionMetaBanner" class="max-w-6xl mx-auto pt-2 mt-2 border-t border-slate-100 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-600">
+          <div>📌 <strong id="curTitleDisp" class="text-slate-900">Đợt nghiệm thu 01</strong></div>
+          <div id="curLotWrap" class="hidden">🏷️ Mã cuộn/lô: <span id="curLotDisp" class="font-mono font-semibold text-slate-800"></span></div>
+          <div id="curAuditorWrap" class="hidden">👤 Giám định: <span id="curAuditorDisp" class="font-semibold text-slate-800"></span></div>
+          <div id="curFactoryWrap" class="hidden">🏭 Nhà máy: <span id="curFactoryDisp" class="text-slate-800"></span></div>
+          <div class="ml-auto text-slate-400 font-mono text-[11px]" id="lastSyncTime">Cập nhật: Vừa xong</div>
+        </div>
+      </header>
+
+      <!-- SESSION INFO EDIT MODAL -->
+      <div id="sessionModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl border border-slate-200 space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-base font-bold text-slate-900">⚙️ Thông Tin Đợt Nghiệm Thu</h3>
+            <button id="closeModalBtn" class="text-slate-400 hover:text-slate-600 font-bold text-lg px-2">✕</button>
+          </div>
+          <div class="space-y-3 text-xs sm:text-sm">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Tên đợt nghiệm thu / Mã biên bản:</label>
+              <input type="text" id="modalTitleInput" placeholder="VD: Nghiệm thu cuộn 01 — Lô 21297" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-600" />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Mã cuộn / Serial cuộn:</label>
+                <input type="text" id="modalLotInput" placeholder="VD: 1FO-2609-001" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-600 font-mono" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Cán bộ QA/QC thực hiện:</label>
+                <input type="text" id="modalAuditorInput" placeholder="VD: Kỹ sư Nguyễn Văn A" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-600" />
+              </div>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Xưởng / Nhà máy sản xuất:</label>
+              <input type="text" id="modalFactoryInput" placeholder="VD: Nhà máy Cáp quang C-FIBER" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-600" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Ghi chú chung / Kết luận nghiệm thu:</label>
+              <textarea id="modalNotesInput" rows="3" placeholder="Ghi nhận tổng quát về lô hàng, điều kiện test, yêu cầu bổ sung..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-600"></textarea>
+            </div>
+          </div>
+          <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+            <button id="cancelModalBtn" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 cursor-pointer">Hủy</button>
+            <button id="saveModalBtn" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-sky-600 text-white hover:bg-sky-700 shadow-sm cursor-pointer">Lưu &amp; Đồng bộ Cloud</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHARE TOAST NOTIFICATION -->
+      <div id="shareToast" class="hidden fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg border border-slate-800 text-xs sm:text-sm flex items-center gap-2 animate-bounce">
+        <span>✓</span> <span>Đã copy link đồng bộ! Bạn có thể dán link này vào máy tính, điện thoại khác để cùng làm việc.</span>
+      </div>
+
+      <main class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+        <!-- Collapsible Ambiguity Alert Drawer -->
+        <section id="alertPanel" class="hidden bg-white border border-amber-300 rounded-2xl p-5 shadow-sm">
+          <div class="flex items-start justify-between gap-4 pb-3 border-b border-amber-100">
+            <div>
+              <h2 class="text-base font-bold text-amber-950">⚠ 11 Điểm Mập Mờ &amp; Kẽ Hở Trong File CTKT (21297/QĐ-VTT)</h2>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1">Cần làm rõ bằng văn bản với Chủ đầu tư trước khi đến nhà máy để tránh tranh cãi tại hiện trường.</p>
+            </div>
+            <button id="closeAlertBtn" class="text-slate-400 hover:text-slate-700 font-bold text-lg px-2 cursor-pointer" title="Đóng">✕</button>
+          </div>
+          <div id="ambiguityList" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm"></div>
+        </section>
+
+        <!-- SECTION 0 (part_previsit): DEDICATED PRE-VISIT PREPARATION CHECKLIST -->
+        <section id="part_previsit" class="tab-panel space-y-5">
+          <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider bg-sky-100 text-sky-800 rounded">Checklist Tiền Trạm</span>
+                  <span id="pvProgressText" class="text-xs font-mono font-semibold text-slate-600">Đã sẵn sàng: 0/15 hạng mục</span>
+                </div>
+                <h2 class="text-lg font-bold text-slate-900 mt-1.5">0. Yêu Cầu Nhà Máy Chuẩn Bị Trước Khi Xuống Xưởng</h2>
+                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Gửi trước 1–2 ngày để đảm bảo đủ máy đo, đủ giấy tờ gốc và thống nhất cách phối hợp, không bị gián đoạn khi đến nơi.</p>
+              </div>
+              <button id="copyPreVisitBtn" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900 text-white hover:bg-slate-800 transition cursor-pointer shrink-0 no-print">
+                📋 Copy tin nhắn gửi nhà máy
+              </button>
+            </div>
+            <div id="copyToast" class="hidden mt-3 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
+              ✓ Đã copy đầy đủ yêu cầu chuẩn bị (Thiết bị + Giấy tờ + Cách thức làm việc) để gửi nhà máy!
+            </div>
+            <div id="preVisitList" class="grid grid-cols-1 gap-5 mt-5"></div>
+          </div>
+        </section>
+
+        <!-- SECTION 1 (part0): STRUCTURE & 7 COMPONENTS -->
+        <section id="part0" class="tab-panel hidden space-y-6">
+          <!-- Header Card: SVG + Quick Overview -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
+              <div>
+                <h2 class="text-lg font-bold text-slate-900">1. Cấu Trúc Cáp 1FO Bọc Chặt &amp; Thành Phần Xuất Bán</h2>
+                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Mặt cắt ngang chuẩn (Trang 63) và đầy đủ 7 thành phần từ lõi quang đến đóng gói xuất xưởng.</p>
+              </div>
+              <span class="px-2.5 py-1 text-xs font-mono font-medium bg-slate-100 text-slate-700 rounded-md w-fit">Chuẩn: G657A1 • 1000m/cuộn</span>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 mt-5 items-start">
+              <!-- SVG Diagram -->
+              <div class="xl:col-span-5 bg-slate-50 border border-slate-200/80 rounded-xl p-4 flex flex-col items-center">
+                <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-2">Mặt Cắt Ngang Cáp Hình Số 8</div>
+                <svg viewBox="0 0 360 320" class="w-full max-w-[320px] h-auto" xmlns="http://www.w3.org/2000/svg">
+              <!-- Outer PE Jacket (Figure 8) -->
+              <!-- Top messenger part -->
+              <circle cx="150" cy="85" r="46" fill="#1e293b" />
+              <!-- Neck (Cổ cáp >= 0.4mm) -->
+              <rect x="136" y="122" width="28" height="32" fill="#1e293b" />
+              <!-- Bottom belly part with V-grooves -->
+              <path d="M 98 152 Q 98 142 112 142 L 188 142 Q 202 142 202 152 L 202 192 L 184 202 L 202 212 L 202 252 Q 202 262 188 262 L 112 262 Q 98 262 98 252 L 98 212 L 116 202 L 98 192 Z" fill="#1e293b" />
+              
+              <!-- 7-strand Messenger Wire (7x0.33mm) -->
+              <g fill="#cbd5e1" stroke="#475569" stroke-width="1">
+                <circle cx="150" cy="85" r="9" />
+                <circle cx="150" cy="67" r="9" />
+                <circle cx="150" cy="103" r="9" />
+                <circle cx="134" cy="76" r="9" />
+                <circle cx="166" cy="76" r="9" />
+                <circle cx="134" cy="94" r="9" />
+                <circle cx="166" cy="94" r="9" />
+              </g>
+
+              <!-- 2 Steel Strength Members (0.45mm) -->
+              <circle cx="122" cy="202" r="10" fill="#e2e8f0" stroke="#475569" stroke-width="1.2" />
+              <circle cx="178" cy="202" r="10" fill="#e2e8f0" stroke="#475569" stroke-width="1.2" />
+
+              <!-- 1 Optical Fiber (Center, colored coating e.g. Blue, NOT black) -->
+              <circle cx="150" cy="202" r="7" fill="#38bdf8" stroke="#ffffff" stroke-width="1.5" />
+              <circle cx="150" cy="202" r="2.5" fill="#ffffff" />
+
+              <!-- Dimension lines & labels -->
+              <!-- Total height >= 5mm -->
+              <line x1="45" y1="39" x2="45" y2="262" stroke="#0f172a" stroke-width="1.2" stroke-dasharray="3,2" />
+              <text x="8" y="155" font-size="11" font-weight="bold" fill="#0f172a">≥ 5.0 mm</text>
+
+              <!-- Belly height 3.2 +- 0.2 -->
+              <line x1="72" y1="142" x2="72" y2="262" stroke="#0284c7" stroke-width="1.2" />
+              <text x="10" y="210" font-size="10" font-weight="bold" fill="#0284c7">3.2±0.2 mm</text>
+
+              <!-- Belly width 2.2 +- 0.2 -->
+              <line x1="98" y1="282" x2="202" y2="282" stroke="#0284c7" stroke-width="1.2" />
+              <text x="115" y="298" font-size="11" font-weight="bold" fill="#0284c7">2.2 ± 0.2 mm (Tổng ≥ 2mm)</text>
+
+              <!-- Neck >= 0.4mm -->
+              <line x1="168" y1="138" x2="225" y2="138" stroke="#d97706" stroke-width="1.2" />
+              <text x="230" y="142" font-size="10.5" font-weight="bold" fill="#b45309">Cổ cáp ≥ 0.4 mm</text>
+
+              <!-- V-groove 1.2 +- 0.2 -->
+              <line x1="116" y1="226" x2="184" y2="226" stroke="#f59e0b" stroke-width="1.5" />
+              <line x1="184" y1="226" x2="225" y2="226" stroke="#d97706" stroke-width="1.2" />
+              <text x="230" y="230" font-size="10.5" font-weight="bold" fill="#b45309">Rãnh chữ V: 1.2±0.2 mm</text>
+
+              <!-- Pointers -->
+              <line x1="175" y1="75" x2="225" y2="65" stroke="#334155" stroke-width="1" />
+              <text x="228" y="68" font-size="10.5" font-weight="bold" fill="#0f172a">Dây treo 7×0.33 mm</text>
+              <text x="228" y="81" font-size="9.5" fill="#475569">(Thép mạ kẽm)</text>
+
+              <line x1="188" y1="198" x2="225" y2="180" stroke="#334155" stroke-width="1" />
+              <text x="228" y="182" font-size="10.5" font-weight="bold" fill="#0f172a">2 sợi trợ lực Ø≥0.45 mm</text>
+              <text x="228" y="194" font-size="9.5" fill="#475569">(Thép mạ kẽm)</text>
+
+              <line x1="155" y1="205" x2="225" y2="255" stroke="#0284c7" stroke-width="1" />
+              <text x="228" y="257" font-size="10.5" font-weight="bold" fill="#0369a1">1 sợi quang G657A1</text>
+              <text x="228" y="269" font-size="9.5" fill="#475569">(Màu TIA-598, ≠ đen)</text>
+
+              <line x1="192" y1="100" x2="225" y2="108" stroke="#334155" stroke-width="1" />
+              <text x="228" y="111" font-size="10.5" font-weight="bold" fill="#0f172a">Vỏ nhựa PE (LLDPE)</text>
+              <text x="228" y="123" font-size="9.5" fill="#475569">(Tỉ trọng ≥ 0.91 g/cm³)</text>
+            </svg>
+              </div>
+
+              <!-- Clean Summary Table -->
+              <div class="xl:col-span-7 overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                  <thead>
+                    <tr class="border-b border-slate-200 text-slate-500 text-[11px] uppercase tracking-wider">
+                      <th class="py-2.5 pr-3 font-semibold">Thành phần</th>
+                      <th class="py-2.5 px-3 font-semibold">Công dụng chính</th>
+                      <th class="py-2.5 pl-3 font-semibold">Chuẩn xuất bán</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100">
+                    <tr class="hover:bg-slate-50/70">
+                      <td class="py-2.5 pr-3 font-semibold text-slate-900 whitespace-nowrap">1. Lõi truyền dẫn</td>
+                      <td class="py-2.5 px-3 text-slate-600">Truyền tín hiệu quang; G657A1 chịu uốn góc hẹp không suy hao.</td>
+                      <td class="py-2.5 pl-3 text-slate-800">01 sợi G657A1, màu TIA-598 (≠ đen), đầu trong ≥ 1m.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/70">
+                      <td class="py-2.5 pr-3 font-semibold text-slate-900 whitespace-nowrap">2. Phần tử chịu lực</td>
+                      <td class="py-2.5 px-3 text-slate-600">Dây treo chịu lực căng cột; 2 sợi trợ lực chống dập/nén lõi.</td>
+                      <td class="py-2.5 pl-3 text-slate-800">Thép mạ kẽm: 7×0,33mm (treo) &amp; 2×0,45mm (bụng).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/70">
+                      <td class="py-2.5 pr-3 font-semibold text-slate-900 whitespace-nowrap">3. Vỏ PE, Cổ &amp; Rãnh V</td>
+                      <td class="py-2.5 px-3 text-slate-600">Chống ẩm/UV ≥ 6 năm; xé tách dây treo &amp; bóc lấy sợi dễ.</td>
+                      <td class="py-2.5 pl-3 text-slate-800">PE ≥ 0,91 g/cm³; cổ ≥ 0,4mm; rãnh V 1,2±0,2mm.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/70">
+                      <td class="py-2.5 pr-3 font-semibold text-slate-900 whitespace-nowrap">4. Nhãn thân cáp</td>
+                      <td class="py-2.5 px-3 text-slate-600">Truy xuất bảo hành &amp; đo đếm mét thi công (1m/lần).</td>
+                      <td class="py-2.5 pl-3 text-slate-800">In hoa cao ≥ 2mm trên bụng, bền mài ≥ 30 chu kỳ.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/70">
+                      <td class="py-2.5 pr-3 font-semibold text-slate-900 whitespace-nowrap">5. Trống cáp (Bobin)</td>
+                      <td class="py-2.5 px-3 text-slate-600">Giữ cuộn 1000m gọn, chống rối và đo OTDR trực tiếp.</td>
+                      <td class="py-2.5 pl-3 text-slate-800">Nhựa đúc chống nước, ≥ 1000m, 3 đinh (nếu ghép rời).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/70">
+                      <td class="py-2.5 pr-3 font-semibold text-slate-900 whitespace-nowrap">6. Tem má trống</td>
+                      <td class="py-2.5 px-3 text-slate-600">Định danh điện tử bằng mã vạch khi nhập/xuất kho.</td>
+                      <td class="py-2.5 pl-3 text-slate-800">Tem PVC chống nước, keo 100%, đủ 9 mục + Barcode.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/70">
+                      <td class="py-2.5 pr-3 font-semibold text-slate-900 whitespace-nowrap">7. Carton &amp; Pallet</td>
+                      <td class="py-2.5 px-3 text-slate-600">Chống va đập, kiểm kho không cần mở hộp, bốc xếp an toàn.</td>
+                      <td class="py-2.5 pl-3 text-slate-800">Hộp carton dán Barcode trùng trống, xếp trên Pallet.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive 7-Component Deep-Dive Explorer -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6 space-y-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div>
+                <h3 class="text-base sm:text-lg font-bold text-slate-900">Soi Chi Tiết Từng Thành Phần (32 Tình Huống Rủi Ro)</h3>
+                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Chọn từng thành phần bên dưới để tập trung kiểm tra, hoặc tìm nhanh theo từ khóa.</p>
+              </div>
+              <input id="searchCompInput" type="text" placeholder="Tìm nhanh (VD: VFL, IOR, CaCO3, panme...)" class="w-full md:w-72 px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-600 no-print" />
+            </div>
+
+            <!-- Component Pill Selector -->
+            <div id="compSelector" class="flex flex-wrap gap-1.5 pt-1 no-print">
+              <button class="comp-pill active px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 transition cursor-pointer" data-comp="ALL">Tất cả (7)</button>
+              <button class="comp-pill px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition cursor-pointer" data-comp="comp1">1. Sợi G657A1</button>
+              <button class="comp-pill px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition cursor-pointer" data-comp="comp2">2. Thép chịu lực</button>
+              <button class="comp-pill px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition cursor-pointer" data-comp="comp3">3. Vỏ PE &amp; Cổ cáp</button>
+              <button class="comp-pill px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition cursor-pointer" data-comp="comp4">4. Nhãn thân cáp</button>
+              <button class="comp-pill px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition cursor-pointer" data-comp="comp5">5. Trống 1000m</button>
+              <button class="comp-pill px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition cursor-pointer" data-comp="comp6">6. Tem má trống</button>
+              <button class="comp-pill px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition cursor-pointer" data-comp="comp7">7. Carton &amp; Pallet</button>
+            </div>
+
+            <div id="componentDeepDiveContainer" class="space-y-4"></div>
+          </div>
+        </section>
+
+        <!-- SECTION 2 (part1): 38 SPECS & TEST METHODS -->
+        <section id="part1" class="tab-panel hidden space-y-4">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div>
+                <h2 class="text-lg font-bold text-slate-900">2. Bảng Tổng Hợp 38 Chỉ Tiêu &amp; Phương Pháp Đo</h2>
+                <p class="text-xs sm:text-sm text-slate-500">Đánh dấu Đạt/Trượt trực tiếp cho từng phép đo tại hiện trường.</p>
+              </div>
+              <input id="searchInput1" type="text" placeholder="Tìm chỉ tiêu, thiết bị, ngưỡng..." class="w-full md:w-72 px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 no-print" />
+            </div>
+            <div class="flex flex-wrap items-center gap-1.5 no-print" id="groupFilters">
+              <button class="filter-btn active px-2.5 py-1 rounded-md text-xs font-semibold border border-slate-200 cursor-pointer" data-group="ALL">Tất cả (38)</button>
+              <button class="filter-btn px-2.5 py-1 rounded-md text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 cursor-pointer" data-group="I.1">I.1 Hình học sợi (6)</button>
+              <button class="filter-btn px-2.5 py-1 rounded-md text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 cursor-pointer" data-group="I.2">I.2 Truyền dẫn (7)</button>
+              <button class="filter-btn px-2.5 py-1 rounded-md text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 cursor-pointer" data-group="II.1">II.1 Vật liệu (1)</button>
+              <button class="filter-btn px-2.5 py-1 rounded-md text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 cursor-pointer" data-group="II.2">II.2 Cấu trúc (12)</button>
+              <button class="filter-btn px-2.5 py-1 rounded-md text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 cursor-pointer" data-group="II.3">II.3 Cơ lý (7)</button>
+              <button class="filter-btn px-2.5 py-1 rounded-md text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 cursor-pointer" data-group="II.4">II.4 Nhiệt độ (1)</button>
+              <button class="filter-btn px-2.5 py-1 rounded-md text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 cursor-pointer" data-group="II.5">II.5 Nhãn &amp; Đóng gói (4)</button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead class="bg-slate-50 text-slate-600 uppercase text-[11px] border-b border-slate-200">
+                  <tr>
+                    <th class="p-3 w-24">Mã / Kết quả</th>
+                    <th class="p-3 w-44">Tên chỉ tiêu</th>
+                    <th class="p-3 w-48">Ngưỡng đạt (Pass/Fail)</th>
+                    <th class="p-3 w-44">Thiết bị bắt buộc</th>
+                    <th class="p-3 w-44">Môi trường &amp; Mẫu</th>
+                    <th class="p-3 min-w-[260px]">Các bước đo chuẩn</th>
+                  </tr>
+                </thead>
+                <tbody id="specsTableBody" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 3 (part6): FIELD TESTS WITHOUT LAB MACHINES -->
+        <section id="part6" class="tab-panel hidden space-y-5">
+          <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h2 class="text-lg font-bold text-slate-900">3. Bộ Dụng Cụ Bỏ Túi &amp; Test Nhanh Khi Thiếu Máy Lab</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Hướng dẫn từng bước sử dụng dụng cụ mang theo để kiểm chứng vật tư tại chỗ và quy trình niêm phong mẫu gửi Lab VILAS.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 text-xs sm:text-sm">
+              <div class="p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl">
+                <div class="font-bold text-slate-900">1. 🔦 Bút soi quang VFL (650nm) + Trục Ø30mm</div>
+                <div class="text-sky-700 font-medium mt-0.5">Kiểm chứng: Sợi G657A1 thật vs G652D rẻ tiền (I.1.1 &amp; I.2.3)</div>
+                <ol class="list-decimal pl-4 mt-2 space-y-1 text-slate-600">
+                  <li>Cắt ~3m cáp, lấy sợi quang trần cắm 1 đầu vào bút soi VFL.</li>
+                  <li>Bật laser đỏ nhấp nháy, quấn <strong>10 vòng</strong> ôm sát trục tròn Ø30mm (R=15mm).</li>
+                  <li>Nếu vòng quấn rò sáng đỏ rực ra ngoài → là G652D, <strong>không phải G657A1</strong>.</li>
+                </ol>
+              </div>
+              <div class="p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl">
+                <div class="font-bold text-slate-900">2. 💧 Cốc nước + 🔥 Bật lửa + Kìm cắt</div>
+                <div class="text-sky-700 font-medium mt-0.5">Kiểm chứng: Nhựa PE nguyên sinh vs Pha bột đá / Tái chế / PVC (II.1.1)</div>
+                <ol class="list-decimal pl-4 mt-2 space-y-1 text-slate-600">
+                  <li><strong>Thả nước:</strong> Cắt 2cm vỏ sạch thả vào nước; PE chuẩn (0,91–0,94) <strong>PHẢI NỔI</strong>, chìm là pha nặng bột đá/PVC.</li>
+                  <li><strong>Bẻ gập 180°:</strong> Gập 5–10 lần; trắng bệch hoặc nứt là nhựa pha.</li>
+                  <li><strong>Đốt lửa:</strong> PE chuẩn lửa xanh-vàng, nhỏ giọt trong, mùi nến, không tro cứng.</li>
+                </ol>
+              </div>
+              <div class="p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl">
+                <div class="font-bold text-slate-900">3. 🧲 Nam châm + Dao rọc + Nước muối</div>
+                <div class="text-sky-700 font-medium mt-0.5">Kiểm chứng: Thép mạ kẽm 7×0,33mm &amp; 2×0,45mm (II.2.8 &amp; II.2.9)</div>
+                <ol class="list-decimal pl-4 mt-2 space-y-1 text-slate-600">
+                  <li>Rút lõi thép dọc trục (không gọt vỏ), thử nam châm phải hút mạnh.</li>
+                  <li>Cạo nhẹ xem có bong lớp mạ lộ thép đen không; bẻ gập 90° kiểm độ dẻo.</li>
+                  <li>Ngâm nước muối loãng qua đêm nếu cần kiểm chứng chống rỉ.</li>
+                </ol>
+              </div>
+              <div class="p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl">
+                <div class="font-bold text-slate-900">4. 🧴 Cồn 90° + Khăn trắng &amp; ⚖️ Cân đối chứng</div>
+                <div class="text-sky-700 font-medium mt-0.5">Kiểm chứng: Độ bền mực in (II.5.1) &amp; Chiều dài 1000m (II.2.11)</div>
+                <ol class="list-decimal pl-4 mt-2 space-y-1 text-slate-600">
+                  <li>Thấm cồn 90° lau mạnh 10–15 lượt lên chữ đoạn giữa cuộn để bắt mực dởm.</li>
+                  <li>Cân đúng 1,00m cáp mẫu nhân 1000, đối chiếu với (Cân cả cuộn − Tang trống rỗng).</li>
+                  <li>Ký bút xóa lên cuộn ngẫu nhiên &amp; dùng tem niêm phong nếu gửi Lab VILAS.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div id="fieldTestContainer" class="grid grid-cols-1 gap-4"></div>
+        </section>
+
+        <!-- SECTION 4 (part2): FRAUD TRICKS -->
+        <section id="part2" class="tab-panel hidden space-y-4">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-bold text-slate-900">4. Chiêu Trò Gian Lận Tại Nhà Máy &amp; Cách Chống Bị Lừa</h2>
+              <p class="text-xs sm:text-sm text-slate-500">Tổng hợp 8 nhóm thủ thuật thường gặp và thao tác giám sát chéo.</p>
+            </div>
+            <input id="searchInput2" type="text" placeholder="Lọc thủ thuật..." class="w-full sm:w-64 px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 no-print" />
+          </div>
+          <div id="fraudContainer" class="grid grid-cols-1 gap-4"></div>
+        </section>
+
+        <!-- SECTION 5 (part3): MANDATORY DOCUMENTS -->
+        <section id="part3" class="tab-panel hidden space-y-4">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+            <h2 class="text-lg font-bold text-slate-900">5. Danh Mục Hồ Sơ &amp; Chứng Từ Gốc Bắt Buộc Kiểm Tra</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Không có giấy tờ gốc &amp; chứng nhận hiệu chuẩn còn hạn → Không ký biên bản đo.</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead class="bg-slate-50 text-slate-600 uppercase text-[11px] border-b border-slate-200">
+                  <tr>
+                    <th class="p-3 w-12 text-center">Đã kiểm</th>
+                    <th class="p-3 w-52">Loại hồ sơ</th>
+                    <th class="p-3 w-48">Áp dụng</th>
+                    <th class="p-3">Nội dung phải soi kỹ</th>
+                    <th class="p-3 w-64">Điểm dễ bị làm giả</th>
+                  </tr>
+                </thead>
+                <tbody id="docsTableBody" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 6 (part4): TECHNICAL INTERROGATION -->
+        <section id="part4" class="tab-panel hidden space-y-4">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+            <h2 class="text-lg font-bold text-slate-900">6. Bộ Câu Hỏi Chất Vấn Kỹ Thuật Tại Hiện Trường</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Hỏi trực tiếp kỹ sư QC/Sản xuất của nhà máy để kiểm tra năng lực thực tế.</p>
+          </div>
+          <div id="questionsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </section>
+
+        <!-- SECTION 7 (part5): WHAT-IF SCENARIOS -->
+        <section id="part5" class="tab-panel hidden space-y-4">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-bold text-slate-900">7. Kịch Bản Dự Trù Tình Huống Phát Sinh (What-If)</h2>
+              <p class="text-xs sm:text-sm text-slate-500">Quy tắc đánh trượt (Reject) hay đo lại (Re-test) và chuẩn thu thập bằng chứng.</p>
+            </div>
+            <select id="whatIfFilter" class="px-3 py-1.5 text-sm border border-slate-300 rounded-lg bg-white no-print">
+              <option value="ALL">Tất cả quyết định</option>
+              <option value="REJECT">Bắt buộc REJECT ngay</option>
+              <option value="RETEST">Cho phép RE-TEST có điều kiện</option>
+              <option value="HOLD">Tạm dừng / Xin ý kiến Chủ đầu tư</option>
+            </select>
+          </div>
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead class="bg-slate-50 text-slate-600 uppercase text-[11px] border-b border-slate-200">
+                  <tr>
+                    <th class="p-3 w-44">Nhóm / Hạng mục</th>
+                    <th class="p-3 w-60">Tình huống bất thường</th>
+                    <th class="p-3 w-36">Quyết định</th>
+                    <th class="p-3">Điều kiện xử lý</th>
+                    <th class="p-3 w-60">Bằng chứng ghi nhận</th>
+                  </tr>
+                </thead>
+                <tbody id="whatIfTableBody" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const ambiguities = [
+      {
+        id: "CB-01",
+        title: "Thiếu hoàn toàn Điều kiện môi trường đo & Thời gian ổn định mẫu",
+        detail: "File CTKT không quy định nhiệt độ, độ ẩm phòng lab (IEC 60794 / ITU-T G.650.1 yêu cầu chuẩn 23°C ± 5°C, RH ≤ 70%, ổn định mẫu 12–24h trước khi đo). Nếu phòng lab quá nóng/lạnh hoặc vừa sản xuất xong đem đo ngay, chỉ số suy hao và kích thước nhựa PE sẽ sai lệch."
+      },
+      {
+        id: "CB-02",
+        title: "Mâu thuẫn bước sóng đo MFD (I.1.2): 1310 nm vs 1550 nm",
+        detail: "Cột Yêu cầu kỹ thuật quy định tại 1310 nm: (8,6-9,2) ± 0,4 µm. Nhưng Phương pháp 2 (đo gián tiếp OTDR, trang 50) lại yêu cầu cài OTDR ở 1550 nm (λ1 = 1550 nm) và không có công thức quy đổi! Ngoài ra trang 50 còn in nhầm cả LA(λ1) và LB(λ1) đều chú thích là 'tại vị trí A'. Thực tế MFD ở 1550 nm lớn hơn ở 1310 nm khoảng 0,8–1,2 µm."
+      },
+      {
+        id: "CB-03",
+        title: "Cách ghi ngưỡng MFD '(8,6-9,2) ± 0,4 µm' dễ gây tranh cãi",
+        detail: "Cần làm rõ với bên mời thầu: Ngưỡng Pass/Fail tuyệt đối là 8,2 – 9,6 µm, hay dải danh định của sợi phải nằm trong 8,6–9,2 µm và sai số phép đo là ±0,4 µm?"
+      },
+      {
+        id: "CB-04",
+        title: "Lỗ hổng 'Cho phép nợ máy đo bằng cam kết & CO/CQ' (5 chỉ tiêu quang)",
+        detail: "Các mục I.1.4 (lỗi đồng tâm), I.1.5 (méo vỏ), I.2.5 (λ0), I.2.6 (độ dốc tán sắc), I.2.7 (PMD) đều có dòng cho phép cung cấp tài liệu/cam kết + CO/CQ nếu không có máy đo. Nhà máy có thể cố tình báo hỏng máy để né đo. Cần hỏi Chủ đầu tư: nếu nhà máy không có máy thì có bắt buộc gửi mẫu ra phòng lab bên thứ 3 (như Quatest/VNPT/Viettel Lab) không?"
+      },
+      {
+        id: "CB-05",
+        title: "Không nêu tên máy đo hình học sợi quang (I.1.3 – I.1.6)",
+        detail: "Chỉ ghi 'máy đo tuân theo ITU-T G.650.1 / IEC 60793-1-20, 1-21'. Nếu nhà máy dùng kính hiển vi quang học thông thường độ phóng đại thấp hoặc thước đo ảnh thủ công không hiệu chuẩn, sai số đo ±0,7 µm (cladding) và ≤0,5 µm (lỗi đồng tâm) là bất khả thi."
+      },
+      {
+        id: "CB-06",
+        title: "Thiếu thông số bán kính trục uốn cụ thể ở bài Uốn cong nhiều lần (II.3.6)",
+        detail: "Yêu cầu ghi 'Bán kính uốn cong ≤ 50 mm', bài đo cũng ghi '≤ 50 mm' nhưng không chốt giá trị cố định (ví dụ R = 30 mm hay R = 50 mm). Nhà máy sẽ chọn R = 50 mm (dễ đạt nhất) thay vì R nhỏ hơn."
+      },
+      {
+        id: "CB-07",
+        title: "Độ cao cổ cáp (II.2.6) chỉ định tính, không có kích thước mm",
+        detail: "Chỉ tiêu II.2.6 không ghi ngưỡng mm cụ thể mà chỉ mô tả 'xé dây treo và bụng cáp không bị lộ lõi thép'. Hình vẽ trang 63 có kích thước tham khảo rất nhỏ/mờ. Dễ xảy ra tranh cãi nếu cổ cáp quá mỏng hoặc xé bị tưa."
+      },
+      {
+        id: "CB-08",
+        title: "Vật liệu vỏ PE (II.1.1) chỉ khống chế tỉ trọng ≥ 0,91 g/cm³",
+        detail: "Tỉ trọng ≥ 0,91 g/cm³ rất dễ đạt bằng nhựa tái chế hoặc nhựa pha bột đá CaCO3 (tỉ trọng còn tăng lên 0,96–1,05 g/cm³). File thiếu ngưỡng tối đa của tỉ trọng, thiếu chỉ tiêu độ giãn dài đứt, độ bền kéo nhựa và hàm lượng muội than (Carbon Black chống UV)."
+      },
+      {
+        id: "CB-09",
+        title: "Lệch tốc độ & mã tiêu chuẩn ở bài Test mài mòn nhãn cáp (II.5.1)",
+        detail: "Cột Yêu cầu ghi IEC 60794-1-2 E2B tốc độ 55 ± 5 chu kỳ/phút (50–60); cột Bài đo ghi IEC 60794-1-21-E2B tốc độ 40–60 chu kỳ/phút. Ngoài ra mẫu chữ in ghi '7X0.33 TRO LUC THEP' (không dấu) — cần xác nhận chính tả và mã hợp đồng."
+      },
+      {
+        id: "CB-10",
+        title: "Chỉ tiêu Tuổi thọ cáp ≥ 6 năm (II.2.12) thiếu tiêu chí chứng minh",
+        detail: "Bài đo chỉ ghi 'Nhà thầu cung cấp tài liệu chứng minh' mà không quy định rõ là báo cáo thử nghiệm lão hóa nhiệt/UV (Aging test) hay chỉ là thư tự công bố của nhà sản xuất."
+      },
+      {
+        id: "CB-11",
+        title: "Lỗi cắt câu ở tiêu đề mục II.2.7 (trang 63–64)",
+        detail: "Tiêu đề ghi 'Độ dày rãnh chữ V xé cáp lấy sợi quang tại phần' rồi ngắt sang trang sau thành 'bụng (độ dày tính từ điểm sâu nhất chữ V từ bên này sang bên kia): 1,2 ± 0,2 mm'. Cần hiểu đúng là bề dày còn lại giữa 2 đáy rãnh V đối diện ở phần bụng cáp."
+      }
+    ];
+
+    const specsData = [
+      // I.1
+      {
+        id: "I.1.1", group: "I.1", name: "Chuẩn sợi quang",
+        passFail: "G657A1 (Đáp ứng bài đo uốn cong mục I.2.3)",
+        equipment: "Dụng cụ uốn bán kính 15 mm + Power Meter / OTDR",
+        env: "File không ghi (Chuẩn: 23°C ± 5°C, RH ≤ 70%)",
+        steps: "Kiểm tra CO/CQ sợi gốc và thực hiện đối chứng qua bài đo Macrobend loss tại mục I.2.3.",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "I.1.2", group: "I.1", name: "Đường kính trường mode (MFD)",
+        passFail: "Tại 1310 nm: (8,6 - 9,2) ± 0,4 µm",
+        equipment: "PP1: WS500-MFD + phần mềm PFO. PP2: OTDR (sự kiện ≤ 0,01 dB) + máy hàn + 2 sợi chuẩn A, B (≥ 1 km)",
+        env: "File không ghi (Chuẩn lab: 23°C ± 5°C). Mẫu PP1: 2–3m; PP2: ≥ 1000m",
+        steps: "PP1: Tuốt vỏ 7–10 cm, lau cồn, cắt phẳng, kẹp ngàm (mặt vát hướng về sợi sạch), chạy PFO. PP2: Hàn mẫu với sợi chuẩn A và B (suy hao hàn ≤ 0,05 dB), đo OTDR 1550 nm mỗi hướng 3 lần lấy TB LA, LB → tính ΔL = LA - LB → Ws = WA × 10^(ΔL/20).",
+        note: "⚠ Mâu thuẫn bước sóng 1310 vs 1550 ở PP2!"
+      },
+      {
+        id: "I.1.3", group: "I.1", name: "Đường kính vỏ sợi (Cladding)",
+        passFail: "125 µm ± 0,7 µm (124,3 – 125,7 µm)",
+        equipment: "Máy đo hình học sợi quang theo ITU-T G.650.1 / IEC 60793-1-20 (VD: PK2400 hoặc tương đương)",
+        env: "File không ghi. Mẫu đo < 2m",
+        steps: "Cắt phẳng đầu sợi sạch lớp phủ, đưa vào máy phân tích mặt cắt/hình học sợi để đo đường kính lớp vỏ thủy tinh.",
+        note: "Không nêu model máy cụ thể"
+      },
+      {
+        id: "I.1.4", group: "I.1", name: "Lỗi đồng tâm lõi sợi",
+        passFail: "≤ 0,5 µm",
+        equipment: "Máy đo hình học sợi quang (ITU-T G.650.1 mục 5.2 / IEC 60793-1-20)",
+        env: "File không ghi. Mẫu đo < 2m",
+        steps: "Đo độ lệch tâm giữa tâm lõi dẫn sáng và tâm vỏ thủy tinh 125 µm. (File cho phép cam kết + CO/CQ nếu không có máy).",
+        note: "⚠ Có kẽ hở nợ máy đo bằng CO/CQ"
+      },
+      {
+        id: "I.1.5", group: "I.1", name: "Méo vỏ sợi (Cladding noncircularity)",
+        passFail: "≤ 1%",
+        equipment: "Máy đo hình học sợi quang (ITU-T G.650.1 mục 5.2 / IEC 60793-1-20)",
+        env: "File không ghi. Mẫu đo < 2m",
+        steps: "Đo độ chênh lệch đường kính lớn nhất/nhỏ nhất của vỏ thủy tinh so với đường kính danh định. (Cho phép cam kết + CO/CQ nếu thiếu máy).",
+        note: "⚠ Có kẽ hở nợ máy đo bằng CO/CQ"
+      },
+      {
+        id: "I.1.6", group: "I.1", name: "Đường kính lớp vỏ sơ cấp (Primary coating)",
+        passFail: "245 µm ± 5 µm (240 – 250 µm)",
+        equipment: "Máy đo hình học sợi / kính hiển vi đo quang học theo IEC 60793-1-21 (08/2001)",
+        env: "File không ghi. Mẫu đo < 2m",
+        steps: "Giữ nguyên lớp phủ màu/sơ cấp (không tuốt), đo đường kính ngoài lớp coating bằng máy đo quang học hoặc thiết bị chuyên dụng.",
+        note: "Bắt buộc (M)"
+      },
+
+      // I.2
+      {
+        id: "I.2.1", group: "I.2", name: "Bước sóng cắt (Cut-off wavelength)",
+        passFail: "≤ 1260 nm",
+        equipment: "Máy đo WS500-MFD + bộ kẹp uốn đường kính 120 mm",
+        env: "File không ghi. Mẫu: sợi 2m ± 0,2m hoặc cáp 22m ± 0,2m (1m sợi 2 đầu + 20m cáp giữa)",
+        steps: "Tuốt lớp màu, cắt, kẹp ngàm WS500-MFD. Nếu dùng Bend-reference: quấn 1 vòng đường kính 120 mm (Multimode-reference không cần quấn). Chạy phần mềm đo Cut-off.",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "I.2.2", group: "I.2", name: "Hệ số suy hao (Attenuation)",
+        passFail: "1310 nm: ≤ 0,4 dB/km | 1550 nm: ≤ 0,3 dB/km",
+        equipment: "OTDR MTS8000 + dây nhảy quang + máy hàn / ghép nối cơ khí (≤ 0,1 dB)",
+        env: "File không ghi. Mẫu: cuộn cáp nguyên trống (≥ 1 km)",
+        steps: "Cắt bỏ ~1m đầu sợi. Hàn nối vào dây nhảy. Cài OTDR: 1310 & 1550 nm, Auto set = OFF, Pulse ≤ 30 ns, Ave time = 20s, Event = AUTO, Splice threshold = 0,01 dB, Return = 0,3 dB, End = 3 dB, Plug check = ON, Group index đúng theo sợi. Bấm AVE.",
+        note: "Chú ý kiểm tra Group Index!"
+      },
+      {
+        id: "I.2.3", group: "I.2", name: "Suy hao khi uốn cong (Macrobend loss)",
+        passFail: "Tại 1550 nm: ≤ 0,25 dB / 10 vòng bán kính 15 mm",
+        equipment: "Power meter (hoặc OTDR) + trục quấn bán kính 15 mm (Ø 30 mm)",
+        env: "File không ghi. Mẫu: tách vỏ cáp lấy ~5m sợi quang từ cuộn nguyên",
+        steps: "Đo suy hao ban đầu khi sợi thẳng (không cong, không xoắn) → Quấn 10 vòng lên trục bán kính 15 mm → Đo lại suy hao tại 1550 nm và tính độ tăng ΔdB.",
+        note: "Bài kiểm chứng chuẩn G657A1"
+      },
+      {
+        id: "I.2.4", group: "I.2", name: "Hệ số tán sắc màu (Chromatic Dispersion)",
+        passFail: "1310 nm: ≤ 3,5 ps/(nm·km) | 1550 nm: ≤ 18,6 ps/(nm·km)",
+        equipment: "Máy đo EXFO FTB-200-V2-S1 (hoặc tương đương)",
+        env: "File không ghi. Mẫu: cáp/sợi ≥ 1 km",
+        steps: "Kết nối mẫu ≥ 1 km vào EXFO FTB-200-V2-S1, cấu hình thông số chiều dài/loại sợi, nhấn Start/Stop để máy tự đo và xuất kết quả.",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "I.2.5", group: "I.2", name: "Bước sóng tán sắc bằng 0 (λ₀)",
+        passFail: "1300 nm ≤ λ₀ ≤ 1324 nm",
+        equipment: "Máy đo EXFO FTB-200-V2-S1 (hoặc tương đương)",
+        env: "File không ghi. Mẫu: ≥ 1 km",
+        steps: "Đo đồng thời trong bài đo tán sắc màu I.2.4. (Cho phép tài liệu chứng minh/cam kết + CO/CQ nếu không có máy).",
+        note: "⚠ Có kẽ hở nợ máy đo"
+      },
+      {
+        id: "I.2.6", group: "I.2", name: "Độ dốc tán sắc tại điểm không",
+        passFail: "≤ 0,092 ps/(nm²·km)",
+        equipment: "Máy đo EXFO FTB-200-V2-S1 (hoặc tương đương)",
+        env: "File không ghi. Mẫu: ≥ 1 km",
+        steps: "Đo đồng thời trong bài đo tán sắc màu I.2.4. (Cho phép tài liệu chứng minh/cam kết + CO/CQ nếu không có máy).",
+        note: "⚠ Có kẽ hở nợ máy đo"
+      },
+      {
+        id: "I.2.7", group: "I.2", name: "Hệ số tán sắc phân cực mode (PMD)",
+        passFail: "≤ 0,2 ps/√km",
+        equipment: "MTS 8000 (Module PMD OSA-10X) + Nguồn OBS-55 + Bộ phân cực OVP-15 + Cuộn đệm quang",
+        env: "File không ghi. Mẫu: cuộn cáp nguyên trong trống (thường 1 km)",
+        steps: "Hàn 2 đầu sợi vào dây nhảy. Cài OBS-55 (PERM, CW, Low). Cài MTS8000 PMD (Single, Auto, Make Ref=Yes). Lấy tham chiếu (OVP-15 tại 0°). Nối OBS-55 → mẫu → OVP-15 → OSA-10X, bấm Start/Stop đo PMD.",
+        note: "⚠ Có kẽ hở nợ máy đo"
+      },
+
+      // II.1
+      {
+        id: "II.1.1", group: "II.1", name: "Chất liệu làm vỏ cáp",
+        passFail: "Nhựa PE (tỉ trọng ≥ 0,91 g/cm³, tương đương LLDPE trở lên)",
+        equipment: "Báo cáo lab VN được công nhận + Thiết bị phân tích quang phổ (FTIR) / nhiệt (DSC/TGA)",
+        env: "Phòng lab chứng nhận tại Việt Nam",
+        steps: "Kiểm tra bản test gốc từ phòng lab VN. Thực hiện phân tích quang phổ, phân tích nhiệt vỏ nhựa để suy ra tỉ trọng và tỉ lệ thành phần cấu tạo vỏ cáp.",
+        note: "⚠ Chỉ khống chế tỉ trọng ≥ 0,91 dễ lọt nhựa pha độn"
+      },
+
+      // II.2
+      {
+        id: "II.2.1", group: "II.2", name: "Cấu trúc chung của cáp",
+        passFail: "Dạng dẹt, bọc chặt: phần gia cường + phần bụng (sợi quang trung tâm + 2 sợi trợ lực thép). Vỏ bọc chắc, không thiếu nhựa, không lộ lõi thép, không khuyết tật",
+        equipment: "Mắt thường, kính lúp, dao cắt cáp",
+        env: "Tại xưởng / hiện trường",
+        steps: "Cắt mặt cắt ngang và dọc bóc vỏ cáp, kiểm tra trực quan các thành phần gia cường, bụng cáp, 2 sợi trợ lực, sợi quang và bề mặt vỏ nhựa.",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "II.2.2", group: "II.2", name: "Số sợi quang",
+        passFail: "1 sợi",
+        equipment: "Trực quan",
+        env: "Hiện trường",
+        steps: "Bóc phần bụng cáp kiểm tra đúng 01 sợi quang nằm tại trung tâm.",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "II.2.3", group: "II.2", name: "Màu sợi quang",
+        passFail: "Thuộc một trong các màu chuẩn TIA/EIA-598 (KHÔNG dùng màu đen)",
+        equipment: "Trực quan + bảng màu TIA/EIA-598",
+        env: "Ánh sáng đủ rõ",
+        steps: "Kiểm tra trực quan màu lớp coating ngoài của sợi quang (thường xanh dương/cam/xanh lá... tuyệt đối loại nếu màu đen).",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "II.2.4", group: "II.2", name: "Kích thước cáp & bụng cáp",
+        passFail: "Cáp: ≥ 2mm × 5mm | Bụng cáp: 2,2mm × 3,2mm ± 0,2mm",
+        equipment: "Thước kẹp (độ chính xác ≤ 0,02 mm)",
+        env: "Mẫu mới lấy từ trống cáp",
+        steps: "Đo chiều ngang và chiều cao tổng thể cáp và phần bụng cáp tại 5 điểm, mỗi điểm cách nhau tối thiểu 1m. Lấy giá trị trung bình 5 điểm.",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "II.2.5", group: "II.2", name: "Độ dày cổ cáp",
+        passFail: "≥ 0,4 mm",
+        equipment: "Máy đo kích thước 2D hoặc 3D (kính hiển vi đo tọa độ)",
+        env: "Mẫu mới lấy từ trống cáp",
+        steps: "Cắt mẫu vuông góc thân cáp tại 5 điểm cách nhau ≥ 1m (mặt cắt phẳng, ngọt). Đưa lên máy đo 2D/3D đo độ dày cổ nối giữa dây treo và bụng. Lấy trung bình 5 vị trí.",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "II.2.6", group: "II.2", name: "Độ cao cổ cáp",
+        passFail: "Khi xé dây treo khỏi bụng cáp không bị lộ lõi thép (của dây treo hoặc bụng)",
+        equipment: "Dụng cụ tuốt/xé tay + trực quan",
+        env: "Hiện trường",
+        steps: "Xé tách phần dây treo khỏi bụng cáp tại 5 vị trí, mỗi vị trí dài 0,5 – 1m. Quan sát kỹ dọc vết xé xem có hở kim loại không.",
+        note: "⚠ Chỉ tiêu định tính, dễ tranh cãi"
+      },
+      {
+        id: "II.2.7", group: "II.2", name: "Độ dày rãnh chữ V phần bụng",
+        passFail: "1,2 ± 0,2 mm (1,0 – 1,4 mm)",
+        equipment: "Máy đo kích thước 2D hoặc 3D",
+        env: "Mẫu mới lấy từ trống cáp",
+        steps: "Cắt vuông góc phẳng ngọt tại 5 điểm cách nhau ≥ 1m. Đo khoảng cách từ điểm sâu nhất rãnh chữ V bên này sang bên kia trên máy 2D/3D. Lấy TB 5 vị trí.",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "II.2.8", group: "II.2", name: "Dây gia cường (dây treo cáp)",
+        passFail: "Thép mạ kẽm, cấu trúc 7 sợi (7×0,33mm), đường kính MỖI sợi ≥ 0,33 mm, màu trắng bạc",
+        equipment: "Thước kẹp panme (palme) độ chính xác 0,001 mm",
+        env: "Mẫu mới từ trống cáp",
+        steps: "Rút phần lõi thép ra khỏi vỏ (KHÔNG gọt vỏ để tránh xước/mòn vào thép). Đo từng sợi trong 7 sợi tại 5 điểm cách nhau ≥ 1m, lấy TB. Kiểm tra màu trắng bạc mạ kẽm. TẤT CẢ 7 sợi phải đạt.",
+        note: "Không được gọt vỏ!"
+      },
+      {
+        id: "II.2.9", group: "II.2", name: "Phần tử chịu lực bụng cáp (2 sợi trợ lực)",
+        passFail: "Thép mạ kẽm, đường kính MỖI sợi Ø ≥ 0,45 mm, màu trắng bạc",
+        equipment: "Thước kẹp panme (palme) độ chính xác 0,001 mm",
+        env: "Mẫu mới từ trống cáp",
+        steps: "Rút 2 sợi trợ lực ra (KHÔNG gọt vỏ). Đo đường kính tại 5 điểm cách nhau ≥ 1m. Kiểm tra màu trắng bạc mạ kẽm. CẢ 2 sợi phải đạt.",
+        note: "Không được gọt vỏ!"
+      },
+      {
+        id: "II.2.10", group: "II.2", name: "Độ dài đầu trong cuộn cáp",
+        passFail: "≥ 1 m",
+        equipment: "Thước mét / kiểm tra trực quan chỉ số mét",
+        env: "Tại trống cáp",
+        steps: "Kiểm tra phần đầu cáp thò ra phía trong lõi trống cáp phải dài tối thiểu 1m để phục vụ đo kiểm mà không cần tháo cuộn.",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "II.2.11", group: "II.2", name: "Độ dài cuộn cáp",
+        passFail: "≥ 1000 m/cuộn",
+        equipment: "Chỉ số mét in trên thân cáp + Máy đo OTDR",
+        env: "Tại trống cáp",
+        steps: "Kiểm tra số mét đầu – cuối in trên vỏ cáp kết hợp đo chiều dài thực tế bằng OTDR (phải kiểm soát chặt Group Index).",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "II.2.12", group: "II.2", name: "Tuổi thọ cáp",
+        passFail: "≥ 6 năm",
+        equipment: "Tài liệu chứng minh của nhà thầu",
+        env: "Hồ sơ kỹ thuật",
+        steps: "Kiểm tra tài liệu chứng minh tuổi thọ (báo cáo lão hóa nhiệt/UV, cam kết chất lượng của NSX nguyên liệu).",
+        note: "⚠ Quy định chứng minh chung chung"
+      },
+
+      // II.3
+      {
+        id: "II.3.1", group: "II.3", name: "Lực căng tối đa vận hành (MOT)",
+        passFail: "≥ 500 N (giữ 1 giờ). Suy hao tại 1550 nm tăng ≤ 0,1 dB, không rạn nứt/đứt gãy",
+        equipment: "Máy thử kéo căng cáp (ròng rọc Ø ≥ 100 mm) + Power Meter / OTDR 1550 nm",
+        env: "File không ghi (Chuẩn: 23°C ± 5°C). Đoạn cáp chịu lực ≥ 50 m",
+        steps: "Lắp đoạn cáp ≥ 50 m qua hệ ròng rọc ≥ 100 mm. Đo suy hao 1550 nm trước khi kéo → tăng tải lên 500 N và giữ liên tục 1 giờ → đo suy hao trong và sau khi nhả tải, soi vỏ cáp.",
+        note: "Thời gian giữ lực lâu (1 giờ)"
+      },
+      {
+        id: "II.3.2", group: "II.3", name: "Lực căng tối đa cho phép (MAT)",
+        passFail: "≥ 1000 N (giữ 5 phút). Suy hao tại 1550 nm trước & sau tăng ≤ 0,1 dB",
+        equipment: "Máy thử kéo căng (ròng rọc Ø ≥ 100 mm) + Máy đo suy hao 1550 nm",
+        env: "Đoạn cáp chịu lực ≥ 50 m",
+        steps: "Sơ đồ như MOT. Nâng dần tải lên ≥ 1000 N, giữ trong 5 phút. So sánh suy hao tại 1550 nm trước và sau tác động lực.",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "II.3.3", group: "II.3", name: "Khả năng chịu nén (Crush)",
+        passFail: "≥ 500 N / 100 mm (giữ 1 phút). Trong và sau khi nén, suy hao 1550 nm tăng ≤ 0,1 dB",
+        equipment: "Máy thử nén (tấm nén dài 100 mm, bán kính mép 5 mm) + Máy đo suy hao 1550 nm",
+        env: "File không ghi (Chuẩn: 23°C ± 5°C)",
+        steps: "Đặt mặt dẹt của cáp dưới tấm nén 100 mm. Đo suy hao nền → nén lực 500 N trong 1 phút → ghi nhận suy hao trong lúc nén và sau khi nhả nén.",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "II.3.4", group: "II.3", name: "Khả năng chịu xoắn (Torsion)",
+        passFail: "≥ 20 chu kỳ. Trong & sau xoắn suy hao 1550 nm tăng ≤ 0,1 dB, không đứt/phá hủy vỏ",
+        equipment: "Máy thử xoắn (kẹp cố định + kẹp xoay, tải ≥ 20 N) + Máy đo suy hao 1550 nm",
+        env: "Mẫu dài 250 mm (chỉ test cáp 1 sợi)",
+        steps: "Kẹp mẫu 250 mm, treo tải ≥ 20 N. Xoắn 20 chu kỳ (0° → +180° → 0° → -180°) tốc độ 30 vòng/phút. Theo dõi suy hao 1550 nm trong và sau xoắn.",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "II.3.5", group: "II.3", name: "Khả năng chịu va đập (Impact)",
+        passFail: "≥ 3 lần va đập. Sau va đập suy hao 1550 nm tăng ≤ 0,1 dB",
+        equipment: "Máy thử va đập (năng lượng 1J / 1 N·m, đầu búa R = 12,5 mm) + Máy đo 1550 nm",
+        env: "Mẫu dài 5 m (ĐÃ tách bỏ dây gia cường)",
+        steps: "Tách dây gia cường khỏi mẫu 5 m. Đập vào mặt dẹt của cáp tại 3 điểm cách nhau 500 mm (1 lần/điểm), năng lượng 1J. Đo suy hao trước và sau va đập.",
+        note: "Phải tách dây gia cường!"
+      },
+      {
+        id: "II.3.6", group: "II.3", name: "Khả năng chịu uốn cong nhiều lần",
+        passFail: "Bán kính uốn ≤ 50 mm, 300 chu kỳ. Suy hao 1550 nm tăng ≤ 0,1 dB, không đứt/hỏng vỏ",
+        equipment: "Máy thử uốn cong nhiều lần (tải 2 kg, trục uốn R ≤ 50 mm) + Máy đo 1550 nm",
+        env: "File không ghi (Chuẩn: 23°C ± 5°C)",
+        steps: "Treo tải 2 kg. Uốn 300 chu kỳ (thẳng → phải 90° → trái 180° → thẳng), tốc độ 30 chu kỳ/phút. Kiểm tra suy hao 1550 nm và ngoại quan vỏ.",
+        note: "⚠ File không chốt bán kính R cụ thể"
+      },
+      {
+        id: "II.3.7", group: "II.3", name: "Khả năng mềm dẻo (Flexing)",
+        passFail: "≥ 300 chu kỳ. Suy hao 1550 nm tăng ≤ 0,1 dB, không đứt gãy/phá hủy vỏ",
+        equipment: "Máy thử mềm dẻo qua Puli Ø 100 mm, tải 2 kg + Máy đo 1550 nm",
+        env: "File không ghi",
+        steps: "Quấn cáp theo mặt dẹt qua Puli Ø 100 mm, treo tải 2 kg. Chạy 300 chu kỳ đi-về với tốc độ 10 chu kỳ/phút. Đo suy hao và kiểm tra vỏ.",
+        note: "Bắt buộc (M)"
+      },
+
+      // II.4
+      {
+        id: "II.4.1", group: "II.4", name: "Dải nhiệt độ làm việc",
+        passFail: "-20°C đến 60°C. Suy hao tăng ≤ 0,1 dB/km",
+        equipment: "Buồng nhiệt (Thermal Chamber) lập trình chu kỳ -20°C ÷ 60°C + OTDR / Power meter",
+        env: "Mẫu ≥ 500 m. Thời gian: 2 ngày (2 chu kỳ × 24h), đầu/cuối ở 23°C",
+        steps: "Mỗi chu kỳ 24h: Giảm 23°C→-20°C (3h) → Giữ -20°C (6h) → Tăng -20°C→60°C (6h) → Giữ 60°C (6h) → Giảm 60°C→23°C (3h). Lặp 2 chu kỳ, đo suy hao liên tục.",
+        note: "Mất 48 giờ liên tục"
+      },
+
+      // II.5
+      {
+        id: "II.5.1", group: "II.5", name: "Nhãn cáp & Độ bền mài mòn",
+        passFail: "Đúng cú pháp in hoa, cách 1m/lần, cao ≥ 2mm, in trên bụng cáp. Chịu ≥ 30 chu kỳ mài vẫn đọc được",
+        equipment: "Thước kẹp + Máy thử mài mòn IEC 60794-1-21-E2B Method 2 (phớt len, lực 4N, hành trình 100 mm)",
+        env: "Lấy mẫu bên trong trống (tránh lớp ngoài cùng bị cọ sát sẵn)",
+        steps: "Kiểm tra chính tả & chiều cao chữ (≥ 2mm). Đặt mẫu giữa 2 miếng phớt len, lực ép 4N, chạy tịnh tiến 100 mm tốc độ 40–60 (hoặc 55±5) chu kỳ/phút trong ≥ 30 chu kỳ → đọc lại bằng mắt thường.",
+        note: "⚠ Lệch tốc độ 55±5 vs 40–60"
+      },
+      {
+        id: "II.5.2", group: "II.5", name: "Trống cáp (Bobin)",
+        passFail: "Nhựa đúc tang & lõi, chống nước; 2 má có ô phẳng viền cao dán tem; nếu ghép rời phải có 3 đinh thép gia cố",
+        equipment: "Trực quan",
+        env: "Kho thành phẩm",
+        steps: "Kiểm tra vật liệu nhựa đúc, thiết kế ô dán tem có gờ bảo vệ ở cả 2 bên má tang trống, kiểm tra 3 đinh thép gia cố nếu không đúc liền khối.",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "II.5.3", group: "II.5", name: "Nhãn dán trên má trống cáp",
+        passFail: "Chống nước (PVC), keo phủ 100%, đúng thông tin in hoa + mã vạch đọc được, không hỏng khi gặp nước",
+        equipment: "Nước thử + Máy đọc mã vạch (Barcode scanner)",
+        env: "Tại trống cáp",
+        steps: "Kiểm tra đủ thông tin (NSX, Viettel, Tên SP, Barcode Serial, 1FO, 1000m, Trọng lượng, Tháng/năm, Số HĐ). Nhúng/xịt nước kiểm tra độ bền mực & keo. Quét thử bằng máy đọc mã vạch.",
+        note: "Bắt buộc (M)"
+      },
+      {
+        id: "II.5.4", group: "II.5", name: "Đóng hộp vận chuyển",
+        passFail: "Hộp bìa carton, dán barcode ngoài hộp trùng mã tang trống, đọc được bằng máy quét, xếp trên pallet",
+        equipment: "Máy đọc mã vạch + Trực quan",
+        env: "Khu đóng gói",
+        steps: "Kiểm tra quy cách đóng hộp carton, đối chiếu mã barcode ngoài hộp với mã trên tang trống bên trong, quét kiểm tra và xác nhận có pallet vận chuyển.",
+        note: "Bắt buộc (M)"
+      }
+    ];
+
+    const fraudData = [
+      {
+        category: "1. Lấy mẫu & Gian lận 'Mẫu Vàng' (Golden Sample)",
+        target: "Toàn bộ các bài đo",
+        trick: "Nhà máy chuẩn bị sẵn 1–2 cuộn 'hàng tuyển' (dùng sợi Corning/YOFC xịn, bọc vỏ nhựa nguyên sinh) để ngay cửa phòng lab mời đoàn đo, trong khi lô hàng đại trà ngoài xưởng dùng sợi giá rẻ hoặc nhựa pha.",
+        counter: [
+          "Tuyệt đối không đo mẫu cắt sẵn trên bàn. Yêu cầu xuống thẳng dây chuyền hoặc kho thành phẩm, tự tay chỉ định ngẫu nhiên số thứ tự cuộn (Serial) từ các lô/ca sản xuất khác nhau.",
+          "Dùng bút xóa/tem niêm phong ký tên trực tiếp lên thân cuộn cáp và đầu sợi vừa cắt trước khi mang vào phòng lab.",
+          "Với các bài cắt mẫu < 2m hoặc 5m, tự tay dùng kìm cắt từ cuộn đang kiểm tra sau khi đã xả bỏ tối thiểu 1–2m ngoài cùng."
+        ]
+      },
+      {
+        category: "2. Suy hao OTDR & Chiều dài cuộn cáp (I.2.2 & II.2.11)",
+        target: "Máy đo OTDR MTS8000",
+        trick: "① Chỉnh sai chỉ số chiết suất nhóm (Group Index / IOR) xuống thấp (VD: từ 1.46800 xuống 1.44000) để làm tăng giả tạo chiều dài cuộn cáp (980m thành 1000m) và làm giảm giả tạo hệ số suy hao dB/km. ② Bật Auto-set hoặc dùng độ rộng xung (Pulse width) quá lớn (> 100 ns) để làm mượt đồ thị, che giấu điểm gãy/suy hao cục bộ (micro-bend). ③ Không cắt bỏ 1m đầu sợi hoặc lấy kết quả file .sor đo sẵn từ trước.",
+        counter: [
+          "Đứng sát màn hình OTDR, yêu cầu kỹ sư reset mặc định hoặc tự tay kiểm tra mục Setup: Wavelength = 1310 & 1550 nm, Auto Set = OFF, Pulse width ≤ 30 ns, Group Index đúng theo datasheet sợi gốc (thường 1.4677 tại 1310nm, 1.4682 tại 1550nm).",
+          "Yêu cầu bấm đo trực tiếp (Real-time / AVE 20s) trước mặt mình, nhìn đồng hồ hệ thống trên máy OTDR khớp giờ hiện tại, xuất file .sor thô ngay tại chỗ.",
+          "Kiểm tra chéo chiều dài OTDR với chỉ số mét in trên vỏ cáp (lấy mét cuối trừ mét đầu)."
+        ]
+      },
+      {
+        category: "3. Đo MFD & Bước sóng cắt trên WS500-MFD (I.1.2 & I.2.1)",
+        target: "Máy đo WS500-MFD / OTDR gián tiếp",
+        trick: "① Ở PP2 (đo gián tiếp OTDR): Sử dụng 'sợi chuẩn A' có thông số MFD trên giấy cao/thấp hơn thực tế để kéo kết quả Ws về vùng đạt; hoặc cố tình hàn mối hàn A kém rồi nhập số đo theo hướng có lợi. ② Ở bài Cut-off: Không quấn vòng đường kính 120 mm khi chọn chế độ Bend-reference, hoặc dùng đoạn cáp 22m bị uốn cong sẵn để đẩy bước sóng cắt xuống thấp giả tạo.",
+        counter: [
+          "Nếu dùng PP1 (WS500-MFD): Kiểm tra mục Setup phần mềm PFO xem Fibre type đã chọn đúng 'G652/G657' chưa, bước sóng có chọn 1310 nm không.",
+          "Nếu dùng PP2 (OTDR): Yêu cầu xuất chứng chỉ hiệu chuẩn của 2 sợi chuẩn A, B ghi rõ giá trị WA. Tự tay giám sát màn hình máy hàn đảm bảo suy hao ước lượng ≤ 0,05 dB, ghi chép đủ 3 lần đo hướng A→B và 3 lần B→A, tự bấm máy tính công thức Ws = WA × 10^(ΔL/20).",
+          "Bài Cut-off: Đo kiểm tra đường kính bộ kẹp uốn đúng 120 mm, đảm bảo 20m cáp giữa không bị gập góc nhọn."
+        ]
+      },
+      {
+        category: "4. Hình học sợi quang & 'Né bài đo' (I.1.3 – I.1.6, I.2.5 – I.2.7)",
+        target: "Lỗi đồng tâm, Méo vỏ, λ0, Độ dốc tán sắc, PMD",
+        trick: "Lợi dụng dòng ghi chú trong CTKT ('Trường hợp không có máy đo hỗ trợ...'), nhà máy cố tình giấu máy hoặc báo máy hỏng để chỉ nộp cam kết miệng và CO/CQ của hãng sợi (trong khi thực tế mua sợi loại B/C hoặc sợi non-brand trộn vào).",
+        counter: [
+          "Kiểm tra danh mục thiết bị trong hồ sơ năng lực dự thầu của nhà máy: Nếu trong hồ sơ thầu họ khai báo CÓ máy đo đó mà tại hiện trường bảo hỏng/không có → lập biên bản vi phạm ngay.",
+          "Đối chiếu số Lot/Reel (cuộn sợi gốc) in trên cuộn sợi đang chạy máy bọc cáp với Packing List và CO/CQ sợi gốc nhập khẩu.",
+          "Nếu bắt buộc phải chấp nhận CO/CQ (khi đã được Chủ đầu tư đồng ý), chỉ chấp nhận bản test report xuất xưởng của từng cuộn sợi gốc (Individual Fiber Test Report) khớp đúng Serial cuộn sợi."
+        ]
+      },
+      {
+        category: "5. Vật liệu vỏ nhựa PE (II.1.1)",
+        target: "Chất liệu vỏ cáp LLDPE",
+        trick: "Pha trộn nhựa tái chế (regrind) hoặc bột đá CaCO3/talc để hạ giá thành. Bột đá làm tỉ trọng tăng vọt lên > 0,95 g/cm³ (vẫn đạt ngưỡng '≥ 0,91 g/cm³' của file CTKT!), nhưng vỏ cáp sẽ bị giòn, bạc màu khi bẻ gập và nhanh nứt ngoài trời.",
+        counter: [
+          "Bẻ gập gắt vỏ cáp 180° nhiều lần bằng tay: nhựa LLDPE nguyên sinh sẽ dẻo dai, không bị trắng vệt (stress whitening) hoặc nứt gãy; nhựa pha nhiều bột đá/tái chế sẽ trắng bệch tại vết gập và dễ nứt.",
+          "Đốt thử một mẩu vỏ nhựa nhỏ: nhựa PE nguyên sinh cháy ngọn lửa xanh/vàng, mùi nến (paraffin), nhỏ giọt trong, không để lại tro trắng nhiều; nhựa pha tạp/PVC có mùi khét hắc, khói đen hoặc tro vón cục.",
+          "Kiểm tra kỹ phổ FTIR và đường cong DSC trong báo cáo phòng lab Việt Nam (nhiệt độ nóng chảy LLDPE chuẩn khoảng 120–126°C, không có đỉnh tạp chất)."
+        ]
+      },
+      {
+        category: "6. Cấu trúc, Cổ cáp, Dây gia cường & Thước đo (II.2.4 – II.2.9)",
+        target: "Kích thước cáp, cổ cáp, rãnh V, sợi thép 7×0,33 & 0,45 mm",
+        trick: "① Chỉnh hệ số phóng đại (Calibration factor) trên máy đo 2D/3D để độ dày cổ cáp 0,32 mm hiện thành 0,42 mm. ② Dùng thước panme không vặn chốt lực (ratchet), siết nhẹ để đường kính sợi thép 0,31 mm đọc thành 0,33 mm; hoặc gọt vỏ bằng dao làm xước/bẹp thép rồi đổ lỗi thao tác. ③ Dùng thép đen hoặc thép mạ kém chất lượng (dễ rỉ) thay cho thép mạ kẽm chuẩn.",
+        counter: [
+          "Yêu cầu đặt một khối chuẩn (Gauge block) hoặc thước chuẩn 1mm/5mm lên bàn máy 2D/3D để kiểm chứng độ chính xác trước khi đo mẫu cáp.",
+          "Tự tay cầm panme 0,001 mm kiểm tra điểm '0' (Zero check) khi đóng hết ngàm, sau đó tự đo bằng núm vặn lực (ratchet stop) kêu 3 tiếng 'tách' cho cả 7 sợi dây treo và 2 sợi trợ lực.",
+          "Khi lấy lõi thép: rút dọc trục từ đầu cắt cáp, tuyệt đối cấm thợ dùng dao rọc vỏ dọc thân thép. Dùng cồn lau sạch dầu/nhựa bám trên sợi thép trước khi kẹp panme."
+        ]
+      },
+      {
+        category: "7. Các bài test Cơ lý & Buồng nhiệt (II.3 & II.4)",
+        target: "MOT, MAT, Nén, Xoắn, Va đập, Uốn, Mềm dẻo, Nhiệt độ",
+        trick: "① Bài MOT (500N - 1 giờ) và Buồng nhiệt (48 giờ): Nhà máy lấy lý do mất thời gian để xin chạy rút gọn (VD: giữ 15 phút thay vì 1 giờ, hoặc chạy 1 chu kỳ nhiệt nhanh thay vì 24h/chu kỳ). ② Bài Va đập (II.3.5): Không tách dây gia cường trước khi đập để dây thép chịu lực hộ phần bụng cáp! ③ Bài Xoắn/Uốn: Cài tốc độ chậm hơn, dùng quả nặng nhẹ hơn 2kg/20N, hoặc đặt dây nhảy đo suy hao lỏng lẻo để biến thiên suy hao bị nhiễu. ④ Bài Nén/Kéo: Chỉnh sai đơn vị trên loadcell (kgf sang N, 50 kgf = 490 N < 500 N).",
+        counter: [
+          "Kiểm tra đồng hồ cân/quả nặng thực tế (cân lại quả nặng 2 kg, 20 N nếu nghi ngờ).",
+          "Bài Va đập: Trực tiếp giám sát việc tách bỏ hoàn toàn dây gia cường trên đoạn mẫu 5m trước khi đặt vào búa đập 1J.",
+          "Bài MOT & Buồng nhiệt: Yêu cầu trích xuất biểu đồ log nhiệt độ/lực căng theo thời gian thực (Time-series log) có đóng dấu thời gian liên tục suốt 1 giờ (MOT) và 48 giờ (Nhiệt độ). Tuyệt đối không chấp nhận chạy tắt.",
+          "Kiểm tra đơn vị hiển thị trên màn hình lực kéo/nén là Newton (N), không phải kgf."
+        ]
+      },
+      {
+        category: "8. Nhãn cáp & Đóng gói (II.5)",
+        target: "Mài mòn nhãn, Trống cáp, Tem nhãn, Barcode",
+        trick: "① Lấy mẫu cáp có lớp mực mới in dày hoặc xịt lớp phủ bóng bảo vệ tạm để qua bài test mài mòn 30 chu kỳ. ② Dán tem giấy cán màng mỏng thay vì tem PVC chống nước, hoặc chỉ quét keo ở 4 góc tem để tiết kiệm chi phí. ③ Barcode in trên hộp carton khác với mã trên tang trống.",
+        counter: [
+          "Kiểm tra đầu in phun trên dây chuyền xem có dùng đúng loại mực/công nghệ in chuẩn của lô sản xuất không; lấy mẫu ở đoạn giữa cuộn (đã khô tự nhiên, không xịt thêm gì).",
+          "Dùng ngón tay cạy thử mép tem trên má trống để kiểm tra độ phủ keo 100%, ngâm/xịt nước trực tiếp lên tem và chà nhẹ bằng tay ướt.",
+          "Dùng máy quét mã vạch quét trực tiếp cả tem trên má trống lẫn tem ngoài thùng carton xem chuỗi ký tự trả về có khớp 100% quy tắc đặt mã hợp đồng không."
+        ]
+      }
+    ];
+
+    const docsData = [
+      {
+        doc: "CO (Certificate of Origin) & CQ (Certificate of Quality) sợi quang gốc",
+        scope: "I.1.1 – I.1.6, I.2.1 – I.2.7",
+        check: "Tên hãng sợi (Corning, YOFC, FiberHome, Fujikura...), chuẩn G657A1, số Lot/Batch, ngày sản xuất, số lượng km nhập khẩu khớp với quy mô đơn hàng.",
+        fakeRisk: "Dùng CO/CQ cũ của lô hàng năm trước; xóa/sửa số Lot hoặc số lượng; nhập sợi không thương hiệu nhưng kẹp CO/CQ của hãng lớn."
+      },
+      {
+        doc: "Individual Fiber Test Report (Bảng test xuất xưởng từng cuộn sợi gốc)",
+        scope: "I.1.2 – I.1.5, I.2.4 – I.2.7",
+        check: "Mã số cuộn sợi (Fiber Reel ID) trên phiếu test phải trùng khớp 100% với tem dán trên cuộn sợi đang lắp trên máy bọc vỏ tại xưởng.",
+        fakeRisk: "File PDF bị chỉnh sửa số liệu bằng Photoshop/PDF editor (kiểm tra font chữ lệch, metadata ngày tạo file); mã cuộn trên máy bọc không có trong danh sách Packing List."
+      },
+      {
+        doc: "Datasheet & Chứng từ nhựa vỏ cáp (LLDPE) + Thép gia cường",
+        scope: "II.1.1, II.2.8, II.2.9",
+        check: "Mã nhựa LLDPE nguyên sinh (tỉ trọng danh định ≥ 0,91 g/cm³, MFI, độ bền kéo), hóa đơn/CO/CQ hạt nhựa và cuộn dây thép mạ kẽm 7×0,33mm & 0,45mm.",
+        fakeRisk: "Khai báo hạt nhựa nguyên sinh ngoại nhưng trong kho nguyên liệu toàn bao nhựa tái chế không nhãn mác hoặc bao bột đá CaCO3."
+      },
+      {
+        doc: "Kết quả test vỏ nhựa từ Phòng Lab được chứng nhận tại Việt Nam",
+        scope: "II.1.1",
+        check: "Dấu công nhận VILAS / ISO/IEC 17025 của phòng lab VN; phương pháp thử (tỉ trọng, FTIR, DSC/TGA); mã mẫu thử trùng với mẫu cáp 1FO chào thầu.",
+        fakeRisk: "Phòng lab hết hạn chứng nhận VILAS; bản scan mờ không có bản gốc đóng dấu giáp lai; mẫu mang đi test lab là mẫu cáp khác có vỏ tốt hơn mẫu sản xuất đại trà."
+      },
+      {
+        doc: "Giấy chứng nhận hiệu chuẩn (Calibration Certificate) toàn bộ thiết bị đo",
+        scope: "Tất cả bài đo (OTDR, WS500, EXFO CD, PMD, Panme, Máy 2D/3D, Loadcell kéo/nén, Buồng nhiệt)",
+        check: "Số Serial Number trên giấy hiệu chuẩn phải khớp với tem/nhãn trên thân máy thực tế; còn hạn hiệu chuẩn tại ngày nghiệm thu; đơn vị hiệu chuẩn có thẩm quyền.",
+        fakeRisk: "Hết hạn hiệu chuẩn; tráo giấy hiệu chuẩn của máy cùng model nhưng khác Serial Number; tem hiệu chuẩn trên máy bị rách/bóc."
+      },
+      {
+        doc: "Log dữ liệu thô từ máy đo (Raw Data: .sor, .pdf xuất từ máy, log nhiệt/lực)",
+        scope: "I.1.2, I.2.1 – I.2.7, II.3.1, II.4.1",
+        check: "File .sor (OTDR), file xuất trực tiếp từ phần mềm PFO/EXFO/MTS8000, biểu đồ nhiệt độ 48h có timestamp trùng thời điểm giám sát.",
+        fakeRisk: "Chỉ cung cấp bảng tổng hợp Excel tự gõ tay; file .sor có ngày giờ đo từ nhiều tuần trước khi đoàn đến kiểm tra."
+      },
+      {
+        doc: "Tài liệu chứng minh tuổi thọ cáp ≥ 6 năm",
+        scope: "II.2.12",
+        check: "Báo cáo thử nghiệm lão hóa (Thermal/UV Aging test) hoặc văn bản xác nhận tuổi thọ kỹ thuật từ nhà sản xuất sợi & nhựa.",
+        fakeRisk: "Chỉ viết một tờ giấy tự cam kết 'cáp bền 6 năm' của chính nhà thầu mà không có cơ sở thử nghiệm vật liệu đi kèm."
+      }
+    ];
+
+    const questionsData = [
+      {
+        topic: "1. Đo MFD & OTDR (I.1.2 & I.2.2)",
+        question: "Anh vui lòng mở phần cài đặt OTDR cho tôi xem giá trị Group Index (IOR) đang nhập cho bước sóng 1310 nm và 1550 nm là bao nhiêu, và lấy thông số này từ đâu? Ngoài ra, nếu đo MFD gián tiếp theo hướng dẫn trang 50 ở 1550 nm thì anh quy đổi về chỉ tiêu 1310 nm như thế nào?",
+        goodAnswer: "Mở Setup OTDR, chỉ rõ IOR lấy theo Datasheet sợi gốc (VD: 1.4677 / 1.4682), Auto set = OFF, Pulse ≤ 30ns. Thừa nhận thẳng việc file CTKT ghi 1550nm ở PP2 là bất nhất với 1310nm và trình bày phương án đo trực tiếp trên WS500-MFD tại 1310nm (hoặc có hệ số hiệu chỉnh chuẩn của Chủ đầu tư).",
+        redFlag: "Ấp úng không biết IOR lấy ở đâu, để mặc định 1.5000 hoặc chỉnh xuống thấp; cố tình bảo 'đo 1550 nm ra kết quả giống hệt 1310 nm' → Dấu hiệu không hiểu bản chất hoặc cố tình làm sai số."
+      },
+      {
+        topic: "2. Đo hình học sợi & Chống 'né bài đo' (I.1.3 – I.1.6)",
+        question: "Hiện tại nhà máy có sẵn máy đo đường kính vỏ sợi, lỗi đồng tâm và méo vỏ theo IEC 60793-1-20 không? Nếu không có thì quy trình kiểm soát đầu vào sợi quang của nhà máy trước khi đưa lên máy bọc vỏ là gì?",
+        goodAnswer: "Đưa ra máy đo chuyên dụng kèm chứng nhận hiệu chuẩn còn hạn, hoặc xuất trình ngay bảng Test Report từng cuộn sợi gốc (Individual Reel Report) đối chiếu khớp mã cuộn đang chạy trên dây chuyền.",
+        redFlag: "Trả lời 'nhà máy chỉ cần đo bằng thước kẹp/kính hiển vi thường' hoặc 'tin tưởng nhà cung cấp sợi nên không kiểm tra mã cuộn đầu vào' → Rủi ro trộn sợi kém chất lượng cực cao."
+      },
+      {
+        topic: "3. Vật liệu vỏ PE (II.1.1)",
+        question: "Hạt nhựa LLDPE đang chạy cho lô cáp này là mã gì, của hãng nào? Ngoài tỉ trọng ≥ 0,91 g/cm³, nhà máy kiểm soát tỉ lệ pha hạt màu/chống UV (Masterbatch) và độ đồng đều nhiệt độ đùn như thế nào để đảm bảo vỏ không giòn?",
+        goodAnswer: "Nêu được chính xác mã hạt nhựa, tỉ lệ trộn masterbatch (thường 2–3% Carbon Black), chỉ ra bao bì nguyên đai tại kho nguyên liệu và xuất trình kết quả test FTIR/DSC từ phòng lab VN.",
+        redFlag: "Không nhớ mã nhựa, né tránh dẫn vào kho nguyên liệu, chỉ nói chung chung 'nhựa PE loại tốt đạt ≥ 0,91' → Khả năng cao đang dùng nhựa tái chế hoặc pha độn."
+      },
+      {
+        topic: "4. Đo Panme sợi thép & Cổ cáp (II.2.5 – II.2.9)",
+        question: "Khi lấy mẫu 7 sợi thép dây treo và 2 sợi trợ lực bụng cáp để đo panme 0,001 mm, công nhân nhà máy tách vỏ bằng cách nào? Và trước khi đo rãnh chữ V trên máy 2D/3D, máy có được kiểm chuẩn bằng thước mẫu không?",
+        goodAnswer: "Rút lõi thép dọc trục không dùng dao gọt vào thép, lau sạch trước khi đo, vặn núm lực (ratchet) trên panme. Có thước chuẩn (calibration glass scale) đặt kiểm tra máy 2D/3D.",
+        redFlag: "Để thợ cầm dao rọc dọc vỏ thép rồi đo luôn (làm sai số đường kính), hoặc siết panme trực tiếp bằng trục chính không qua núm lực."
+      },
+      {
+        topic: "5. Test Cơ lý & Buồng nhiệt (II.3 & II.4)",
+        question: "Ở bài thử Va đập (Impact 1J), mẫu cáp 5m có phải tách bỏ dây gia cường không? Và ở bài MOT 500N giữ 1 giờ cũng như Buồng nhiệt 48 giờ, hệ thống của nhà máy có tự động ghi log suy hao theo thời gian thực không?",
+        goodAnswer: "Khẳng định bắt buộc phải tách dây gia cường ở bài Va đập (đúng mục II.3.5). Xuất trình được phần mềm/bộ ghi dữ liệu tự động lưu log lực căng, nhiệt độ và suy hao liên tục theo thời gian.",
+        redFlag: "Định để nguyên dây gia cường đem đập búa 1J, hoặc bảo 'máy buồng nhiệt không lưu log, chỉ ghi tay vào sổ' → Không có bằng chứng xác thực đã chạy đủ 48 giờ."
+      },
+      {
+        topic: "6. Test Mài mòn nhãn & Đóng gói (II.5)",
+        question: "Khi lấy mẫu cáp đi test mài mòn 30 chu kỳ bằng phớt len lực 4N, anh lấy đoạn cáp ở vị trí nào của trống, và làm sao chứng minh tem nhãn má trống phủ keo 100%?",
+        goodAnswer: "Xả bỏ lớp ngoài cùng đã bị cọ sát, lấy đoạn cáp bên trong trống có chữ in nguyên vẹn. Cho xem mẫu tem PVC bóc thử kiểm tra lớp keo full bề mặt và test xịt nước trực tiếp.",
+        redFlag: "Cắt luôn đoạn đầu cáp ngoài cùng hoặc lấy mẫu cáp in riêng bên ngoài để thử mài mòn."
+      }
+    ];
+
+    const whatIfData = [
+      {
+        item: "Mọi chỉ tiêu bắt buộc (M)",
+        scenario: "Kết quả đo vượt ngưỡng Fail rõ rệt (VD: Suy hao 1550nm = 0,35 dB/km > 0,3; Đường kính thép < 0,33 mm; Xé cổ cáp bị lộ lõi thép).",
+        decision: "REJECT",
+        decisionLabel: "ĐÁNH TRƯỢT NGAY",
+        action: "Không công nhận lô/cuộn mẫu đó. Nếu là mẫu dự thầu (01 cuộn 1 km) → ghi nhận Không Đáp Ứng toàn bộ phần thầu theo Ghi chú trang 73. Nếu là nghiệm thu hàng loạt → cách ly lô, tăng tần suất lấy mẫu kiểm tra (tùy hợp đồng) hoặc trả hàng.",
+        evidence: "Chụp ảnh màn hình máy đo/panme hiển thị rõ thông số lỗi + mã cuộn cáp; xuất file .sor/.pdf thô; lập Biên bản kiểm tra hiện trường có chữ ký 2 bên."
+      },
+      {
+        item: "Các chỉ tiêu đo quang & kích thước",
+        scenario: "Kết quả đo mấp mé ngưỡng đạt (VD: Suy hao 1550nm = 0,298 dB/km sát 0,30; Độ dày cổ cáp = 0,405 mm sát 0,40; Rãnh V = 1,01 mm).",
+        decision: "RETEST",
+        decisionLabel: "CHO ĐO LẠI (CÓ ĐK)",
+        action: "Kiểm tra lại vệ sinh đầu nối, chất lượng mối hàn (≤ 0,05 dB), điểm '0' của panme/thước, và cắt lại mặt cắt vuông góc phẳng ngọt. Đo lặp lại tối thiểu 3 lần (với OTDR) hoặc tại 5 điểm mới cách nhau ≥ 1m (với kích thước) trên cùng cuộn và lấy thêm 1 cuộn ngẫu nhiên khác để đối chứng.",
+        evidence: "Lưu toàn bộ kết quả cả lần đo đầu và các lần đo lại (không xóa log cũ); chụp ảnh mặt cắt mẫu và tem hiệu chuẩn máy đo."
+      },
+      {
+        item: "Kết quả đo lặp lại không đồng nhất",
+        scenario: "Đo 3 lần OTDR hoặc 5 điểm kích thước cho kết quả nhảy loạn (lúc đạt lúc trượt, độ lệch lớn).",
+        decision: "RETEST",
+        decisionLabel: "TẠM DỪNG & ĐO LẠI",
+        action: "Dừng ghi nhận kết quả. Kiểm tra đầu connector/dây nhảy quang (soi kính hiển vi đầu nối), hàn lại mối nối, hoặc kiểm tra độ ổn định kẹp mẫu trên máy 2D/3D. Nếu sau khi chuẩn hóa thao tác mà kết quả vẫn dao động bất thường → kết luận sản phẩm không đồng đều chất lượng (REJECT).",
+        evidence: "Quay video thao tác đo và sự nhảy số trên màn hình; lưu các file log liên tiếp nhau."
+      },
+      {
+        item: "Thiết bị đo của nhà máy",
+        scenario: "Máy đo báo lỗi, không lên nguồn, hoặc Giấy chứng nhận hiệu chuẩn đã HẾT HẠN / không khớp Serial Number.",
+        decision: "REJECT",
+        decisionLabel: "KHÔNG CHẤP NHẬN KẾT QUẢ",
+        action: "Từ chối đo trên thiết bị hết hạn hiệu chuẩn hoặc bị lỗi. Yêu cầu nhà máy: (1) Đổi sang máy dự phòng có hiệu chuẩn hợp lệ, HOẶC (2) Niêm phong mẫu tại chỗ và mang đi đo kiểm chứng tại phòng Lab độc lập đạt chuẩn VILAS (chi phí nhà thầu chịu).",
+        evidence: "Chụp ảnh tem/giấy hiệu chuẩn hết hạn và số Serial trên thân máy; ghi rõ vào biên bản lý do dừng đo."
+      },
+      {
+        item: "Nhà máy xin 'nợ' chỉ tiêu",
+        scenario: "Nhà máy lấy lý do thiếu vật tư, chưa kịp chuẩn bị máy hoặc bài đo tốn thời gian (như MOT 1h, Buồng nhiệt 48h) để xin nợ hoặc xin bỏ qua.",
+        decision: "HOLD",
+        decisionLabel: "KHÔNG TỰ Ý DUYỆT NỢ",
+        action: "Với các bài bắt buộc phải đo (như MOT, MAT, Nén, Xoắn, Va đập, Nhiệt độ): Không ký xác nhận đạt. Với 5 chỉ tiêu có ghi chú cho phép dùng CO/CQ & cam kết (I.1.4, I.1.5, I.2.5, I.2.6, I.2.7): Chỉ tiếp nhận hồ sơ CO/CQ + Test report cuộn gốc để báo cáo Chủ đầu tư quyết định.",
+        evidence: "Lập biên bản ghi nhận rõ hạng mục nhà máy chưa thực hiện được tại thời điểm kiểm tra, đính kèm toàn bộ hồ sơ họ nộp thay thế."
+      },
+      {
+        item: "MFD PP2 (I.1.2) & Uốn cong nhiều lần (II.3.6)",
+        scenario: "Phát sinh tranh cãi về bước sóng đo MFD (1310 vs 1550 nm) hoặc bán kính trục uốn (R=50mm vs nhỏ hơn).",
+        decision: "HOLD",
+        decisionLabel: "GHI NHẬN & BÁO CHỦ ĐẦU TƯ",
+        action: "Ưu tiên đo MFD bằng PP1 trực tiếp tại 1310 nm (WS500-MFD). Nếu bắt buộc dùng PP2 ở 1550 nm hoặc trục uốn R=50mm, yêu cầu đo thực tế và ghi chú rõ điều kiện đo (bước sóng/bán kính đã dùng) vào biên bản để Chủ đầu tư đối chiếu.",
+        evidence: "Chụp ảnh màn hình cài đặt bước sóng/cấu hình, thước đo đường kính trục uốn thực tế."
+      },
+      {
+        item: "Nhãn cáp (II.5.1) & Tem trống (II.5.3)",
+        scenario: "Nhãn cáp bị mờ sau 30 chu kỳ mài, hoặc tem trống bị bong/nhòe mực khi thử nước, hoặc máy đọc mã vạch không nhận.",
+        decision: "REJECT",
+        decisionLabel: "ĐÁNH TRƯỢT HẠNG MỤC",
+        action: "Nếu lấy mẫu quá sát đầu ngoài cuộn cáp (đã bị cọ sát khi vận chuyển), cho phép cắt sâu vào trong trống 2–3m để test lại đúng 1 lần theo hướng dẫn trang 70. Nếu vẫn mờ/nhòe hoặc tem không chống nước/không quét được barcode → REJECT.",
+        evidence: "Chụp ảnh/quay video cận cảnh đoạn nhãn trước và sau 30 chu kỳ mài, video xịt nước lên tem và màn hình máy quét mã vạch báo lỗi."
+      }
+    ];
+
+    const componentDeepDiveData = [
+      {
+        id: "comp1",
+        purpose: "Truyền dẫn tín hiệu quang tốc độ cao đến thuê bao; chuẩn G657A1 giúp chịu uốn cong bán kính nhỏ (đi góc tường, hộp đấu nối hẹp) mà không tăng suy hao hay đứt gãy.",
+        badge: "Thành phần 1/7",
+        name: "Lõi truyền dẫn — 01 sợi quang G657A1",
+        summary: "1 sợi G657A1 tại tâm bụng cáp • Màu TIA/EIA-598 (≠ đen) • Suy hao ≤0,4 (1310nm) & ≤0,3 dB/km (1550nm) • Đầu trong ≥1m",
+        cases: [
+          {
+            risk: "1.1 Tráo sợi G652D hoặc sợi loại B/non-brand thành G657A1",
+            selfCheck: "Cắt ~3m sợi, cắm bút soi quang VFL (650nm) và quấn 10 vòng quanh trục tròn Ø30mm (R=15mm): sợi G652D sẽ rò sáng đỏ rực ra ngoài, G657A1 gần như không rò sáng. Ra thẳng máy đùn soi tem hãng (Corning/YOFC/FiberHome...) trên cuộn sợi gốc đang quay.",
+            factoryReq: "Xuất CO/CQ + Test Report từng cuộn sợi gốc khớp đúng Reel ID đang chạy trên dây chuyền; đo bài uốn cong 10 vòng R=15mm tại 1550nm (tăng ≤ 0,25 dB)."
+          },
+          {
+            risk: "1.2 Đánh tráo 'Mẫu vàng' (Golden Sample) chuẩn bị sẵn ở cửa phòng lab",
+            selfCheck: "Tuyệt đối không đo mẫu cắt sẵn trên bàn. Xuống thẳng kho chọn ngẫu nhiên cuộn theo số Serial, ký tên bằng bút xóa trực tiếp lên thân cuộn và đầu sợi trước khi mang vào đo.",
+            factoryReq: "Mở đúng cuộn bạn chỉ định, xả bỏ 1m đầu ngoài cùng và cắt mẫu trực tiếp trước mặt bạn."
+          },
+          {
+            risk: "1.3 Chỉnh sai Group Index (IOR) hoặc Pulse width > 30ns trên OTDR để làm đẹp suy hao",
+            selfCheck: "Đứng sát màn hình Setup OTDR kiểm tra: Wavelength = 1310 & 1550nm, Auto set = OFF, Pulse width ≤ 30ns, Average time = 20s, Group Index đúng theo datasheet sợi gốc (thường ~1.4677 / 1.4682).",
+            factoryReq: "Bấm đo trực tiếp chế độ AVE (không dùng file đo sẵn) và xuất file .sor thô có timestamp hiện tại ngay tại chỗ."
+          },
+          {
+            risk: "1.4 Mâu thuẫn bước sóng đo MFD (1310nm vs 1550nm) hoặc dùng sợi chuẩn A/B sai giá trị WA",
+            selfCheck: "Nếu đo PP1 (WS500-MFD), kiểm tra phần mềm PFO chọn đúng Fibre type 'G652/G657' và 1310nm. Nếu đo PP2 (OTDR gián tiếp), tự giám sát màn hình máy hàn đảm bảo suy hao mối hàn ≤ 0,05 dB, ghi đủ 3 lần đo hướng A→B và 3 lần B→A.",
+            factoryReq: "Ưu tiên đo trực tiếp PP1 tại 1310nm; nếu dùng PP2 phải xuất chứng chỉ hiệu chuẩn 2 sợi chuẩn A, B ghi rõ WA và giải trình cách quy đổi."
+          },
+          {
+            risk: "1.5 Sai số lượng sợi (cáp 2FO) hoặc dùng sợi màu đen (vi phạm mục II.2.3)",
+            selfCheck: "Bóc vỏ bụng cáp kiểm tra trực quan đúng 01 sợi nằm ở tâm, đối chiếu màu lớp phủ thuộc chuẩn TIA/EIA-598 (xanh dương, cam, xanh lá... tuyệt đối cấm màu đen).",
+            factoryReq: "Đánh trượt ngay lập tức nếu phát hiện sợi màu đen hoặc sai số lượng sợi."
+          },
+          {
+            risk: "1.6 Báo 'hỏng máy / thiếu module' để né đo lỗi đồng tâm (≤0,5 µm), méo vỏ (≤1%), λ0, độ dốc tán sắc, PMD",
+            selfCheck: "Đối chiếu danh mục thiết bị trong hồ sơ dự thầu của nhà máy xem họ có khai báo sở hữu máy không. Không bao giờ ký 'Đạt' bằng lời hứa miệng.",
+            factoryReq: "Xuất Individual Fiber Test Report đúng Reel ID cuộn sợi gốc; nếu Chủ đầu tư yêu cầu kiểm chứng, cho phép tự tay cắt mẫu niêm phong gửi Lab VILAS độc lập."
+          }
+        ]
+      },
+      {
+        id: "comp2",
+        purpose: "Dây treo 7×0,33mm chịu toàn bộ lực kéo căng khi treo vượt nhịp cột/gió bão; 2 sợi trợ lực 0,45mm giữ thẳng và chống dập/nén bảo vệ sợi quang khi tách dây treo đi trong nhà.",
+        badge: "Thành phần 2/7",
+        name: "Phần tử chịu lực — Dây treo 7×0,33 mm & 2 sợi trợ lực Ø≥0,45 mm",
+        summary: "Dây treo: 7 sợi thép mạ kẽm (mỗi sợi ≥0,33mm) • Bụng cáp: 2 sợi thép mạ kẽm (mỗi sợi Ø≥0,45mm) • Màu trắng bạc",
+        cases: [
+          {
+            risk: "2.1 Thép thiếu ly (dây treo < 0,33mm hoặc 1 trong 2 sợi trợ lực < 0,45mm)",
+            selfCheck: "Tự tay kiểm tra điểm '0' của panme 0,001mm, vặn núm lực (ratchet) kêu 3 tiếng 'tách' đo đủ cả 7 sợi dây treo và cả 2 sợi trợ lực tại 5 điểm cách nhau ≥ 1m (lau sạch dầu/nhựa bằng cồn trước khi kẹp).",
+            factoryReq: "Xuất CO/CQ cuộn dây thép 7×0,33mm & 0,45mm; xuất Giấy chứng nhận hiệu chuẩn panme còn hạn khớp Serial Number."
+          },
+          {
+            risk: "2.2 Dùng thép đen dễ rỉ, hợp kim nhôm/đồng mạ hoặc lớp mạ kẽm bong tróc",
+            selfCheck: "Đưa nam châm lại gần (thép cacbon mạ kẽm hút rất mạnh); dùng dao cạo nhẹ bề mặt xem lớp mạ trắng bạc có bong lộ lõi đen không; bẻ gập 90° kiểm tra độ dẻo; ngâm nước muối loãng nếu lưu xưởng qua đêm.",
+            factoryReq: "Loại bỏ ngay nếu không hút nam châm, bị bong lớp mạ hoặc có vết rỉ sét sẵn."
+          },
+          {
+            risk: "2.3 Thợ dùng dao gọt vỏ làm xước/bẹp thép khi lấy mẫu đo",
+            selfCheck: "Quan sát thợ lấy mẫu: bắt buộc rút lõi thép dọc trục từ đầu cắt cáp, tuyệt đối cấm dùng dao rọc dọc thân thép.",
+            factoryReq: "Cắt mẫu mới rút lại dọc trục nếu phát hiện thợ gọt vào lõi thép."
+          },
+          {
+            risk: "2.4 Để nguyên dây treo 7×0,33mm khi thử Va đập (Impact 1J — mục II.3.5)",
+            selfCheck: "Trực tiếp giám sát việc tách bỏ hoàn toàn phần dây gia cường khỏi mẫu cáp 5m trước khi đặt mặt dẹt bụng cáp lên đe đập 1J tại 3 điểm cách 500mm.",
+            factoryReq: "Bắt làm lại từ đầu nếu chưa tách bỏ dây gia cường."
+          },
+          {
+            risk: "2.5 Ăn bớt lực hoặc rút gọn thời gian test Cơ lý (MOT 500N 1h, MAT 1000N 5p, Nén, Xoắn, Uốn, Mềm dẻo)",
+            selfCheck: "Kiểm tra màn hình lực kéo/nén đang để đơn vị Newton (N) chứ không phải kgf; cân lại quả nặng 2 kg / 20 N; kiểm tra đường kính puli/ròng rọc ≥ 100mm và trục uốn ≤ 50mm.",
+            factoryReq: "Xuất biểu đồ log lực căng và suy hao 1550nm theo thời gian thực suốt 1 giờ (MOT) và 5 phút (MAT)."
+          }
+        ]
+      },
+      {
+        id: "comp3",
+        purpose: "Vỏ PE chống nước, tia UV và va đập ngoài trời ≥6 năm; Cổ cáp giúp xé tách dây treo dễ không lộ thép; Rãnh chữ V tạo điểm tách vỏ lấy sợi nhanh và an toàn cho thợ.",
+        badge: "Thành phần 3/7",
+        name: "Thân vỏ nhựa PE (LLDPE), Cổ cáp & Rãnh chữ V",
+        summary: "Vỏ PE tỉ trọng ≥0,91 g/cm³ • Tổng ≥2×5mm • Bụng 2,2×3,2±0,2mm • Cổ cáp ≥0,4mm • Rãnh V 1,2±0,2mm",
+        cases: [
+          {
+            risk: "3.1 Pha bột đá CaCO3 hoặc nhựa tái chế (tỉ trọng vẫn ≥ 0,91 g/cm³ nhưng giòn, nứt ngoài trời)",
+            selfCheck: "① Thả mẩu vỏ PE sạch vào cốc nước: PE nguyên sinh PHẢI NỔI (chìm là pha nặng bột đá/PVC); ② Bẻ gập 180° 5–10 lần: hằn vệt trắng bệch hoặc nứt là nhựa pha; ③ Đốt lửa: PE chuẩn lửa chân xanh ngọn vàng, nhỏ giọt trong, mùi nến, không tro cứng (tro trắng vón cục/khói đen mùi hắc là bột đá/PVC).",
+            factoryReq: "Mở nắp phễu hạt nhựa trên máy đùn cho xem trực tiếp; xuất báo cáo Lab VN (VILAS) có phân tích quang phổ FTIR & nhiệt DSC + Datasheet/hóa đơn hạt LLDPE nguyên sinh."
+          },
+          {
+            risk: "3.2 Cổ cáp quá mỏng (< 0,4mm) hoặc lệch tâm khiến khi xé dây treo bị lộ lõi thép",
+            selfCheck: "Tự tay dùng kìm/dao xé tách dây treo khỏi bụng cáp tại 5 vị trí (mỗi vị trí dài 0,5–1m) và soi kỹ dọc vết xé xem có hở kim loại của dây treo hoặc sợi trợ lực không.",
+            factoryReq: "Đánh trượt ngay mục II.2.6 nếu xé bị lộ lõi thép ở bất kỳ vị trí nào."
+          },
+          {
+            risk: "3.3 Chỉnh sai hệ số phóng đại trên máy đo 2D/3D hoặc cắt mặt cắt nghiêng làm tăng độ dày giả tạo",
+            selfCheck: "Yêu cầu đặt thước chuẩn/khối chuẩn (Gauge block) lên bàn máy 2D/3D để kiểm chứng độ chính xác trước khi đo; kiểm tra 5 mẫu cắt (cách nhau ≥ 1m) phải vuông góc, phẳng ngọt.",
+            factoryReq: "Cắt lại mẫu mới nếu mặt cắt bị vát nghiêng hoặc bẹp biến dạng."
+          },
+          {
+            risk: "3.4 Sai kích thước tổng thể (≥2×5mm), bụng cáp (2,2×3,2±0,2mm) hoặc rãnh chữ V (1,2±0,2mm)",
+            selfCheck: "Tự cầm thước kẹp đo chiều ngang/cao tại 5 điểm cách ≥ 1m tính trung bình; đối chiếu độ dày giữa 2 đáy rãnh V đối diện trên máy 2D/3D.",
+            factoryReq: "Hiệu chỉnh lại khuôn đùn nếu kích thước trung bình vượt dung sai."
+          },
+          {
+            risk: "3.5 Rút gọn chu kỳ Buồng nhiệt (-20°C ÷ 60°C trong 48 giờ)",
+            selfCheck: "Không chấp nhận chạy tắt 1 chu kỳ hoặc ghi nhiệt độ bằng tay vào sổ giấy.",
+            factoryReq: "Xuất file log nhiệt độ và suy hao tự động liên tục suốt 48 giờ (2 chu kỳ × 24h) có đóng dấu thời gian thực."
+          },
+          {
+            risk: "3.6 Khuyết tật ngoại quan vỏ cáp (thiếu nhựa, rỗ khí, sần sùi, xước sâu)",
+            selfCheck: "Vuốt tay trực tiếp dọc thân cáp khi xả trống dưới ánh sáng đủ mạnh để phát hiện vết rỗ, bọt khí hoặc điểm khuyết nhựa.",
+            factoryReq: "Cắt bỏ đoạn lỗi kiểm tra sâu vào trong trống; loại cuộn nếu lỗi lặp lại."
+          }
+        ]
+      },
+      {
+        id: "comp4",
+        purpose: "Định danh chủ sở hữu, nhà sản xuất và số hợp đồng để truy xuất bảo hành; chỉ số mét từng 1m giúp thợ đo đếm chiều dài thi công và phát hiện thiếu mét.",
+        badge: "Thành phần 4/7",
+        name: "Nhãn in dọc thân cáp",
+        summary: "In hoa cách 1m/lần • Cao ≥2mm • Nằm trên mặt bụng (≠ chèn dây treo) • Chịu mài ≥30 chu kỳ (4N)",
+        cases: [
+          {
+            risk: "4.1 Dùng mực thường dễ bay màu ngoài trời hoặc xịt lớp phủ bóng tạm lên mẫu thử",
+            selfCheck: "Lấy mẫu đoạn giữa cuộn, thấm cồn 90° vào khăn trắng lau mạnh 10–15 lượt lên chữ in xem mực có lem đen hoặc bay nét không.",
+            factoryReq: "Kẹp mẫu vào máy mài IEC 60794-1-21-E2B giữa 2 miếng phớt len, lực 4N, hành trình 100mm chạy đủ ≥ 30 chu kỳ để bạn đọc lại bằng mắt thường."
+          },
+          {
+            risk: "4.2 Sai cú pháp in hoa, thiếu trường thông tin hoặc nhầm số hợp đồng/tháng năm",
+            selfCheck: "Đối chiếu từng ký tự với mẫu chuẩn: VIETTEL - [TÊN NSX] 1FO G657A1 PE 7X0.33 TRO LUC THEP [THÁNG/NĂM] [HỢP ĐỒNG] – [CHỈ SỐ MÉT].",
+            factoryReq: "Chỉnh lại nội dung đầu in phun trên dây chuyền và xuất văn bản xác nhận cú pháp hợp đồng."
+          },
+          {
+            risk: "4.3 Chữ cao < 2mm, bước in > 1m/lần hoặc in chèn lên cổ cáp/dây treo",
+            selfCheck: "Dùng thước kẹp đo chiều cao chữ (≥ 2mm), dùng thước mét đo khoảng cách giữa 2 lần in (1m/lần), kiểm tra vị trí chữ nằm gọn trên mặt bụng cáp.",
+            factoryReq: "Dừng dây chuyền căn chỉnh lại đầu in nếu chữ nhỏ hoặc bị lệch sang dây treo."
+          },
+          {
+            risk: "4.4 Lấy đoạn cáp ngoài cùng bị cọ sát sẵn khi vận chuyển để thử mài",
+            selfCheck: "Xả bỏ lớp ngoài cùng đã cọ sát, cắt mẫu đoạn bên trong trống có nét chữ nguyên vẹn trước khi kẹp vào máy mài.",
+            factoryReq: "Nếu đoạn ngoài bị mờ sẵn, cho phép cắt sâu vào 2–3m để thử lại đúng 1 lần."
+          }
+        ]
+      },
+      {
+        id: "comp5",
+        purpose: "Cuộn giữ cố định 1000m cáp chống rối/gãy gập khi vận chuyển và xả thi công; chống nước và chừa đầu trong ≥1m giúp đo kiểm OTDR trực tiếp không cần tháo cuộn.",
+        badge: "Thành phần 5/7",
+        name: "Trống cáp (Bobin) & Chiều dài cuộn ≥ 1000 m",
+        summary: "Nhựa đúc tang & lõi chống nước • 2 má có ô viền cao dán tem • 3 đinh thép (nếu ghép rời) • Dài ≥1000m",
+        cases: [
+          {
+            risk: "5.1 Quấn thiếu mét (970–980m) rồi chỉnh Group Index trên OTDR cho đủ 1000m",
+            selfCheck: "Cắt đúng 1,00m cáp mẫu cân tiểu ly (VD: 20 g/m → 1000m = 20 kg). Cân cả cuộn thành phẩm trừ đi trọng lượng 1 tang trống nhựa rỗng cùng loại để đối chiếu trọng lượng tịnh.",
+            factoryReq: "Cân đối chứng tang trống rỗng và cuộn thành phẩm ngay tại xưởng; đo OTDR đúng Group Index và đối chiếu hiệu số mét đầu – cuối trên vỏ cáp."
+          },
+          {
+            risk: "5.2 Hai má tang trống và lõi giữa ghép rời nhưng thiếu 3 đinh thép gia cố",
+            selfCheck: "Kiểm tra trực quan mặt trong và ngoài 2 bên má tang trống: nếu không đúc liền khối, phải đếm đủ 3 đinh thép gia cố chắc chắn.",
+            factoryReq: "Gia cố đủ 3 đinh thép hoặc thay thế bằng tang trống nhựa đúc liền khối."
+          },
+          {
+            risk: "5.3 Tang trống nhựa tái chế giòn vỡ hoặc thiếu ô phẳng viền cao dán tem",
+            selfCheck: "Kiểm tra 2 bên má tang phải có ô riêng mặt nền phẳng, có viền gờ cao xung quanh bảo vệ tem nhãn; gõ/kiểm tra độ cứng nhựa chống nước.",
+            factoryReq: "Loại bỏ các tang trống bị nứt vỡ hoặc thiết kế sai quy cách ô dán tem."
+          },
+          {
+            risk: "5.4 Đầu trong cuộn cáp chừa < 1m (khó khăn khi đo kiểm)",
+            selfCheck: "Kiểm tra trực quan và đo chiều dài phần đầu cáp thò ra phía trong lõi trống phải đạt ≥ 1m.",
+            factoryReq: "Quấn lại hoặc đổi cuộn nếu đầu trong không đủ 1m."
+          }
+        ]
+      },
+      {
+        id: "comp6",
+        purpose: "Định danh từng cuộn cáp bằng mã vạch (Serial) để quản lý nhập/xuất kho tự động, đối chiếu trọng lượng và truy xuất lô lỗi ngoài hiện trường.",
+        badge: "Thành phần 6/7",
+        name: "Tem nhãn trên má trống cáp",
+        summary: "Tem PVC chống nước • Phủ keo 100% mặt sau • Đủ 9 thông tin in hoa + Barcode Serial đọc được",
+        cases: [
+          {
+            risk: "6.1 Dùng tem giấy cán màng mỏng thay vì tem PVC chống nước",
+            selfCheck: "Xin 1 tem dự phòng chưa dán xé thử góc (tem PVC dai kéo giãn, tem giấy rách lộ xơ giấy); xịt/nhúng nước lên tem đã dán đợi 5 phút rồi miết mạnh tay.",
+            factoryReq: "Thay toàn bộ bằng tem PVC chống nước nếu tem bị rách xơ giấy hoặc nhòe mực khi gặp nước."
+          },
+          {
+            risk: "6.2 Chỉ bôi keo ở 4 góc hoặc dán hờ làm tem dễ bong tróc",
+            selfCheck: "Lật mặt sau tem dự phòng kiểm tra lớp keo phủ kín 100%; dùng ngón tay cạy nhẹ các mép tem đã dán trên má trống.",
+            factoryReq: "Dán lại bằng lô tem phủ keo 100% toàn bề mặt."
+          },
+          {
+            risk: "6.3 Thiếu thông tin in hoa hoặc sai số hợp đồng/trọng lượng",
+            selfCheck: "Kiểm tra đủ thông tin: NSX, Khách hàng (TỔNG CÔNG TY VIỄN THÔNG VIETTEL), Tên SP (CÁP QUANG BỌC CHẶT 1FO), Barcode Serial, 1FO, 1000m, Trọng lượng cáp/cả bobin, Tháng/năm, Số HĐ.",
+            factoryReq: "In lại tem bổ sung đủ và đúng thông tin theo hợp đồng."
+          },
+          {
+            risk: "6.4 Mã vạch (Barcode) in mờ, lỗi định dạng khiến máy quét không nhận diện được",
+            selfCheck: "Quét thử bằng máy đọc mã vạch (hoặc app quét trên điện thoại) xem có trả về đúng chuỗi Serial (VD: M3151020102000001) không.",
+            factoryReq: "Cung cấp máy đọc mã vạch quét kiểm tra trực tiếp; in lại tem nếu máy không đọc được."
+          }
+        ]
+      },
+      {
+        id: "comp7",
+        purpose: "Hộp carton bảo vệ cuộn cáp khỏi va đập/trầy xước và cho phép kiểm kho bằng mã vạch không cần mở hộp; Pallet giúp nâng hạ bằng xe nâng an toàn, cách ẩm mặt sàn.",
+        badge: "Thành phần 7/7",
+        name: "Đóng gói vận chuyển (Thùng Carton & Pallet)",
+        summary: "Đóng hộp bìa carton • Dán Barcode ngoài hộp trùng mã tang trống • Xếp trên Pallet khi vận chuyển",
+        cases: [
+          {
+            risk: "7.1 Barcode ngoài vỏ thùng carton không khớp với mã cuộn trên tang trống bên trong",
+            selfCheck: "Mở ngẫu nhiên một vài hộp carton, quét Barcode ngoài vỏ hộp và đối chiếu từng ký tự với Barcode trên má tang trống bên trong.",
+            factoryReq: "Dán lại đồng bộ 100% mã vạch giữa vỏ hộp carton và tang trống trước khi xuất xưởng."
+          },
+          {
+            risk: "7.2 Hộp carton mỏng, ẩm ướt, móp méo hoặc không đóng hộp riêng",
+            selfCheck: "Kiểm tra trực quan từng cuộn cáp phải được đóng trong hộp bìa carton nguyên vẹn, khô ráo, chịu lực tốt.",
+            factoryReq: "Thay mới các thùng carton bị móp méo hoặc ẩm ướt."
+          },
+          {
+            risk: "7.3 Giao hàng rời, không xếp trên Pallet khi vận chuyển",
+            selfCheck: "Kiểm tra khu vực xuất hàng: các thùng carton phải được xếp gọn gàng trên Pallet và chằng buộc chắc chắn.",
+            factoryReq: "Xếp đủ hàng lên Pallet theo đúng quy cách trước khi ký biên bản giao nhận."
+          }
+        ]
+      }
+    ];
+
+    const fieldTestData = [
+      {
+        title: "1. Phân biệt Sợi quang G657A1 vs G652D / Sợi loại B (Không có máy đo MFD / Bench Lab)",
+        risk: "Nhà máy dùng sợi G652D rẻ tiền hơn hoặc sợi trôi nổi không rõ chuẩn G657A1 nhưng vẫn báo cáo là G657A1.",
+        diyTests: [
+          "Test 1 — Thử uốn cong bằng Bút soi quang (VFL 650nm) hoặc Nguồn 1550nm + Power Meter cầm tay: Tách lấy ~3–5m sợi quang, cắm 1 đầu vào bút soi VFL (hoặc nguồn 1550nm). Quấn 10 vòng quanh trụ tròn đường kính 30 mm (bán kính 15 mm). Sợi G652D sẽ rò ánh sáng đỏ rực ra ngoài tại các vòng quấn và suy hao 1550nm nhảy vọt (> 1 dB đến > 10 dB). Sợi G657A1 chuẩn gần như không rò sáng và suy hao 1550nm tăng ≤ 0,25 dB. (Cảnh báo: Không đo ở 1310nm vì 1310nm không nhạy uốn cong).",
+          "Test 2 — Truy xuất cuộn sợi gốc trực tiếp trên máy bọc vỏ: Đi thẳng xuống dây chuyền đùn đang chạy, soi tem gốc dán trên lõi cuộn sợi quang (Fiber Bobbin) ở giàn nhả sợi. Phải có nhãn hãng (Corning, YOFC, FiberHome, Fujikura...) ghi rõ 'G.657.A1' và mã Reel/Lot. Chụp ảnh mã Lot đó đối chiếu ngay với Packing List và Individual Fiber Test Report."
+        ],
+        redFlag: "Trên máy bọc vỏ đang chạy cuộn sợi trắng trơn không tem, hoặc tem in giấy A4 tự dán; hoặc khi quấn 10 vòng Ø30mm đèn VFL sáng rực như vòng đèn LED.",
+        fallback: "Nếu vẫn nghi ngờ các chỉ tiêu hình học sâu (MFD, lỗi đồng tâm ≤ 0,5 µm, méo vỏ ≤ 1%), cắt ngay 5m mẫu tại chỗ, dán tem niêm phong ký tên 2 bên gửi phòng Lab độc lập (VNPT Lab / Viettel Lab / Quatest)."
+      },
+      {
+        title: "2. Phân biệt Vỏ nhựa PE (LLDPE nguyên sinh) vs Nhựa tái chế / Pha bột đá CaCO3 / PVC",
+        risk: "File CTKT chỉ ghi tỉ trọng ≥ 0,91 g/cm³. Nhà máy pha bột đá CaCO3 hoặc nhựa tái chế khiến tỉ trọng lên 0,96–1,05 g/cm³ (vẫn ≥ 0,91) nhưng cáp giòn, nứt ngoài trời sau vài tháng.",
+        diyTests: [
+          "Test 1 — Thả nước kiểm tra tỉ trọng nhanh: Cắt một mẩu vỏ nhựa PE (đã rút sạch lõi thép và sợi quang, lau hết bọt khí bám ngoài), thả vào cốc nước sạch. Nhựa LLDPE nguyên sinh có tỉ trọng 0,91–0,94 g/cm³ → BẮT BUỘC PHẢI NỔI. Nếu mẩu vỏ chìm xuống đáy → tỉ trọng > 1,0 g/cm³ (bị pha nặng bột đá CaCO3 hoặc là nhựa PVC) → Bắt lỗi tại chỗ!",
+          "Test 2 — Bẻ gập 180° (Stress Whitening): Dùng tay bẻ gập gắt mẩu vỏ cáp 180° qua lại 5–10 lần. LLDPE nguyên sinh rất dẻo, không nứt và không để lại vệt trắng bệch tại nếp gấp. Nhựa pha bột đá/tái chế sẽ lập tức trắng bệch ở vết gập hoặc gãy giòn.",
+          "Test 3 — Đốt lửa & ngửi mùi: Đốt đầu mẩu vỏ bằng bật lửa. PE chuẩn cháy ngọn lửa chân xanh ngọn vàng, nhỏ giọt trong suốt như sáp nến, mùi nến (paraffin), ít khói, không tro cứng. PVC sẽ tự tắt, khói đen kịt, mùi clo hắc. PE pha bột đá cháy lẹt đẹt và để lại tro trắng/xám vón cục.",
+          "Test 4 — Soi phễu hút hạt nhựa trên dây chuyền: Mở nắp phễu cấp liệu trên máy đùn xem hạt nhựa là hạt tròn đều đồng nhất (nguyên sinh) hay hạt băm vụn lởm chởm (tái chế)."
+        ],
+        redFlag: "Vỏ nhựa chìm trong nước, bẻ gập bị trắng bệch/nứt, đốt có tro trắng vón cục hoặc khói đen mùi khét, hoặc trong kho toàn bao nhựa không nhãn mác.",
+        fallback: "Cắt 1m cáp niêm phong gửi Lab đạt chuẩn VILAS chạy phân tích quang phổ FTIR và nhiệt vi sai DSC (nhiệt độ nóng chảy LLDPE chuẩn ~120–126°C) theo đúng mục II.1.1."
+      },
+      {
+        title: "3. Phân biệt Dây gia cường (7×0,33mm) & Sợi trợ lực (0,45mm) Mạ Kẽm chuẩn vs Thép đen / Mạ kém",
+        risk: "Dùng thép đen dễ rỉ sét, hợp kim nhôm/đồng mạ kém, hoặc dây gia cường bện lỏng lẻo không đủ đường kính.",
+        diyTests: [
+          "Test 1 — Kiểm tra từ tính bằng Nam châm: Đưa nam châm lại gần sợi thép 7×0,33mm và 2 sợi 0,45mm. Thép cacbon mạ kẽm hút nam châm rất mạnh; nếu không hút hoặc hút yếu → sai vật liệu (nhôm/inox).",
+          "Test 2 — Cạo bề mặt & Ngâm nước muối: Dùng dao cạo nhẹ lớp vỏ ngoài sợi thép để kiểm tra lớp mạ kẽm trắng bạc có bị bong tróc lộ thép đen bên dưới không. Nếu ở xưởng qua đêm, ngâm mẩu thép vào nước muối loãng để kiểm tra rỉ sét đỏ.",
+          "Test 3 — Bẻ gập lặp lại: Bẻ gập sợi thép qua lại 90°; thép tốt dẻo dai, thép tái chế kém chất lượng gãy giòn chỉ sau 2–3 lần bẻ."
+        ],
+        redFlag: "Sợi thép có màu xám xỉn/vệt rỉ sẵn, cạo nhẹ bị bong lớp mạ, hoặc nam châm không hút.",
+        fallback: "Dùng panme 0,001mm tự tay kiểm tra đủ 7 sợi dây treo và 2 sợi trợ lực tại 5 điểm cách nhau ≥ 1m (rút lõi, tuyệt đối không gọt vỏ)."
+      },
+      {
+        title: "4. Kiểm chứng Độ dài cuộn cáp ≥ 1000m (Phòng nhà máy chỉnh Group Index lừa OTDR)",
+        risk: "Nhà máy giảm Group Index (IOR) trên OTDR từ ~1.468 xuống ~1.440 để biến cuộn cáp 970m thành 1000m trên màn hình.",
+        diyTests: [
+          "Test 1 — Cân trọng lượng thực tế (Phương pháp vật lý không thể nói dối): Cắt đúng 1,00 m cáp mẫu (đo bằng thước mét chuẩn), cân trên cân tiểu ly (VD được 20 g/m → 1000m nặng 20 kg). Sau đó cân cả cuộn cáp (Gross) trừ đi trọng lượng 1 tang trống nhựa rỗng cùng loại (Tare). Nếu khối lượng tịnh phần cáp nhỏ hơn 20 kg (VD chỉ được 18,5 kg) → Cuộn cáp chắc chắn thiếu mét!",
+          "Test 2 — Soi trực tiếp màn hình Setup OTDR: Bắt buộc IOR đúng theo Datasheet sợi gốc (khoảng 1.4677 @ 1310nm, 1.4682 @ 1550nm), đối chiếu chiều dài OTDR với hiệu số chỉ số mét đầu – cuối in trên vỏ cáp."
+        ],
+        redFlag: "Trọng lượng tịnh của cáp nhẹ bất thường so với mẫu 1m nhân 1000, hoặc kỹ sư từ chối cho xem màn hình cài đặt IOR của OTDR.",
+        fallback: "Lập biên bản ghi nhận chênh lệch khối lượng và yêu cầu xả cuộn đo đếm mét thực tế bằng máy đếm mét cơ học."
+      },
+      {
+        title: "5. Kiểm chứng Mực in nhãn cáp bền mài mòn (Khi chưa có máy mài IEC 60794-1-21-E2B)",
+        risk: "Nhà máy dùng mực in rẻ tiền dễ bay màu ngoài trời hoặc xịt lớp phủ bóng tạm lên mẫu thử.",
+        diyTests: [
+          "Test 1 — Lau bằng Cồn 90° & Khăn trắng: Lấy mẫu cáp ở đoạn giữa cuộn (tránh đoạn ngoài cùng). Thấm cồn 90° vào khăn giấy trắng, dùng lực ngón tay miết mạnh qua lại 10–15 lượt lên dòng chữ in. Mực chuẩn (laser/UV/MEK chuyên dụng cho PE) sẽ bám chắc, vẫn đọc rõ; mực dởm sẽ lem đen ra khăn và bay chữ.",
+          "Test 2 — Soi máy in tại dây chuyền: Kiểm tra trực tiếp đầu in phun trên line sản xuất xem chữ in trên cáp đang chạy có sắc nét, đúng cú pháp in hoa, cao ≥ 2mm và cách đều 1m/lần không."
+        ],
+        redFlag: "Chữ in bị nhòe/mất nét chỉ sau vài lượt lau cồn nhẹ, hoặc in lệch lên phần cổ cáp/dây treo.",
+        fallback: "Yêu cầu niêm phong đoạn cáp 2m để test đúng lực 4N, 30 chu kỳ bằng phớt len trên máy chuẩn."
+      },
+      {
+        title: "6. Kiểm chứng Tem nhãn PVC chống nước & Keo phủ 100% trên má trống",
+        risk: "Dùng tem giấy thường cán màng mỏng hoặc chỉ quét keo ở 4 góc để tiết kiệm, ra công trường gặp mưa là bong tróc mất mã cuộn.",
+        diyTests: [
+          "Test 1 — Xé thử góc tem dự phòng: Xin 1 tờ tem chưa dán, dùng tay xé thử mép tem. Tem giấy sẽ rách dễ dàng và lộ xơ giấy trắng; tem PVC chuẩn rất dai, kéo hơi giãn chứ không rách xơ.",
+          "Test 2 — Ngâm/xịt nước & Miết tay: Xịt nước trực tiếp lên tem đã dán trên má trống, đợi 5 phút rồi dùng ngón tay miết mạnh lên mặt chữ và cạy mép tem. Kiểm tra mặt sau tem dự phòng xem keo có phủ kín 100% bề mặt không.",
+          "Test 3 — Quét Barcode bằng điện thoại/máy quét: Quét thử cả tem trên má trống và tem ngoài thùng carton xem chuỗi ký tự trả về có khớp nhau và đúng cấu trúc mã hợp đồng không."
+        ],
+        redFlag: "Tem rách xơ giấy, mực nhòe khi miết tay ướt, keo mặt sau chỉ bôi thành vệt, hoặc barcode trên thùng carton khác mã trên tang trống.",
+        fallback: "Từ chối nghiệm thu quy cách đóng gói (mục II.5.3 & II.5.4) cho đến khi thay đúng tem PVC phủ keo 100%."
+      },
+      {
+        title: "7. Quy trình xử lý các chỉ tiêu KHÔNG THỂ test thủ công (PMD, CD, Hình học lõi, Buồng nhiệt 48h)",
+        risk: "Nhà máy xin 'nợ' chỉ tiêu hoặc ép bạn ký xác nhận đạt dựa trên lời hứa miệng và một tờ CO/CQ photo.",
+        diyTests: [
+          "Bước 1 — Không bao giờ ký 'Đạt' cho bài đo chưa chứng kiến: Chỉ ghi nhận 'Chưa đo kiểm tại nhà máy do thiếu thiết bị'.",
+          "Bước 2 — Cắt mẫu niêm phong tại chỗ (Witness Sampling): Tự tay chỉ định 1 cuộn ngẫu nhiên, cắt đoạn mẫu đúng chiều dài quy định (22m cho Cut-off/MFD, hoặc nguyên cuộn 1km cho PMD/CD/Nhiệt độ), dán tem niêm phong có chữ ký của bạn và đại diện nhà máy.",
+          "Bước 3 — Quay video toàn bộ quá trình cắt & niêm phong, ghi rõ số Serial cuộn cáp vào Biên bản hiện trường để mang mẫu gửi phòng Lab độc lập đạt chuẩn VILAS."
+        ],
+        redFlag: "Nhà máy từ chối cho cắt mẫu niêm phong từ cuộn ngẫu nhiên hoặc khăng khăng đòi tự gửi mẫu đi test mà không có chữ ký niêm phong của bạn.",
+        fallback: "Bảo lưu ý kiến, lập biên bản từ chối nghiệm thu lô hàng và báo cáo ngay về Chủ đầu tư."
+      }
+    ];
+
+
+    const preVisitData = [
+      {
+        pillar: "Pillar 1",
+        group: "A. Trang Thiết Bị & Dụng Cụ Đo Tại Xưởng (16 mục)",
+        desc: "Đánh dấu 'Có' nếu nhà máy có sẵn và hoạt động tốt; đánh dấu 'Thiếu' nếu hỏng hoặc không có để chốt phương án xử lý trước.",
+        items: [
+          { id: "eq_otdr", title: "1. Máy đo OTDR (MTS8000) + Dây nhảy quang sạch", detail: "Đo suy hao 1310/1550 nm (sự kiện ≤ 0,01 dB) và chiều dài cuộn cáp ≥ 1000m." },
+          { id: "eq_ws500", title: "2. Máy đo WS500-MFD + Bộ kẹp uốn Ø120 mm", detail: "Đo MFD trực tiếp tại 1310 nm và bước sóng cắt ≤ 1260 nm." },
+          { id: "eq_exfo", title: "3. Máy đo tán sắc màu (EXFO FTB-200-V2-S1)", detail: "Đo hệ số tán sắc màu, λ₀ và độ dốc tán sắc." },
+          { id: "eq_pmd", title: "4. Bộ đo PMD (OSA-10X + Nguồn OBS-55 + Phân cực OVP-15)", detail: "Đo hệ số tán sắc phân cực mode ≤ 0,2 ps/√km kèm cuộn đệm quang." },
+          { id: "eq_geo", title: "5. Máy đo hình học sợi quang (ITU-T G.650.1 / IEC 60793-1-20)", detail: "Đo Cladding 125µm, Coating 245µm, lỗi đồng tâm ≤ 0,5µm và méo vỏ ≤ 1%." },
+          { id: "eq_2d3d", title: "6. Máy đo kích thước 2D / 3D + Thước chuẩn (Gauge block)", detail: "Đo độ dày cổ cáp ≥ 0,4 mm và rãnh chữ V 1,2 ± 0,2 mm." },
+          { id: "eq_panme", title: "7. Thước kẹp & Panme điện tử 0,001 mm", detail: "Đo kích thước cáp/bụng cáp và đường kính từng sợi thép (0,33 & 0,45 mm)." },
+          { id: "eq_tensile", title: "8. Máy thử kéo căng (MOT 500N 1h & MAT 1000N 5p)", detail: "Hệ thống ròng rọc Ø ≥ 100 mm, đoạn cáp chịu lực ≥ 50 m." },
+          { id: "eq_crush", title: "9. Máy thử nén (Crush ≥ 500N / 100 mm)", detail: "Tấm nén dài 100 mm, bán kính mép 5 mm, giữ lực 1 phút." },
+          { id: "eq_torsion", title: "10. Máy thử xoắn (Torsion ≥ 20 chu kỳ)", detail: "Mẫu 250 mm, tải cố định ≥ 20 N, tốc độ 30 vòng/phút." },
+          { id: "eq_impact", title: "11. Máy thử va đập (Impact 1J)", detail: "Đầu búa R = 12,5 mm, thử trên mẫu 5m đã tách dây treo." },
+          { id: "eq_bend", title: "12. Máy uốn cong nhiều lần (R ≤ 50mm) & Mềm dẻo (Puli Ø100mm)", detail: "Đủ quả nặng chuẩn 2 kg, chạy 300 chu kỳ mỗi bài." },
+          { id: "eq_abr", title: "13. Máy thử mài mòn nhãn (IEC 60794-1-21-E2B)", detail: "Miếng phớt len, lực 4 N, hành trình 100 mm." },
+          { id: "eq_temp", title: "14. Buồng thử nhiệt (-20°C ÷ 60°C)", detail: "Lập trình tự động 48 giờ (2 chu kỳ × 24h) và xuất log liên tục." },
+          { id: "eq_splice", title: "15. Máy hàn quang + Dao cắt + 02 sợi chuẩn A/B", detail: "Suy hao mối hàn ≤ 0,05 dB; sợi chuẩn A/B có chứng chỉ WA." },
+          { id: "eq_bench", title: "16. Bộ đối chứng tại bàn (Cân + Tang trống rỗng + Quét mã + Cồn)", detail: "Cân bàn + Cân tiểu ly + 01 tang rỗng cùng loại, máy đọc barcode, bình xịt nước, cồn 90°, khăn lau, kìm/dao." }
+        ]
+      },
+      {
+        pillar: "Pillar 2",
+        group: "B. Giấy Tờ & Chứng Từ Gửi Bản Scan Trước (5 bộ hồ sơ)",
+        desc: "Yêu cầu gửi trước 1–2 ngày qua Email/Zalo để soi trước, tránh trùng lặp khi xuống xưởng.",
+        items: [
+          { id: "dc_cal", title: "1. Giấy chứng nhận hiệu chuẩn còn hạn của TỪNG máy đo", detail: "Rõ số Serial Number để đối chiếu với thân máy thực tế (kèm danh mục máy tại xưởng)." },
+          { id: "dc_fib", title: "2. Bộ CO, CQ, Packing List & Test Report từng cuộn sợi gốc G657A1", detail: "Khớp hãng sợi, chuẩn G657A1 và thông số xuất xưởng theo từng mã Reel/Lot." },
+          { id: "dc_pe", title: "3. Datasheet/CO/CQ hạt nhựa LLDPE & Báo cáo Lab VN (VILAS)", detail: "Vỏ nhựa ≥ 0,91 g/cm³ kèm kết quả phân tích quang phổ FTIR & nhiệt DSC từ Lab VN." },
+          { id: "dc_steel_life", title: "4. CO/CQ dây thép (7×0,33mm & 0,45mm) + Chứng minh tuổi thọ ≥ 6 năm", detail: "Chứng nhận thép mạ kẽm và báo cáo lão hóa/xác nhận tuổi thọ vật liệu." },
+          { id: "dc_serial", title: "5. Danh sách mã cuộn (Serial) thành phẩm dự kiến nghiệm thu", detail: "Để bạn chọn ngẫu nhiên cuộn test trước khi đến, không cho chuẩn bị sẵn mẫu." }
+        ]
+      },
+      {
+        pillar: "Pillar 3",
+        group: "C. Cách Thức Làm Việc & Phối Hợp Tại Xưởng (4 nguyên tắc)",
+        desc: "Thống nhất trước để buổi kiểm tra diễn ra thông suốt, minh bạch.",
+        items: [
+          { id: "wk_sample", title: "1. Lấy mẫu ngẫu nhiên tại kho & dây chuyền (Cấm dùng mẫu cắt sẵn)", detail: "Tự chỉ định cuộn theo Serial, ký bút xóa/niêm phong cuộn trước khi cắt." },
+          { id: "wk_schedule", title: "2. Chốt trước lịch chạy bài dài giờ (Buồng nhiệt 48h & MOT 1h)", detail: "Thống nhất chạy trực tiếp hay niêm phong mẫu cho chạy đủ giờ và xuất log." },
+          { id: "wk_staff", title: "3. Cử cố định 01 Kỹ sư vận hành máy + 01 QC hồ sơ đi cùng suốt buổi", detail: "Đảm bảo thao tác liên tục, không đổi người gây gián đoạn." },
+          { id: "wk_raw", title: "4. Xuất file dữ liệu thô tại chỗ & Phương án niêm phong Lab VILAS", detail: "Xuất file gốc (.sor/.pdf/log) có timestamp; cho cắt mẫu niêm phong gửi Lab nếu thiếu máy." }
+        ]
+      }
+    ];
+
+    // ==================== STATE & CLOUDFLARE BACKEND ====================
+    let activeComp = "ALL";
+    let compSearchTerm = "";
+    let activeGroup = "ALL";
+    let searchTerm1 = "";
+    let searchTerm2 = "";
+    let whatIfFilterVal = "ALL";
+
+    // Application data state
+    let currentSessionId = "default";
+    let sessionMeta = {
+      title: "Nghiệm Thu Mẫu 01",
+      cable_lot: "",
+      auditor: "",
+      factory: "",
+      notes: ""
+    };
+    let testStatus = {};
+    let testNotes = {};
+    let docChecked = {};
+    let preVisitChecked = {};
+    let allSessionsList = [];
+
+    let syncDebounceTimer = null;
+    let isSaving = false;
+
+    // Cloud status UI updater
+    function setSyncStatus(type, message) {
+      const badge = document.getElementById("syncBadge");
+      const dot = document.getElementById("syncDot");
+      const txt = document.getElementById("syncStatusText");
+      if (!badge || !dot || !txt) return;
+
+      badge.classList.remove("bg-emerald-50", "text-emerald-800", "border-emerald-200", "bg-sky-50", "text-sky-800", "border-sky-200", "bg-amber-50", "text-amber-800", "border-amber-200", "bg-rose-50", "text-rose-800", "border-rose-200");
+      dot.classList.remove("bg-emerald-500", "bg-sky-500", "bg-amber-500", "bg-rose-500", "animate-pulse-fast");
+
+      if (type === "SYNCED") {
+        badge.classList.add("bg-emerald-50", "text-emerald-800", "border-emerald-200");
+        dot.classList.add("bg-emerald-500");
+        txt.textContent = message || "Cloud: Đã đồng bộ";
+      } else if (type === "SAVING") {
+        badge.classList.add("bg-sky-50", "text-sky-800", "border-sky-200");
+        dot.classList.add("bg-sky-500", "animate-pulse-fast");
+        txt.textContent = message || "Cloud: Đang lưu...";
+      } else if (type === "OFFLINE") {
+        badge.classList.add("bg-amber-50", "text-amber-800", "border-amber-200");
+        dot.classList.add("bg-amber-500");
+        txt.textContent = message || "Offline (Đã lưu máy)";
+      } else if (type === "ERROR") {
+        badge.classList.add("bg-rose-50", "text-rose-800", "border-rose-200");
+        dot.classList.add("bg-rose-500");
+        txt.textContent = message || "Lỗi đồng bộ";
+      }
+    }
+
+    function updateSessionMetaBanner() {
+      const titleEl = document.getElementById("curTitleDisp");
+      const lotWrap = document.getElementById("curLotWrap");
+      const lotEl = document.getElementById("curLotDisp");
+      const audWrap = document.getElementById("curAuditorWrap");
+      const audEl = document.getElementById("curAuditorDisp");
+      const facWrap = document.getElementById("curFactoryWrap");
+      const facEl = document.getElementById("curFactoryDisp");
+
+      if (titleEl) titleEl.textContent = sessionMeta.title || "Đợt nghiệm thu 01";
+      if (lotWrap && lotEl) {
+        if (sessionMeta.cable_lot) {
+          lotWrap.classList.remove("hidden");
+          lotEl.textContent = sessionMeta.cable_lot;
+        } else {
+          lotWrap.classList.add("hidden");
+        }
+      }
+      if (audWrap && audEl) {
+        if (sessionMeta.auditor) {
+          audWrap.classList.remove("hidden");
+          audEl.textContent = sessionMeta.auditor;
+        } else {
+          audWrap.classList.add("hidden");
+        }
+      }
+      if (facWrap && facEl) {
+        if (sessionMeta.factory) {
+          facWrap.classList.remove("hidden");
+          facEl.textContent = sessionMeta.factory;
+        } else {
+          facWrap.classList.add("hidden");
+        }
+      }
+    }
+
+    // Local Storage operations
+    function loadLocalState() {
+      try {
+        const raw = localStorage.getItem("qa_qc_session_" + currentSessionId);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          sessionMeta = parsed.sessionMeta || sessionMeta;
+          testStatus = parsed.testStatus || {};
+          testNotes = parsed.testNotes || {};
+          docChecked = parsed.docChecked || {};
+          preVisitChecked = parsed.preVisitChecked || {};
+        }
+      } catch (e) {
+        console.warn("Local storage parse error:", e);
+      }
+    }
+
+    function saveLocalState() {
+      try {
+        localStorage.setItem("qa_qc_session_" + currentSessionId, JSON.stringify({
+          sessionMeta,
+          testStatus,
+          testNotes,
+          docChecked,
+          preVisitChecked,
+          updated_at: new Date().toISOString()
+        }));
+      } catch (e) {}
+    }
+
+    // Cloud API operations
+    async function fetchSessionsList() {
+      try {
+        const res = await fetch("/api/sessions");
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        if (data.sessions) {
+          allSessionsList = data.sessions;
+          renderSessionDropdown();
+        }
+      } catch (err) {
+        console.warn("Fetch sessions list error:", err);
+      }
+    }
+
+    function renderSessionDropdown() {
+      const select = document.getElementById("sessionSelect");
+      if (!select) return;
+
+      const items = [...allSessionsList];
+      const hasCurrent = items.some(s => s.id === currentSessionId);
+      if (!hasCurrent) {
+        items.unshift({
+          id: currentSessionId,
+          title: sessionMeta.title || (currentSessionId === "default" ? "Mặc định" : currentSessionId),
+          testedCount: Object.values(testStatus).filter(Boolean).length,
+          passCount: Object.values(testStatus).filter(v => v === "PASS").length
+        });
+      }
+
+      select.innerHTML = items.map(s => {
+        const sel = s.id === currentSessionId ? "selected" : "";
+        const stat = s.testedCount !== undefined ? ` (${s.passCount || 0}/${s.testedCount || 0} Đạt)` : "";
+        return `<option value="${s.id}" ${sel}>${s.title || s.id}${stat}</option>`;
+      }).join("");
+    }
+
+    async function loadSessionFromCloud(id) {
+      setSyncStatus("SAVING", "Đang tải dữ liệu...");
+      try {
+        const res = await fetch("/api/sessions/" + encodeURIComponent(id));
+        if (res.ok) {
+          const data = await res.json();
+          if (data.session) {
+            const s = data.session;
+            sessionMeta = {
+              title: s.title || "Nghiệm Thu Mẫu 01",
+              cable_lot: s.cable_lot || "",
+              auditor: s.auditor || "",
+              factory: s.factory || "",
+              notes: s.notes || ""
+            };
+            testStatus = s.test_status || {};
+            testNotes = s.test_notes || {};
+            docChecked = s.doc_checked || {};
+            preVisitChecked = s.pre_visit_state || {};
+            saveLocalState();
+            setSyncStatus("SYNCED", "Cloud: Đã đồng bộ");
+            const timeEl = document.getElementById("lastSyncTime");
+            if (timeEl) timeEl.textContent = "Đồng bộ: " + new Date().toLocaleTimeString("vi-VN");
+          }
+        } else if (res.status === 404) {
+          // If not in cloud yet, sync our local state up
+          await pushSessionToCloud();
+        } else {
+          setSyncStatus("OFFLINE", "Offline (Dùng dữ liệu máy)");
+        }
+      } catch (err) {
+        console.warn("Load cloud error:", err);
+        setSyncStatus("OFFLINE", "Offline (Đã lưu máy)");
+      }
+      updateCounters();
+      updateSessionMetaBanner();
+      renderAllViews();
+    }
+
+    async function pushSessionToCloud() {
+      if (isSaving) return;
+      isSaving = true;
+      setSyncStatus("SAVING", "Cloud: Đang lưu...");
+      try {
+        const payload = {
+          id: currentSessionId,
+          title: sessionMeta.title || "Nghiệm Thu Mẫu 01",
+          cable_lot: sessionMeta.cable_lot || "",
+          auditor: sessionMeta.auditor || "",
+          factory: sessionMeta.factory || "",
+          pre_visit_state: preVisitChecked,
+          test_status: testStatus,
+          test_notes: testNotes,
+          doc_checked: docChecked,
+          notes: sessionMeta.notes || ""
+        };
+
+        const res = await fetch("/api/sessions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          setSyncStatus("SYNCED", "Cloud: Đã đồng bộ");
+          const timeEl = document.getElementById("lastSyncTime");
+          if (timeEl) timeEl.textContent = "Đồng bộ: " + new Date().toLocaleTimeString("vi-VN");
+          fetchSessionsList(); // update counts in dropdown
+        } else {
+          setSyncStatus("OFFLINE", "Offline (Lưu tạm trên máy)");
+        }
+      } catch (err) {
+        setSyncStatus("OFFLINE", "Offline (Đã lưu máy)");
+      } finally {
+        isSaving = false;
+      }
+    }
+
+    function triggerSaveAndSync() {
+      saveLocalState();
+      updateCounters();
+      setSyncStatus("SAVING", "Đang lưu...");
+      clearTimeout(syncDebounceTimer);
+      syncDebounceTimer = setTimeout(() => {
+        pushSessionToCloud();
+      }, 500);
+    }
+
+    function updateCounters() {
+      const ids = Object.keys(testStatus).filter(k => testStatus[k]);
+      const pass = ids.filter(k => testStatus[k] === "PASS").length;
+      const fail = ids.filter(k => testStatus[k] === "FAIL").length;
+      const total = specsData.length;
+      document.getElementById("progressCount").textContent = `${ids.length}/${total}`;
+      document.getElementById("passCount").textContent = pass;
+      document.getElementById("failCount").textContent = fail;
+      document.getElementById("passBar").style.width = `${(pass / total) * 100}%`;
+      document.getElementById("failBar").style.width = `${(fail / total) * 100}%`;
+    }
+
+    function renderAmbiguities() {
+      const el = document.getElementById("ambiguityList");
+      el.innerHTML = ambiguities.map(a => `
+        <div class="bg-amber-50/60 p-3.5 rounded-xl border border-amber-200/80">
+          <div class="font-bold text-amber-950">${a.id}: ${a.title}</div>
+          <p class="text-slate-700 mt-1 leading-relaxed">${a.detail}</p>
+        </div>
+      `).join("");
+    }
+
+    function renderComponentDeepDive() {
+      const container = document.getElementById("componentDeepDiveContainer");
+      const q = compSearchTerm.toLowerCase();
+      const filtered = componentDeepDiveData.map(comp => {
+        if (activeComp !== "ALL" && comp.id !== activeComp) return null;
+        if (!q) return comp;
+        const compMatch = comp.name.toLowerCase().includes(q) || comp.summary.toLowerCase().includes(q) || comp.purpose.toLowerCase().includes(q);
+        const matchedCases = comp.cases.filter(cs =>
+          cs.risk.toLowerCase().includes(q) ||
+          cs.selfCheck.toLowerCase().includes(q) ||
+          cs.factoryReq.toLowerCase().includes(q)
+        );
+        if (compMatch) return comp;
+        if (matchedCases.length > 0) return { ...comp, cases: matchedCases };
+        return null;
+      }).filter(Boolean);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="p-8 text-center text-slate-500 text-sm bg-slate-50 rounded-xl border border-slate-200">Không tìm thấy trường hợp phù hợp.</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(c => `
+        <div class="border border-slate-200 rounded-xl overflow-hidden bg-white">
+          <div class="bg-slate-50 border-b border-slate-200 px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5">
+              <span class="px-2 py-0.5 text-[11px] font-mono font-semibold bg-sky-100 text-sky-800 rounded">${c.badge}</span>
+              <span class="font-bold text-slate-900 text-sm sm:text-base">${c.name}</span>
+            </div>
+            <span class="text-xs font-mono text-slate-500">${c.cases.length} tình huống</span>
+          </div>
+          <div class="px-4 py-3 bg-white border-b border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <div class="text-slate-700"><strong class="text-slate-900">🎯 Công dụng:</strong> ${c.purpose}</div>
+            <div class="text-slate-700"><strong class="text-slate-900">📐 Chuẩn CTKT:</strong> ${c.summary}</div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+              <thead class="bg-slate-50/70 text-slate-500 text-[11px] uppercase border-b border-slate-200">
+                <tr>
+                  <th class="p-3 w-72 font-semibold">Điểm cần lưu ý / Rủi ro</th>
+                  <th class="p-3 font-semibold">Cách tự kiểm tra &amp; Chống lừa</th>
+                  <th class="p-3 w-80 font-semibold">Yêu cầu nhà máy làm / Xuất trình</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                ${c.cases.map(cs => `
+                  <tr class="hover:bg-slate-50/70 transition">
+                    <td class="p-3 align-top font-semibold text-slate-900 leading-relaxed">${cs.risk}</td>
+                    <td class="p-3 align-top text-slate-700 leading-relaxed">${cs.selfCheck}</td>
+                    <td class="p-3 align-top text-slate-700 leading-relaxed bg-slate-50/40">${cs.factoryReq}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderSpecsTable() {
+      const tbody = document.getElementById("specsTableBody");
+      const q = searchTerm1.toLowerCase();
+      const filtered = specsData.filter(item => {
+        const matchGroup = activeGroup === "ALL" || item.group === activeGroup;
+        const matchSearch = !q || (
+          item.id.toLowerCase().includes(q) ||
+          item.name.toLowerCase().includes(q) ||
+          item.passFail.toLowerCase().includes(q) ||
+          item.equipment.toLowerCase().includes(q) ||
+          item.steps.toLowerCase().includes(q)
+        );
+        return matchGroup && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-500">Không tìm thấy chỉ tiêu phù hợp.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(item => {
+        const st = testStatus[item.id];
+        const noteVal = testNotes[item.id] || "";
+        const rowBg = st === "PASS" ? "bg-emerald-50/40" : st === "FAIL" ? "bg-rose-50/40" : "hover:bg-slate-50/70";
+        return `
+          <tr class="${rowBg} transition">
+            <td class="p-3 align-top">
+              <div class="font-mono font-bold text-slate-900 text-xs">${item.id}</div>
+              <div class="flex gap-1 mt-1.5 no-print">
+                <button data-id="${item.id}" data-val="PASS" class="status-toggle px-1.5 py-0.5 rounded text-[11px] font-semibold border cursor-pointer ${st === 'PASS' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-600 border-slate-300 hover:bg-emerald-50'}">Đạt</button>
+                <button data-id="${item.id}" data-val="FAIL" class="status-toggle px-1.5 py-0.5 rounded text-[11px] font-semibold border cursor-pointer ${st === 'FAIL' ? 'bg-rose-600 text-white border-rose-600' : 'bg-white text-slate-600 border-slate-300 hover:bg-rose-50'}">Trượt</button>
+              </div>
+            </td>
+            <td class="p-3 align-top">
+              <div class="font-semibold text-slate-900">${item.name}</div>
+              ${item.note.includes("⚠") ? `<span class="inline-block mt-1 px-1.5 py-0.5 text-[11px] font-medium rounded bg-amber-100 text-amber-900">${item.note}</span>` : `<span class="inline-block mt-1 text-[11px] text-slate-500">${item.note}</span>`}
+            </td>
+            <td class="p-3 align-top font-medium text-slate-800">${item.passFail}</td>
+            <td class="p-3 align-top text-slate-600">${item.equipment}</td>
+            <td class="p-3 align-top text-slate-600">${item.env}</td>
+            <td class="p-3 align-top text-slate-700 leading-relaxed">
+              <div>${item.steps}</div>
+              <div class="mt-2 pt-2 border-t border-slate-100 no-print flex items-center gap-1.5">
+                <span class="text-[11px] text-slate-400">📝</span>
+                <input type="text" data-spec-id="${item.id}" class="spec-note-input flex-1 px-2 py-1 text-xs border border-slate-200 rounded-md focus:bg-white bg-slate-50/70 transition" placeholder="Ghi chú / số đo thực tế (VD: 0.33 dB/km, 0.45mm)..." value="${noteVal.replace(/"/g, '&quot;')}" />
+              </div>
+              ${noteVal ? `<div class="hidden print:block text-xs font-mono text-sky-950 mt-1 font-semibold">→ Đo thực tế: ${noteVal}</div>` : ''}
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderFieldTests() {
+      const container = document.getElementById("fieldTestContainer");
+      container.innerHTML = fieldTestData.map(item => `
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+          <h3 class="text-sm sm:text-base font-bold text-slate-900 pb-2.5 border-b border-slate-100">${item.title}</h3>
+          <p class="text-xs sm:text-sm text-rose-900 bg-rose-50/70 border border-rose-200/80 rounded-lg p-3 mt-3">
+            <strong>Rủi ro bị lừa:</strong> ${item.risk}
+          </p>
+          <ul class="list-disc pl-5 mt-3 space-y-1.5 text-xs sm:text-sm text-slate-700 leading-relaxed">
+            ${item.diyTests.map(t => `<li>${t}</li>`).join("")}
+          </ul>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 text-xs sm:text-sm">
+            <div class="p-3 rounded-xl bg-amber-50/70 border border-amber-200/80">
+              <strong class="text-amber-950">Dấu hiệu bắt tại trận:</strong>
+              <p class="text-slate-700 mt-1">${item.redFlag}</p>
+            </div>
+            <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200/80">
+              <strong class="text-emerald-950">Chốt xử lý:</strong>
+              <p class="text-slate-700 mt-1">${item.fallback}</p>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderFraud() {
+      const container = document.getElementById("fraudContainer");
+      const q = searchTerm2.toLowerCase();
+      const filtered = fraudData.filter(f =>
+        !q ||
+        f.category.toLowerCase().includes(q) ||
+        f.target.toLowerCase().includes(q) ||
+        f.trick.toLowerCase().includes(q) ||
+        f.counter.some(c => c.toLowerCase().includes(q))
+      );
+
+      container.innerHTML = filtered.map(f => `
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
+            <h3 class="text-sm sm:text-base font-bold text-slate-900">${f.category}</h3>
+            <span class="px-2.5 py-0.5 text-xs font-medium bg-slate-100 text-slate-600 rounded-md w-fit">Đối tượng: ${f.target}</span>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-3 text-xs sm:text-sm">
+            <div class="bg-rose-50/60 border border-rose-200/80 rounded-xl p-3.5">
+              <div class="font-bold text-rose-900 mb-1.5">Thủ thuật nhà máy</div>
+              <p class="text-slate-700 leading-relaxed">${f.trick}</p>
+            </div>
+            <div class="bg-emerald-50/60 border border-emerald-200/80 rounded-xl p-3.5">
+              <div class="font-bold text-emerald-900 mb-1.5">Cách tự kiểm tra &amp; bóc trần</div>
+              <ul class="list-disc pl-4 space-y-1.5 text-slate-700 leading-relaxed">
+                ${f.counter.map(c => `<li>${c}</li>`).join("")}
+              </ul>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderPreVisit() {
+      const container = document.getElementById("preVisitList");
+      let totalItems = 0;
+      let checkedItems = 0;
+      let hasCount = 0;
+      let missCount = 0;
+      preVisitData.forEach(g => g.items.forEach(it => {
+        totalItems++;
+        if (preVisitChecked[it.id] === "HAS") { checkedItems++; hasCount++; }
+        else if (preVisitChecked[it.id] === "MISSING") { checkedItems++; missCount++; }
+      }));
+      document.getElementById("pvBadge").textContent = `${checkedItems}/${totalItems}`;
+      document.getElementById("pvProgressText").innerHTML = `Đã kiểm: <strong>${checkedItems}/${totalItems}</strong> &nbsp;|&nbsp; <span class="text-emerald-700">Có/Đủ: <strong>${hasCount}</strong></span> &nbsp;|&nbsp; <span class="text-rose-700">Thiếu/Không: <strong>${missCount}</strong></span>`;
+
+      container.innerHTML = preVisitData.map(grp => `
+        <div class="border border-slate-200 rounded-xl overflow-hidden bg-white">
+          <div class="bg-slate-50 border-b border-slate-200 px-4 py-3">
+            <div class="font-bold text-slate-900 text-sm sm:text-base">${grp.group}</div>
+            <p class="text-xs text-slate-500 mt-0.5">${grp.desc}</p>
+          </div>
+          <div class="divide-y divide-slate-100">
+            ${grp.items.map(it => {
+              const st = preVisitChecked[it.id];
+              const rowCls = st === "HAS" ? "bg-emerald-50/40" : st === "MISSING" ? "bg-rose-50/40" : "hover:bg-slate-50/70";
+              return `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 transition ${rowCls}">
+                  <div class="text-xs sm:text-sm flex-1">
+                    <div class="font-semibold text-slate-900">${it.title}</div>
+                    <p class="text-slate-600 mt-0.5 leading-relaxed">${it.detail}</p>
+                  </div>
+                  <div class="flex items-center gap-1.5 shrink-0 no-print">
+                    <button type="button" data-pv-id="${it.id}" data-pv-val="HAS" class="pv-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold border cursor-pointer transition ${st === 'HAS' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-700 border-slate-300 hover:bg-emerald-50'}">✓ Có / Đủ</button>
+                    <button type="button" data-pv-id="${it.id}" data-pv-val="MISSING" class="pv-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold border cursor-pointer transition ${st === 'MISSING' ? 'bg-rose-600 text-white border-rose-600' : 'bg-white text-slate-700 border-slate-300 hover:bg-rose-50'}">✕ Thiếu / Không</button>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderDocs() {
+      const tbody = document.getElementById("docsTableBody");
+      tbody.innerHTML = docsData.map((d, idx) => `
+        <tr class="${docChecked[idx] ? 'bg-emerald-50/40' : 'hover:bg-slate-50/70'}">
+          <td class="p-3 text-center align-top">
+            <input type="checkbox" data-doc-idx="${idx}" class="doc-check w-4 h-4 accent-slate-900 cursor-pointer" ${docChecked[idx] ? 'checked' : ''} />
+          </td>
+          <td class="p-3 align-top font-semibold text-slate-900">${d.doc}</td>
+          <td class="p-3 align-top font-mono text-xs text-slate-500">${d.scope}</td>
+          <td class="p-3 align-top text-slate-700 leading-relaxed">${d.check}</td>
+          <td class="p-3 align-top text-rose-900 bg-rose-50/30 leading-relaxed">${d.fakeRisk}</td>
+        </tr>
+      `).join("");
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById("questionsContainer");
+      container.innerHTML = questionsData.map(q => `
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col justify-between gap-3">
+          <div>
+            <span class="px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-700 rounded">${q.topic}</span>
+            <p class="mt-2.5 text-sm font-semibold text-slate-900 leading-relaxed">“${q.question}”</p>
+          </div>
+          <div class="space-y-2 text-xs sm:text-sm pt-3 border-t border-slate-100">
+            <div class="p-3 rounded-xl bg-emerald-50/60 border border-emerald-200/80">
+              <strong class="text-emerald-900">✓ Trả lời đạt chuẩn:</strong>
+              <p class="text-slate-700 mt-0.5">${q.goodAnswer}</p>
+            </div>
+            <div class="p-3 rounded-xl bg-rose-50/60 border border-rose-200/80">
+              <strong class="text-rose-900">✕ Dấu hiệu đối phó:</strong>
+              <p class="text-slate-700 mt-0.5">${q.redFlag}</p>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderWhatIf() {
+      const tbody = document.getElementById("whatIfTableBody");
+      const filtered = whatIfData.filter(w => whatIfFilterVal === "ALL" || w.decision === whatIfFilterVal);
+      tbody.innerHTML = filtered.map(w => {
+        const badgeClass = w.decision === "REJECT" ? "bg-rose-100 text-rose-800" : w.decision === "RETEST" ? "bg-sky-100 text-sky-800" : "bg-amber-100 text-amber-800";
+        return `
+          <tr class="hover:bg-slate-50/70">
+            <td class="p-3 align-top font-semibold text-slate-900">${w.item}</td>
+            <td class="p-3 align-top text-slate-700 leading-relaxed">${w.scenario}</td>
+            <td class="p-3 align-top">
+              <span class="inline-block px-2 py-1 rounded text-[11px] font-bold ${badgeClass}">${w.decisionLabel}</span>
+            </td>
+            <td class="p-3 align-top text-slate-700 leading-relaxed">${w.action}</td>
+            <td class="p-3 align-top text-slate-600 leading-relaxed">${w.evidence}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderAllViews() {
+      renderPreVisit();
+      renderAmbiguities();
+      renderComponentDeepDive();
+      renderSpecsTable();
+      renderFieldTests();
+      renderFraud();
+      renderDocs();
+      renderQuestions();
+      renderWhatIf();
+      updateCounters();
+    }
+// ==================== EVENT LISTENERS ====================
+    document.querySelectorAll(".nav-item").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const target = btn.getAttribute("data-tab");
+        document.querySelectorAll(".tab-panel").forEach(p => {
+          p.classList.toggle("hidden", p.id !== target);
+        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+
+    document.getElementById("compSelector").addEventListener("click", e => {
+      const btn = e.target.closest(".comp-pill");
+      if (!btn) return;
+      document.querySelectorAll(".comp-pill").forEach(b => {
+        b.classList.remove("active");
+        b.classList.add("bg-white", "text-slate-700");
+      });
+      btn.classList.add("active");
+      btn.classList.remove("bg-white", "text-slate-700");
+      activeComp = btn.getAttribute("data-comp");
+      renderComponentDeepDive();
+    });
+
+    document.getElementById("searchCompInput").addEventListener("input", e => {
+      compSearchTerm = e.target.value;
+      renderComponentDeepDive();
+    });
+
+    document.getElementById("toggleAlertBtn").addEventListener("click", () => {
+      document.getElementById("alertPanel").classList.toggle("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    document.getElementById("closeAlertBtn").addEventListener("click", () => {
+      document.getElementById("alertPanel").classList.add("hidden");
+    });
+    document.getElementById("printBtn").addEventListener("click", () => {
+      window.print();
+    });
+
+    document.getElementById("groupFilters").addEventListener("click", e => {
+      const btn = e.target.closest(".filter-btn");
+      if (!btn) return;
+      document.querySelectorAll(".filter-btn").forEach(b => {
+        b.classList.remove("active");
+        b.classList.add("bg-white", "text-slate-700");
+      });
+      btn.classList.add("active");
+      btn.classList.remove("bg-white", "text-slate-700");
+      activeGroup = btn.getAttribute("data-group");
+      renderSpecsTable();
+    });
+
+    document.getElementById("searchInput1").addEventListener("input", e => {
+      searchTerm1 = e.target.value;
+      renderSpecsTable();
+    });
+
+    document.getElementById("searchInput2").addEventListener("input", e => {
+      searchTerm2 = e.target.value;
+      renderFraud();
+    });
+
+    document.getElementById("whatIfFilter").addEventListener("change", e => {
+      whatIfFilterVal = e.target.value;
+      renderWhatIf();
+    });
+
+    document.getElementById("specsTableBody").addEventListener("click", e => {
+      const btn = e.target.closest(".status-toggle");
+      if (!btn) return;
+      const id = btn.getAttribute("data-id");
+      const val = btn.getAttribute("data-val");
+      testStatus[id] = testStatus[id] === val ? null : val;
+      triggerSaveAndSync();
+      updateCounters();
+      renderSpecsTable();
+    });
+
+    document.getElementById("preVisitList").addEventListener("click", e => {
+      const btn = e.target.closest(".pv-btn");
+      if (!btn) return;
+      const id = btn.getAttribute("data-pv-id");
+      const val = btn.getAttribute("data-pv-val");
+      preVisitChecked[id] = preVisitChecked[id] === val ? null : val;
+      triggerSaveAndSync();
+      renderPreVisit();
+    });
+
+    document.getElementById("copyPreVisitBtn").addEventListener("click", () => {
+      const msg = [
+        "Chào anh/chị, để buổi kiểm tra nghiệm thu cáp 1FO (21297/QĐ-VTT) diễn ra nhanh chóng và không bị gián đoạn, anh/chị chuẩn bị và gửi trước giúp em 3 nhóm nội dung sau:",
+        "A. TRANG THIẾT BỊ TẠI BÀN TEST: Kiểm tra sẵn sàng OTDR MTS8000, WS500-MFD, EXFO FTB-200-V2-S1, bộ PMD, máy đo hình học, máy 2D/3D (kèm thước chuẩn), panme 0,001mm, máy kéo/nén/xoắn/va đập/uốn/mài mòn, buồng nhiệt; bày sẵn cân bàn + cân tiểu ly + 1 tang trống rỗng cùng loại, máy hàn quang, dây nhảy sạch, máy đọc mã vạch, cồn 90° và khăn lau.",
+        "B. GIẤY TỜ GỬI TRƯỚC QUA EMAIL/ZALO: (1) Danh sách máy đo + bản scan Giấy hiệu chuẩn còn hạn rõ Serial Number; (2) CO/CQ + Packing List + Test Report từng cuộn sợi gốc G657A1; (3) Datasheet + CO/CQ hạt nhựa LLDPE & Báo cáo test vỏ nhựa tại Lab VN (VILAS có FTIR/DSC); (4) CO/CQ dây thép 7x0,33mm & 0,45mm + Tài liệu chứng minh tuổi thọ >= 6 năm.",
+        "C. CÁCH THỨC LÀM VIỆC: (1) Cho phép lấy mẫu ngẫu nhiên từ kho thành phẩm & dây chuyền đang chạy (không dùng mẫu cắt sẵn); (2) Chốt trước lịch chạy bài Buồng nhiệt 48h & MOT 500N 1h; (3) Cử 01 kỹ sư vận hành máy + 01 QC đi cùng suốt buổi và xuất file dữ liệu thô (.sor/.pdf/log) ngay tại chỗ."
+      ].join("\n\n");
+      const showToast = () => {
+        const t = document.getElementById("copyToast");
+        t.classList.remove("hidden");
+        setTimeout(() => t.classList.add("hidden"), 3000);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(msg).then(showToast).catch(() => {
+          const ta = document.createElement("textarea");
+          ta.value = msg;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          showToast();
+        });
+      } else {
+        const ta = document.createElement("textarea");
+        ta.value = msg;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        showToast();
+      }
+    });
+
+    document.getElementById("docsTableBody").addEventListener("change", e => {
+      if (!e.target.classList.contains("doc-check")) return;
+      const idx = e.target.getAttribute("data-doc-idx");
+      docChecked[idx] = e.target.checked;
+      triggerSaveAndSync();
+      renderPreVisit();
+    renderDocs();
+    });
+
+    
+    // ==================== CLOUD SYNC & SESSION EVENTS ====================
+    // Session switcher dropdown
+    document.getElementById("sessionSelect").addEventListener("change", async (e) => {
+      const newId = e.target.value;
+      if (newId === currentSessionId) return;
+      currentSessionId = newId;
+      const url = new URL(window.location);
+      url.searchParams.set("session", currentSessionId);
+      window.history.pushState({}, "", url);
+      loadLocalState();
+      renderAllViews();
+      updateSessionMetaBanner();
+      await loadSessionFromCloud(currentSessionId);
+    });
+
+    // Create New Session
+    document.getElementById("newSessionBtn").addEventListener("click", async () => {
+      const name = prompt("Nhập tên đợt nghiệm thu mới (VD: Cuộn 02 — Lô 21297):", "Cuộn mới — " + new Date().toLocaleDateString("vi-VN"));
+      if (!name || !name.trim()) return;
+
+      const newId = "session_" + Date.now();
+      currentSessionId = newId;
+      sessionMeta = {
+        title: name.trim(),
+        cable_lot: "",
+        auditor: "",
+        factory: "",
+        notes: ""
+      };
+      testStatus = {};
+      testNotes = {};
+      docChecked = {};
+      preVisitChecked = {};
+
+      const url = new URL(window.location);
+      url.searchParams.set("session", currentSessionId);
+      window.history.pushState({}, "", url);
+
+      saveLocalState();
+      updateSessionMetaBanner();
+      renderAllViews();
+      await pushSessionToCloud();
+      await fetchSessionsList();
+    });
+
+    // Edit Session Metadata Modal
+    const modal = document.getElementById("sessionModal");
+    document.getElementById("editSessionBtn").addEventListener("click", () => {
+      document.getElementById("modalTitleInput").value = sessionMeta.title || "";
+      document.getElementById("modalLotInput").value = sessionMeta.cable_lot || "";
+      document.getElementById("modalAuditorInput").value = sessionMeta.auditor || "";
+      document.getElementById("modalFactoryInput").value = sessionMeta.factory || "";
+      document.getElementById("modalNotesInput").value = sessionMeta.notes || "";
+      modal.classList.remove("hidden");
+    });
+    document.getElementById("closeModalBtn").addEventListener("click", () => modal.classList.add("hidden"));
+    document.getElementById("cancelModalBtn").addEventListener("click", () => modal.classList.add("hidden"));
+    document.getElementById("saveModalBtn").addEventListener("click", async () => {
+      sessionMeta.title = document.getElementById("modalTitleInput").value.trim() || "Nghiệm Thu Mẫu";
+      sessionMeta.cable_lot = document.getElementById("modalLotInput").value.trim();
+      sessionMeta.auditor = document.getElementById("modalAuditorInput").value.trim();
+      sessionMeta.factory = document.getElementById("modalFactoryInput").value.trim();
+      sessionMeta.notes = document.getElementById("modalNotesInput").value.trim();
+      modal.classList.add("hidden");
+      updateSessionMetaBanner();
+      triggerSaveAndSync();
+      renderSessionDropdown();
+    });
+
+    // Share / Copy Link
+    document.getElementById("shareSessionBtn").addEventListener("click", () => {
+      const url = new URL(window.location);
+      url.searchParams.set("session", currentSessionId);
+      const shareUrl = url.toString();
+
+      const showToast = () => {
+        const t = document.getElementById("shareToast");
+        t.classList.remove("hidden");
+        setTimeout(() => t.classList.add("hidden"), 3500);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(showToast).catch(() => {
+          prompt("Copy link sau để mở trên máy tính hoặc điện thoại khác:", shareUrl);
+        });
+      } else {
+        prompt("Copy link sau để mở trên máy tính hoặc điện thoại khác:", shareUrl);
+      }
+    });
+
+    // Manual Force Sync
+    document.getElementById("manualSyncBtn").addEventListener("click", async () => {
+      await loadSessionFromCloud(currentSessionId);
+      await fetchSessionsList();
+    });
+
+    // Delete Session
+    document.getElementById("deleteSessionBtn").addEventListener("click", async () => {
+      if (!confirm(`Bạn có chắc muốn xóa đợt nghiệm thu "${sessionMeta.title}" không?`)) return;
+      try {
+        await fetch("/api/sessions/" + encodeURIComponent(currentSessionId), { method: "DELETE" });
+        localStorage.removeItem("qa_qc_session_" + currentSessionId);
+        currentSessionId = "default";
+        const url = new URL(window.location);
+        url.searchParams.delete("session");
+        window.history.pushState({}, "", url);
+        loadLocalState();
+        renderAllViews();
+        await loadSessionFromCloud("default");
+        await fetchSessionsList();
+      } catch (e) {
+        alert("Lỗi khi xóa session: " + e.message);
+      }
+    });
+
+    // Spec note input event delegation
+    document.getElementById("specsTableBody").addEventListener("input", e => {
+      if (!e.target.classList.contains("spec-note-input")) return;
+      const id = e.target.getAttribute("data-spec-id");
+      testNotes[id] = e.target.value;
+      triggerSaveAndSync();
+    });
+
+    // Init sequence
+    (async function init() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlSession = urlParams.get("session");
+      if (urlSession) {
+        currentSessionId = urlSession;
+      }
+      loadLocalState();
+      updateSessionMetaBanner();
+      renderAllViews();
+      await fetchSessionsList();
+      await loadSessionFromCloud(currentSessionId);
+    })();
+  </script>
+</body>
+</html>

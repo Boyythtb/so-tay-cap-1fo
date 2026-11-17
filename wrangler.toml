@@ -1,0 +1,8 @@
+name = "so-tay-cap-1fo"
+pages_build_output_dir = "public"
+compatibility_date = "2024-09-23"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "qa-qc-1fo-db"
+database_id = "edce7a61-78cf-441f-984d-c4358b5d2dab"

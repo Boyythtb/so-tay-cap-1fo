@@ -1,0 +1,13 @@
+{
+  "name": "so-tay-cap-1fo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sổ Tay QA/QC Hiện Trường & Hệ Thống Nghiệm Thu Cáp Quang 1FO (21297/QĐ-VTT) trên Cloudflare D1",
+  "scripts": {
+    "dev": "wrangler pages dev public --d1=DB=edce7a61-78cf-441f-984d-c4358b5d2dab",
+    "deploy": "wrangler pages deploy public"
+  },
+  "devDependencies": {
+    "wrangler": "^4.163.0"
+  }
+}
